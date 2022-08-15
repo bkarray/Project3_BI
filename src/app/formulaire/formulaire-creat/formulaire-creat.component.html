@@ -1,0 +1,94 @@
+<div class="container">
+<div>
+ <h3>exemplaire: {{formulaire.Formulaire_Name}}</h3>
+  <table>
+    <thead>
+        <tr>
+            <th>Champ</th>
+            <th>Type</th>
+            <th></th>
+            <th>fonction</th>
+        </tr>
+    </thead>
+
+    <tbody>
+   <tr  *ngFor="let field of fields"> 
+    <td>{{field.Name}}</td>
+    <td>{{field.Type}}</td>
+    <td><p *ngIf="field.choises!=null">{{field.choises}}</p></td>
+    <td>{{field.Status}}</td>
+</tr>
+<tr *ngIf="fieldFormIsOpen">
+    <td><input type="text" [(ngModel)]="newFieldName" placeholder="field Name..."></td>
+    <td>
+        <select [(ngModel)]="newFieldType">
+         <option *ngIf="newFieldType==''" value="">choisir un type</option>
+         <option value="list">list</option>
+         <option value="character varying(255)">string</option>
+         <option value="date">date</option>
+         <option value="boolean">boolean</option>
+         <option value="integer">number</option>
+         <option value="real">float</option>
+        </select>
+    </td>
+    <td><input *ngIf="newFieldType=='list'" type="text" [(ngModel)]="newfieldChoises" placeholder="separer les choix par ';'..."></td>
+    <td><select [(ngModel)]="newFieldStatus">
+        <option *ngIf="newFieldStatus==''" value="">choisir la fonctinalite</option>
+        <option value="consulté">consulté</option>
+        <option value="modifié">modifié</option>
+    </select></td>
+</tr>
+<tr *ngIf="fieldFormIsOpen">
+    <td></td>
+    <td></td>
+    <td></td>
+    <td><a class="myButton" (click)="addnewfield()">confirmer</a></td>
+</tr>
+<tr *ngIf="!fieldFormIsOpen">
+    <td></td>
+    <td></td>
+    <td></td>
+    <td><a class="myButton" (click)="openfieldForm()">+</a></td>
+  </tr>
+    </tbody>
+  </table>
+
+</div>
+<div class="currentserv">
+
+<select (change)="correctOrder()" [(ngModel)]="currentsrvOrd">
+    <option *ngFor="let serv of formulaire.services;let index=index" value="{{serv.Serv_order}}">etap n°{{serv.Serv_order}}</option>
+
+</select>
+<a class="myButton" *ngIf="numservs!=1" (click)="nextServ()">next</a>
+</div>
+<div>
+<p>fonction:</p>
+<select (change)="correctOrder()" [(ngModel)]="currentsrvName" >
+<option *ngFor="let serv of formulaire.services" value="{{serv.Serv_Name}}">{{serv.Serv_Name}}</option>
+</select>
+</div>
+<div>
+
+<table cdkDropListGroup>
+<tbody *ngFor="let table of formulaire.tables;let index=index;let last=last" >
+
+<tr  cdkDropList 
+[cdkDropListData]="table.fields" 
+(cdkDropListDropped)="drop($event)">
+<td *ngFor="let space of table.spaces"></td>
+<td>ID</td>
+<td cdkDrag class="grab" *ngFor="let field of table.fields">{{field.Name}}</td>
+
+</tr>
+
+        </tbody>
+        <tbody>
+            <tr>
+                <td ><a class="myButton" (click)="addNewTable()">+</a></td> 
+             </tr>
+        </tbody>
+    </table>
+    <a class="myButton" *ngIf="numservs==1" (click)="End()">next</a>
+</div>
+</div>

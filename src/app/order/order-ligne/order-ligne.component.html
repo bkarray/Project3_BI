@@ -1,0 +1,529 @@
+
+<div class="container" style="width: 60%">
+  <article class="card">
+    <header class="card-header">Mes commandes</header>
+    <select [(ngModel)]="filterCondition"
+    aria-label=".form-select-lg example"
+    (change)="filter()"
+    class="filter">
+      <option value="">no filter</option>
+      <option value="date">date</option>
+      <option value="order">order</option>
+    </select>
+    <select [(ngModel)]="statusToFind"
+    aria-label=".form-select-lg example"
+    (change)="getCart()"
+    class="filter">
+     <option value="">non status</option>
+     <option value="envoyée">indetermine</option>
+     <option value="en livraison">en livraison</option>
+     <option value="livrée">livrée</option>
+     <option value="payée">payée</option>
+    </select>
+    <select
+    *ngIf="isAdmin"
+    [(ngModel)]="fnxOrClient"
+    aria-label=".form-select-lg example"
+    (change)="getCart()"
+    class="filter">
+    <option value="">no filter</option>
+    <option value="customer">customer</option>
+    <option value="admin">admin</option>
+    </select>
+
+    <div class="search">
+      <input type="text" [(ngModel)]="searchedId" class="searchTerm" placeholder="order Id">
+      <button (click)="search()" class="searchButton">
+        <i class="fa fa-search"></i>
+     </button>
+     
+   </div> 
+   <p class="notFound" *ngIf="notFound==true">pas de solution</p>
+    <div class="card-body" >
+    
+      <hr />
+      <table class="blueTable" cdkDropListGroup>
+        <thead style="border-radius: 100px;">
+        <tr>
+        <th></th>
+        <th>Changer</th>
+        <th>En livraison</th>
+        <th>Livrée</th>
+        <th>Payée</th>
+        <th></th>
+        </tr>
+        </thead>
+        <tbody *ngFor="let ord of orders;let index=index" >
+        <tr >
+        <td><p>{{ord.ord_id}}</p>
+        <p *ngIf="!ord.isNew">{{ord.orderType}}</p>
+        <select *ngIf="ord.isNew" [(ngModel)]="ord.orderType">
+          <option value="customer">customer</option>
+          <option value="admin">admin</option>
+        </select>
+      </td>
+        <td *ngFor="let stat of ord.statusTable" >
+          <ng-container>
+          <div
+         
+          id="statusTable,{{ord.ord_id}}"
+          cdkDropList
+          [cdkDropListData]="stat.info"
+          (cdkDropListDropped)="drop($event,ord.ord_id)">
+          <div *ngIf="(stat.info.length==0)&&(!ord.isPayed)" ><p class="hide">.</p></div>
+          <div cdkDrag class="grab" *ngFor="let i of stat.info" >
+            <i *ngIf="i==0" class="material-icons grab">done_outline</i>
+            <p class="hide">{{i}}</p>
+          </div>
+        </div>
+        </ng-container>
+         </td>
+        <td> <a class="d-flex justify-content-end" (click)="open(ord.ord_id)">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            fill="currentColor"
+            class="bi bi-caret-down"
+            viewBox="0 0 16 16"
+          >
+            <path
+              d="M3.204 5h9.592L8 10.481 3.204 5zm-.753.659 4.796 5.48a1 1 0 0 0 1.506 0l4.796-5.48c.566-.647.106-1.659-.753-1.659H3.204a1 1 0 0 0-.753 1.659z"
+            />
+          </svg>
+        </a></td>
+        </tr>
+        <tr *ngIf="ord.isOpen">
+             <td colspan="6" style="padding: 0px;"><div class="opendiv"> <thead>
+              <tr>
+              <th class="chance" >Num_Cmd</th>
+              <th class="chance" >Statut par cmd</th>
+              <th class="chance">Num_SousCmd</th>
+              <th class="chance">Statut par Sous_Cmd</th>
+              <th class="chance" (click)="showItems()" >Item </th>
+              <th class="chance2">Date Livraison estimé</th>
+              <th class="chance">Statut par Item</th>
+              <th class="chance">Supplier</th>
+              <th class="chance">Quantité</th>
+              <th class="chance2" >Date Livraison Réelle</th>
+
+              </tr>
+              </thead>
+              <tbody
+              cdkDropList
+              [cdkDropListData]="ord.prods"
+              id="P,{{ord.ord_id}}"
+              (cdkDropListDropped)="drop($event,ord.ord_id)">
+              <tr *ngIf="ord.prods.length==0" >
+                <td>{{ord.ord_id}}</td>
+                <td><select
+                  (change)="changeOnSelectOrd(ord.ord_id)"
+                  [(ngModel)]="ord.status"
+                  aria-label=".form-select-lg example"
+                  id="A{{ ord.ord_id }}"
+                >
+                <option value="envoyée" *ngIf="!ord.isPayed">
+                  indetermine
+                </option>
+                  <option selected class="d-flex  text-center" value="payée" *ngIf="ord.isPayed">
+                    <p  >
+                    le produit est livré et payé
+                  </p>
+                  </option>
+                  <option
+                    value="en livraison"
+                    *ngIf="!ord.isPayed"
+                  >
+                    en livraison
+                  </option>
+                  <option
+                    value="livrée"
+                    *ngIf="!ord.isPayed"
+                  >
+                    livrée
+                  </option>
+                  <option value="payée" *ngIf="!ord.isPayed">
+                    payée
+                  </option>
+                </select></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+                <tr *ngFor="let prod of ord.prods;let first=first"
+                cdkDrag class="grab">
+                  <td><p *ngIf="first">{{ord.ord_id}}</p></td>
+                  <td><select
+                    *ngIf="first"
+                    (change)="changeOnSelectOrd(ord.ord_id)"
+                    [(ngModel)]="ord.status"
+                    aria-label=".form-select-lg example"
+                    id="A{{ ord.ord_id }}"
+                  >
+                  <option value="envoyée" *ngIf="!ord.isPayed">
+                    indetermine
+                  </option>
+                    <option selected class="d-flex  text-center" value="payée" *ngIf="ord.isPayed">
+                      <p  >
+                      le produit est livré et payé
+                    </p>
+                    </option>
+                    <option
+                      value="en livraison"
+                      *ngIf="!ord.isPayed"
+                    >
+                      en livraison
+                    </option>
+                    <option
+                      value="livrée"
+                      *ngIf="!ord.isPayed"
+                    >
+                      livrée
+                    </option>
+                    <option value="payée" *ngIf="!ord.isPayed">
+                      payée
+                    </option>
+                  </select>
+                </td>
+                  <td></td>
+                  <td></td>
+                  <td><span (click)="deleteOrderLigne(ord.ord_id,prod.LignId)" class="material-symbols-outlined">
+                    close
+                    </span>
+                    <p>{{prod.Prod_Name}}</p></td>
+                  <td><input type="date" (change)="verifierSousOrders(ord.ord_id,prod.LignId,-1)" [(ngModel)]="prod.expected_delivery_date"></td>
+                  <td><select
+                    (change)="refrechStatus()"
+                    [(ngModel)]="prod.status"
+                    aria-label=".form-select-lg example"
+                    id="C{{ prod.Prod_Id }}"
+                  >
+                  <option value="envoyée" *ngIf="!prod.isPayed">
+                    indetermine
+                  </option>
+                    <option selected class="d-flex  text-center" value="payée" *ngIf="prod.isPayed">
+                      <p  >
+                      le produit est livré et payé
+                    </p>
+                    </option>
+                    <option
+                      value="en livraison"
+                      *ngIf="!prod.isPayed"
+                    >
+                      en livraison
+                    </option>
+                    <option
+                      value="livrée"
+                      *ngIf="!prod.isPayed"
+                    >
+                      livrée
+                    </option>
+                    <option value="payée" *ngIf="!prod.isPayed">
+                      payée
+                    </option>
+                  </select></td>
+                  <td>         
+                    <select id="C{{index}}" *ngIf="isAdmin&&ord.orderType=='admin'" [(ngModel)]="prod.Supplier">
+                    <option *ngFor="let u of FnxList" value="{{ u.U_Id }}" >
+                      {{ u.U_FirstName }} {{ u.U_LastName }}
+                    </option>
+                  </select></td>
+                  <td>{{prod.Qte}}</td>
+                  <td><input type="date" [(ngModel)]="prod.real_delivery_date"></td>
+                  
+                  
+                </tr>
+                <tr *ngIf="!ord.toAdd&&((ord.prods.length!=0)||(ord.isNew))">
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td><a class="myButton"  (click)="openOrderLigneForme(ord.ord_id)">+</a></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+                <tr *ngIf="ord.toAdd">
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td (click)="listToAdd()">{{ProdNameOfNewOrderLigne}}</td>
+                  <td></td>
+                  <td></td>
+                  <td>                    
+                    <select id="C{{index}}" *ngIf="isAdmin&&ord.orderType=='admin'" [(ngModel)]="supplierOfNewOrderLigne" >
+                    <option *ngFor="let u of FnxList" value="{{ u.U_Id }}" >
+                      {{ u.U_FirstName }} {{ u.U_LastName }}
+                    </option>
+                    </select>
+                  </td>
+                  <td><input type="number" min="1" [(ngModel)]="QteOfNewOrderLigne"></td>
+                  <td></td>
+                </tr>
+                <tr *ngIf="ord.toAdd">
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td><a class="myButton" (click)="addOrderLigneSansSO(ord.ord_id)"  >confirme</a></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+                <tr *ngIf="(ord.sousOrders.length==0)&&!ord.isNew">
+                  <td></td>
+                  <td></td>
+                  <td>
+                  <a *ngIf="!DateFormeIsOpen" class="myButton" (click)="getNewSousOrdDate()">+</a></td>
+                  <td><input *ngIf="DateFormeIsOpen" type="date" [(ngModel)]="newSousOrdData"></td>
+                  <td>                    <a *ngIf="DateFormeIsOpen" class="myButton" (click)="addNewSousOrd(ord.ord_id)">confirme</a></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+              </tbody>
+              <tbody *ngFor="let sousOrd of ord.sousOrders; let last = last"
+              cdkDropList
+              id="S,{{ord.ord_id}}"
+              [cdkDropListData]="sousOrd.prods"
+              (cdkDropListDropped)="drop($event,ord.ord_id)">
+              <tr *ngIf="sousOrd.prods.length==0">
+                <td></td>
+                <td></td>
+                <td>{{sousOrd.SousOrd_Id}}</td>
+                <td><select
+                  (change)="changeOnSelectSousOrd(ord.ord_id,sousOrd.SousOrd_Id)"
+                  [(ngModel)]="sousOrd.SousOrd_status"
+                  aria-label=".form-select-lg example"
+                  id="B{{ sousOrd.SousOrd_Id }}"
+                >
+                <option value="envoyée" *ngIf="!sousOrd.isPayed">
+                  indetermine
+                </option>
+                  <option selected class="d-flex  text-center" value="payée" *ngIf="sousOrd.isPayed">
+                    <p  >
+                    le produit est livré et payé
+                  </p>
+                  </option>
+                  <option
+                    value="en livraison"
+                    *ngIf="!sousOrd.isPayed"
+                  >
+                    en livraison
+                  </option>
+                  <option
+                    value="livrée"
+                    *ngIf="!sousOrd.isPayed"
+                  >
+                    livrée
+                  </option>
+                  <option value="payée" *ngIf="!sousOrd.isPayed">
+                    payée
+                  </option>
+                </select></td>
+                <td></td>
+                <td></td>
+                <td><input type="date" [(ngModel)]="sousOrd.expected_delivery_date"></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+                <tr cdkDrag class="grab" *ngFor="let prod of sousOrd.prods;let first=first;let last=last">
+                  <td></td>
+                  <td></td>
+                  <td>    <span *ngIf="first" (click)="deleteSousOrder(ord.ord_id,sousOrd.SousOrd_Id)" class="material-symbols-outlined">
+                    close
+                    </span>
+                    <p *ngIf="first">{{sousOrd.SousOrd_Id}}</p></td>
+                  <td><select
+                    *ngIf="first"
+                    (change)="changeOnSelectSousOrd(ord.ord_id,sousOrd.SousOrd_Id)"
+                    [(ngModel)]="sousOrd.SousOrd_status"
+                    aria-label=".form-select-lg example"
+                    id="B{{ sousOrd.SousOrd_Id }}"
+                  >
+                  <option value="envoyée" *ngIf="!sousOrd.isPayed">
+                    indetermine
+                  </option>
+                    <option selected class="d-flex  text-center" value="payée" *ngIf="sousOrd.isPayed">
+                      <p  >
+                      le produit est livré et payé
+                    </p>
+                    </option>
+                    <option
+                      value="en livraison"
+                      *ngIf="!sousOrd.isPayed"
+                    >
+                      en livraison
+                    </option>
+                    <option
+                      value="livrée"
+                      *ngIf="!sousOrd.isPayed"
+                    >
+                      livrée
+                    </option>
+                    <option value="payée" *ngIf="!sousOrd.isPayed">
+                      payée
+                    </option>
+                  </select></td>
+                  <td><span (click)="deleteSousOrderLigne(ord.ord_id,sousOrd.SousOrd_Id,prod.LignId)" class="material-symbols-outlined">
+                    close
+                    </span>
+                    <p>{{prod.Prod_Name}}</p></td>
+                  <td><input type="date" (change)="verifierSousOrders(ord.ord_id,prod.LignId,sousOrd.SousOrd_Id)" [(ngModel)]="prod.expected_delivery_date"></td>
+                  <td><select
+                    (change)="refrechStatus()"
+                    [(ngModel)]="prod.status"
+                    aria-label=".form-select-lg example"
+                    id="C{{ prod.Prod_Id }}"
+                  >
+                  <option value="envoyée" *ngIf="!prod.isPayed">
+                    indetermine
+                  </option>
+                    <option selected class="d-flex  text-center" value="payée" *ngIf="prod.isPayed">
+                      <p  >
+                      le produit est livré et payé
+                    </p>
+                    </option>
+                    <option
+                      value="en livraison"
+                      *ngIf="!prod.isPayed"
+                    >
+                      en livraison
+                    </option>
+                    <option
+                      value="livrée"
+                      *ngIf="!prod.isPayed"
+                    >
+                      livrée
+                    </option>
+                    <option value="payée" *ngIf="!prod.isPayed">
+                      payée
+                    </option>
+                  </select></td>
+                  <td>         
+                    <select id="C{{index}}" *ngIf="isAdmin&&ord.orderType=='admin'" [(ngModel)]="prod.Supplier" >
+                    <option *ngFor="let u of FnxList" value="{{ u.U_Id }}" >
+                      {{ u.U_FirstName }} {{ u.U_LastName }}
+                    </option>
+                  </select></td>
+                  <td>{{prod.Qte}}</td>
+                  <td> <input type="date" [(ngModel)]="prod.real_delivery_date"></td>
+
+              </tr>
+              <tr *ngIf="!sousOrd.toAdd">
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><a class="myButton"  (click)="openOrderLigneFormeSO(ord.ord_id,sousOrd.SousOrd_Id)">+</a></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr *ngIf="sousOrd.toAdd">
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td (click)="listToAdd()">{{ProdNameOfNewOrderLigne}}</td>
+                <td></td>
+                <td></td>
+                <td>                    
+                  <select id="C{{index}}" *ngIf="isAdmin&&ord.orderType=='admin'" [(ngModel)]="supplierOfNewOrderLigne" >
+                  <option *ngFor="let u of FnxList" value="{{ u.U_Id }}" >
+                    {{ u.U_FirstName }} {{ u.U_LastName }}
+                  </option>
+                  </select>
+                </td>
+                <td><input type="number" min="1" [(ngModel)]="QteOfNewOrderLigne"></td>
+                <td></td>
+              </tr>
+              <tr *ngIf="sousOrd.toAdd">
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><a class="myButton" (click)="addOrderLigne(ord.ord_id,sousOrd.SousOrd_Id)"  >confirme</a></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+
+                <tr *ngIf="last">
+                  <td></td>
+                  <td></td>
+                  <td><a *ngIf="!DateFormeIsOpen" class="myButton" (click)="getNewSousOrdDate()">+</a></td>
+                  <td><input *ngIf="DateFormeIsOpen"  type="date" [(ngModel)]="newSousOrdData" class="inputdate" ></td>
+                  <td><a *ngIf="DateFormeIsOpen" class="myButton" (click)="addNewSousOrd(ord.ord_id)">confirme</a></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+                </tbody>
+
+             </div>
+             </td>
+        </tr>
+        </tbody>
+        </table>
+     
+        
+    
+      
+      <hr />
+    </div>
+  </article>
+  <div class="d-flex justify-content-end">
+    <button href="#" class="btn btn-warning mt-3" (click)="valide()">
+      <i class="fa fa-chevron-right"></i> Valider
+    </button>
+    
+      <button href="#" class="btn btn-warning mt-3" (click)="addNewOrder()">
+      <i class="fa fa-chevron-right"></i> Creat order
+    </button>
+
+  </div>
+
+
+
+  <div class="listItems" *ngIf="itemsIsShown">
+    <i (click)="closeItemList()" class="material-icons close">
+      close
+    </i>
+
+    <div class="main" >
+      <div class="allcard">
+   <div class="card-prod" *ngFor="let l of products">
+    <img  src="../../assets/{{l.Prod_Img}}" style="width:80%" class="cardimg justify-content-center m-auto">
+
+   <h3>{{ l.Prod_Name }}</h3>
+   <p class="price">{{l.Prod_Price}} $</p>
+   <a (click)="details(l.Prod_Id)" >Voir details</a>
+   <p *ngIf="canAddItem" (click)="choseProd(l)" ><button class="btn btn-outline-secondary" >Ajouter au panier</button></p>
+
+     </div>
+    </div>
+
+   </div>
+</div>
+
+</div>
+ 

@@ -1,0 +1,31 @@
+<div>
+
+<div class="infoRponse">
+    <h3>Exemplaire:{{formulaire.Formulaire_Name}}==>{{formulaire.Formulaire_Status}}</h3>
+    <br>
+  <p>Reponse==> <input type="text" [(ngModel)]="reponseStatus" placeholder="reponceStatus..."></p>  
+</div>
+
+ <div class="infoRponse">
+    <h3>Fontions:</h3>
+    <table>
+        <tr *ngFor="let serv Of services">
+        <td>{{serv.Serv_Name}}</td>
+        <td><select [(ngModel)]="serv.Serv_User">
+            <option value="null">choisire l'utilisateur</option>
+            <option *ngFor="let user of users" value="{{user.U_Id}}"> {{user.U_FirstName}} {{user.U_LastName}}</option>
+        </select></td>
+        </tr>
+    </table>
+     
+  <div class="btns">
+    <a class="myButton" (click)="startReponse()" >Start</a>
+    <a class="myButton" (click)="creatReponse()">creat response</a>
+  </div>
+</div> 
+
+
+
+
+
+</div>

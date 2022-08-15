@@ -1,0 +1,77 @@
+<div class="container">
+    <table>
+        <tbody class="blueTable" *ngFor="let formulaire of formulaires;let index=index">
+        <tr>
+            <td>{{formulaire.Formulaire_Name}}</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><a class="d-flex justify-content-end" (click)="open(index)">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  fill="currentColor"
+                  class="bi bi-caret-down"
+                  viewBox="0 0 16 16"
+                >
+                  <path
+                    d="M3.204 5h9.592L8 10.481 3.204 5zm-.753.659 4.796 5.48a1 1 0 0 0 1.506 0l4.796-5.48c.566-.647.106-1.659-.753-1.659H3.204a1 1 0 0 0-.753 1.659z"
+                  />
+                </svg>
+              </a></td>
+
+            
+        </tr>
+        <tr *ngIf="formulaire.isOpen"> 
+        <td colspan="5">
+            <tr *ngFor="let reponse of formulaire.reponses">
+                <td></td>
+                <td>{{reponse.reponse_Name}}</td>
+                <td><p *ngIf="reponse.reponse_level==null">etap n°{{reponse.currentServ.Serv_order}}</p> 
+                <p *ngIf="reponse.reponse_level!=null">reponse est executé </p></td>
+                <td><p *ngIf="reponse.reponse_level!=null">{{reponse.currentServ.Serv_Name}}</p></td>
+                <td><p *ngIf="reponse.reponse_level!=null">{{reponse.currentServ.userName}}</p></td>
+                <td (click)="openTable(formulaire.Formulaire_Id,reponse.Reponse_Id)" *ngIf="reponse.reponse_level!=null">open</td>
+    
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td><input *ngIf="reponseFormIsOpen"  type="text" placeholder="Reponse Name..." [(ngModel)]="newReponseName"></td>
+                <td><a *ngIf="reponseFormIsOpen"  class="myButton" (click)="addNewReponse(formulaire.Formulaire_Id)">confirmer</a></td>
+                <td><a *ngIf="!reponseFormIsOpen" class="myButton" (click)="openReponseForm()">+</a></td>
+    
+            </tr>
+        </td>
+    </tr>
+    
+
+        </tbody>
+    </table>
+    <div class="d-flex justify-content-end">
+        <button class="btn btn-warning mt-3" (click)="openForm()"  >
+          <i class="fa fa-chevron-right"></i> cree formulaire
+        </button>    
+      </div>
+<div class="listItems" *ngIf="creatFormIsOpen">
+    <i (click)="openForm()" class="material-icons close">
+        close
+      </i>
+    <p>New Formulaire name:</p>
+    <input type="text" [(ngModel)]="newFormulaireName">
+    <p>New Formulaire status:</p>
+    <input type="text" [(ngModel)]="newFormulaireStatus">
+    <br>
+    <p>services:</p>
+    <div>
+      <p *ngFor="let serv of services;let index=index">{{serv.Serv_Name}}     <i class="material-icons"(click)="deleteServ(index)" >close</i></p>
+      <p *ngIf="!serviceFormIsOpen"><a (click)="openServiceForm()" class="myButton">+</a></p>
+      <p *ngIf="serviceFormIsOpen" ><input type="text" [(ngModel)]="newServName" class="inputServ"></p>
+      <p *ngIf="serviceFormIsOpen"><a (click)="addNewServ()" class="myButton">confirme</a></p>
+    </div>
+    <button href="#" class="btn btn-warning mt-3" (click)="addNewFormulaire()">
+        <i class="fa fa-chevron-right"></i> Creat Formulaire
+      </button>
+</div>
+</div>
