@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class SharedService {
+  length: any;
   splice() {
     throw new Error('Method not implemented.');
   }

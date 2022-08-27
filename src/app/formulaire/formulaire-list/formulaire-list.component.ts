@@ -36,10 +36,13 @@ export class FormulaireListComponent implements OnInit {
   usersNewServ:any=[]
   userForm:boolean=false
   newUserId:Number=0
+  servList:boolean=false
+  creationFormulaire:boolean=false
 
 
   ngOnInit(): void {
     this.getForms()
+    console.log(this.servsExamples)
   }
   @Output() emitter: EventEmitter<string> = new EventEmitter<string>();
 
@@ -48,6 +51,11 @@ export class FormulaireListComponent implements OnInit {
     this.deleteFormName=name
     this.todelete=!this.todelete
 
+  }
+  deletServExample(index:any){
+  this.FormulaireService.deleteServ(this.servsExamples[index].Serv_Id).subscribe((res:any)=>{
+    this.servsExamples.splice(index,1)
+  })
   }
 
 
@@ -65,7 +73,35 @@ export class FormulaireListComponent implements OnInit {
    })
    this.usersNewServ=[]
    this.servToCreate=''
+
    this.openServForm()
+   
+   if(this.creationFormulaire) this.creatFormIsOpen=!this.creatFormIsOpen
+   else this.servList=!this.servList
+  }
+  addOrRemoveServ(index:any){
+    if(this.servsExamples[index].isAdded) {  let serv={
+      Formulaire_Id:null,
+      Serv_Name:this.servsExamples[index].Serv_Name,
+      Serv_User:null,
+      Serv_order:0,
+      serv_reponse:null,
+      Serv_Refer:null
+    }
+    this.services.push(serv)}
+    else {
+      let  indexS=this.services.findIndex((e:any)=>e.Serv_Name==this.servsExamples[index].Serv_Name)
+
+      this.services.splice(indexS,1)
+    }
+  }
+
+  openServList(){
+    this.servList=!this.servList
+  }
+  addServForm(){
+    this.openServList()
+    this.openServForm()
   }
 
   creatServ(){
@@ -90,8 +126,11 @@ if((this.servToCreate!='')&&(this.servsExamples.findIndex((e:any)=> e.Serv_Name=
 
     })
   })
+  serv['isAdded']=false
   this.servsExamples.push(serv)
-  this.closeServForm()
+  if(!this.creationFormulaire) this.addServForm()
+  else {this.servFormIsOpen=!this.servFormIsOpen
+  this.creatFormIsOpen=!this.creatFormIsOpen}
 })}
   }
   addUserForm(){
@@ -116,6 +155,16 @@ this.FormulaireService.deleteFoemulaire(this.deleteFormID).subscribe((res:any)=>
   this.deleteFormName=''
   this.todelete=!this.todelete
 })
+  }
+  closeForm(){
+    this.newFormulaireName=''
+    this.newFormulaireStatus=''
+    this.services.forEach((serv:any)=>{
+      this.servsExamples.push(serv)
+    })
+
+    this.services=[]
+    this.openForm()
   }
 
   open(index:any){
@@ -149,28 +198,11 @@ if(this.services.length!=0){
     })}
   }
 
-  deleteServ(index:any){
-    this.servsExamples.push(this.services[index])
-this.services.splice(index, 1)
-  }
+
   openFormPage(formulaire:any){
     this.router.navigate(['/formulaire/new/', formulaire,1])
   }
-  addNewServ(){
-  let serv={
-    Formulaire_Id:null,
-    Serv_Name:this.newServName,
-    Serv_User:null,
-    Serv_order:0,
-    serv_reponse:null,
-    Serv_Refer:null
-  }
-  this.services.push(serv)
-  let index=this.servsExamples.findIndex((e:any)=> e.Serv_Name==this.newServName)
-  this.servsExamples.splice(index,1)
-  this.newServName=''
-  this.serviceFormIsOpen=!this.serviceFormIsOpen
-  }
+
   addNewReponse(Formulaire_Id:any){
    let newReponse={
     Formulaire_Id:Formulaire_Id,
@@ -189,6 +221,7 @@ this.services.splice(index, 1)
     this.router.navigate(['/formulaire/reponse/',this.formulaires[indexF].Formulaire_Id,this.formulaires[indexF].reponses[indexR].Reponse_Id,1])
   }
   openForm() {
+    this.creationFormulaire=!this.creationFormulaire
 this.creatFormIsOpen=!this.creatFormIsOpen
 
   }
@@ -198,6 +231,10 @@ this.serviceFormIsOpen=!this.serviceFormIsOpen
   openTable(Formulaire_Id:any,Reponse_Id:any){
     this.router.navigate(['/formulaire/table/',Formulaire_Id,Reponse_Id])
   }
+  goToCreatServForm(){
+    this.creatFormIsOpen=!this.creatFormIsOpen
+    this.servFormIsOpen=!this.servFormIsOpen
+  }
 
   getForms(){
     this.FormulaireService.getAllFormulaire().subscribe((data:any)=>{
@@ -205,6 +242,9 @@ this.serviceFormIsOpen=!this.serviceFormIsOpen
        this.users=users
        this.FormulaireService.getServsExamples().subscribe((res:any)=>{
         console.log(res)
+        res.forEach((serv:any)=>{
+          serv['isAdded']=false
+        })
         this.servsExamples=res;
       
       data.forEach((formulaire:any)=>{

@@ -220,7 +220,7 @@ table.blueTable tfoot .links a{
 table{
   width: 100%; 
   border-collapse: separate;
-  border-spacing: 0 15px;
+  border-spacing: 0 ;
   box-shadow: 0 2px 15px rgba(64,64,64,.7);
   border-radius: 100px;
 
@@ -450,5 +450,12 @@ width: 500px;
 .sevBtnSpace{
   text-align: right;
   padding: 20px;
+}
+
+.deleteServ{
+  position: absolute;
+}
+li{
+  margin: 25px;
 }
 

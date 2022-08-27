@@ -1,6 +1,6 @@
 <div class="container">
   <div class="sevBtnSpace">
-    <a class="myButton" (click)="openServForm()">creat Serv</a>
+    <a class="myButton" (click)="openServList()">Serv</a>
   </div>
   
     <table>
@@ -62,7 +62,7 @@
         </button>    
       </div>
 <div class="listItems" *ngIf="creatFormIsOpen">
-    <i (click)="openForm()" class="material-icons close">
+    <i (click)="closeForm()" class="material-icons close">
         close
       </i>
     <p>New Formulaire name:</p>
@@ -71,14 +71,18 @@
     <input type="text" [(ngModel)]="newFormulaireStatus">
     <br>
     <p>services:</p>
-    <div>
-      <p *ngFor="let serv of services;let index=index">{{serv.Serv_Name}}     <i class="material-icons"(click)="deleteServ(index)" >close</i></p>
-      <p *ngIf="!serviceFormIsOpen"><a (click)="openServiceForm()" class="myButton">+</a></p>
-      <p *ngIf="serviceFormIsOpen" ><select [(ngModel)]="newServName" class="inputServ">
-        <option value="">choisir un service</option>
-        <option *ngFor="let serv of servsExamples" value="{{serv.Serv_Name}}">{{serv.Serv_Name}}</option>
-      </select></p>
-      <p *ngIf="serviceFormIsOpen"><a (click)="addNewServ()" class="myButton">confirme</a></p>
+    <div style="padding-left: 35%;">
+     <table style="width: 50% ;">
+      <tr *ngFor="let serv of servsExamples;let index=index" >
+        <td>{{serv.Serv_Name}}</td>
+        <td><input type="checkbox" [(ngModel)]="serv.isAdded" (change)="addOrRemoveServ(index)"></td>
+      </tr>
+      <tr>
+        
+        <td><a class="myButton" (click)="goToCreatServForm()" >+</a></td>
+        <td></td>
+      </tr>
+     </table>
     </div>
     <button href="#" class="btn btn-warning mt-3" (click)="addNewFormulaire()">
         <i class="fa fa-chevron-right"></i> Creat Formulaire
@@ -96,7 +100,7 @@
   <a class="myButton" (click)="deleteFormulaire()">yes</a>
   
 </div>
-<div class="listItems" *ngIf="servFormIsOpen">
+ <div class="listItems" *ngIf="servFormIsOpen">
   <h3>new Service</h3>
   <br>
   <br>
@@ -118,5 +122,18 @@
   <a class="myButton" (click)="closeServForm()">cancel</a>
   <a class="myButton" (click)="creatServ()">creat</a>
 
+</div> 
+<div *ngIf="servList" class="listItems">
+  <i (click)="openServList()" class="material-icons close">
+    close
+  </i>
+  <br>
+<h3>les services</h3>
+<br>
+
+<ul>
+  <li *ngFor="let serv of servsExamples;"> {{serv.Serv_Name}}</li>
+</ul>
+<a class="myButton" (click)="addServForm()">+</a>
 </div>
 </div>
