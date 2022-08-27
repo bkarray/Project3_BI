@@ -1,22 +1,52 @@
 <div class="container">
-<div>
+<div style="margin-bottom:40px ;">
  <h3>exemplaire: {{formulaire.Formulaire_Name}}</h3>
-  <table>
+  <table style="width:100% ;">
     <thead>
         <tr>
             <th>Champ</th>
             <th>Type</th>
             <th></th>
-            <th>fonction</th>
+             <th>description</th>
+             <th *ngIf="isGenerated">fonction</th>
+             <th></th>
         </tr>
     </thead>
 
     <tbody>
-   <tr  *ngFor="let field of fields"> 
-    <td>{{field.Name}}</td>
-    <td>{{field.Type}}</td>
+   <tr  *ngFor="let field of fields;let index=index"> 
+    <td> <p *ngIf="!field.editName">{{field.Name}}<i class="material-icons editIcon" *ngIf="(field.Name!='ID')&&!isGenerated" (click)="openNameForm(index)" >edit</i></p>
+        <input style="width: 100px ;" type="text" *ngIf="field.editName" [(ngModel)]="field.Name" placeholder="field Name...">
+        <i class="material-icons editIcon" *ngIf="field.editName&&(field.Name!='ID')" (click)="closeNameForm(index)">edit</i></td>
+    <td> <p *ngIf="!field.editType">{{field.Type}}<i class="material-icons editIcon" *ngIf="(field.Name!='ID')&&!isGenerated" (click)="openTypeForm(index)" >edit</i></p>
+        <select *ngIf="field.editType" [(ngModel)]="field.Type" (change)="openTypeForm(index)" >
+            <option *ngIf="field.Type==''" value="">choisir un type</option>
+            <option value="list">list</option>
+            <option value="character varying(255)">string</option>
+            <option value="date">date</option>
+            <option value="boolean">boolean</option>
+            <option value="integer">number</option>
+            <option value="real">float</option>
+        </select>
+        <i class="material-icons editIcon" *ngIf="(field.Name!='ID')&&!isGenerated&&field.editType" (click)="openTypeForm(index)" >edit</i>
+    </td>
     <td><p *ngIf="field.choises!=null">{{field.choises}}</p></td>
-    <td>{{field.Status}}</td>
+    <td *ngIf="field.Name!='ID'"><p *ngIf="!field.editDesc">{{field.Serv_description}} <i *ngIf="!isGenerated"  class="material-icons editIcon" (click)="editDesc(index)" >edit</i></p>
+        <input *ngIf="field.editDesc" type="text" [(ngModel)]="field.Serv_description">
+        <i class="material-icons editIcon" *ngIf="field.editDesc" (click)="editDesc(index)" >edit</i></td>
+    <td *ngIf="isGenerated">
+        <p *ngIf="!field.editSataus&&(field.Status!=null)&&(field.Name!='ID')">{{field.Status}} <i class="material-icons editIcon" (click)="editSatus(index)">edit</i></p>
+        <select *ngIf="field.editSataus||(field.Status==null)" [(ngModel)]="field.Status" (change)="correctionField(index)">
+            <option *ngIf="field.Status==null" value="null">choisir la fonctinalite</option>
+            <option value="consulté">consulté</option>
+            <option value="modifié">modifié</option>
+            <option value="invisible">invisible</option>
+        </select>
+        <i *ngIf="field.editSataus||(field.Status==null)" class="material-icons editIcon" (click)="editSatus(index)">edit</i>
+     </td>
+     <td style="text-align:left ;"><span *ngIf="(field.Name!='ID')&&!isGenerated" class="material-symbols-outlined" (click)="deleteField(index)">
+        cancel
+        </span></td>
 </tr>
 <tr *ngIf="fieldFormIsOpen">
     <td><input type="text" [(ngModel)]="newFieldName" placeholder="field Name..."></td>
@@ -31,64 +61,71 @@
          <option value="real">float</option>
         </select>
     </td>
-    <td><input *ngIf="newFieldType=='list'" type="text" [(ngModel)]="newfieldChoises" placeholder="separer les choix par ';'..."></td>
-    <td><select [(ngModel)]="newFieldStatus">
-        <option *ngIf="newFieldStatus==''" value="">choisir la fonctinalite</option>
-        <option value="consulté">consulté</option>
-        <option value="modifié">modifié</option>
-    </select></td>
+    <td><input *ngIf="newFieldType=='list'" type="text" [(ngModel)]="newfieldChoises" placeholder="separer les choix par ';'...">
+    <td> <input type="text" [(ngModel)]="newFieldStatus"></td>
+    <td></td>
 </tr>
 <tr *ngIf="fieldFormIsOpen">
     <td></td>
     <td></td>
     <td></td>
+    <td></td>
     <td><a class="myButton" (click)="addnewfield()">confirmer</a></td>
+
 </tr>
-<tr *ngIf="!fieldFormIsOpen">
+<tr *ngIf="!fieldFormIsOpen&&!isGenerated">
+    <td></td>
     <td></td>
     <td></td>
     <td></td>
     <td><a class="myButton" (click)="openfieldForm()">+</a></td>
+
   </tr>
     </tbody>
   </table>
 
 </div>
-<div class="currentserv">
 
-<select (change)="correctOrder()" [(ngModel)]="currentsrvOrd">
-    <option *ngFor="let serv of formulaire.services;let index=index" value="{{serv.Serv_order}}">etap n°{{serv.Serv_order}}</option>
-
-</select>
-<a class="myButton" *ngIf="numservs!=1" (click)="nextServ()">next</a>
-</div>
-<div>
-<p>fonction:</p>
-<select (change)="correctOrder()" [(ngModel)]="currentsrvName" >
+<div *ngIf="isGenerated">
+    <select (change)="fieldsToShow()" [(ngModel)]="shownServNum">
+        <option *ngFor="let serv of servsEtap" value="{{serv.Serv_order}}">serv n°{{serv.Serv_order}}</option>
+        <option value="{{currentsrvOrd}}">new...</option>
+    </select>
+<p>etap n°{{shownServNum}}</p>
+<select [(ngModel)]="currentsrvName" >
+    <option *ngIf="currentsrvName==''" value="">choisir un service</option>
 <option *ngFor="let serv of formulaire.services" value="{{serv.Serv_Name}}">{{serv.Serv_Name}}</option>
 </select>
 </div>
 <div>
 
 <table cdkDropListGroup>
-<tbody *ngFor="let table of formulaire.tables;let index=index;let last=last" >
+<tbody *ngFor="let table of formulaire.tables;let index=index;let last=last"  >
 
-<tr  cdkDropList 
+<tr  cdkDropList  
+class="example-list"
 [cdkDropListData]="table.fields" 
-(cdkDropListDropped)="drop($event)">
+(cdkDropListDropped)="drop($event)"
+cdkDropListOrientation="horizontal"
+id="{{index}}">
 <td *ngFor="let space of table.spaces"></td>
 <td>ID</td>
-<td cdkDrag class="grab" *ngFor="let field of table.fields">{{field.Name}}</td>
+<td cdkDrag class="grab example-box" *ngFor="let field of table.fields">{{field.Name}}</td>
 
 </tr>
 
         </tbody>
-        <tbody>
+        <tbody *ngIf="!isGenerated">
             <tr>
                 <td ><a class="myButton" (click)="addNewTable()">+</a></td> 
              </tr>
         </tbody>
     </table>
-    <a class="myButton" *ngIf="numservs==1" (click)="End()">next</a>
+    <div class="currentserv">
+        <a *ngIf="!isGenerated" class="myButton" (click)="generatFields()">Generat</a>
+        <a *ngIf="isGenerated" class="myButton" (click)="nextServ()">Next</a>
+        <a *ngIf="isGenerated" class="myButton" (click)="End()">End</a>
+        </div>
+
 </div>
 </div>

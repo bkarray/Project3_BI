@@ -13,6 +13,17 @@ import {MatIconModule} from '@angular/material/icon';
 import { FormulaireCreatComponent } from './formulaire-creat/formulaire-creat.component';
 import { FormulaireReponseComponent } from './formulaire-reponse/formulaire-reponse.component';
 import { FormulaireTableComponent } from './formulaire-table/formulaire-table.component';
+import {MatTreeModule} from '@angular/material/tree';
+import {TreeTableModule} from 'primeng/treetable';
+
+import {HttpClientModule} from '@angular/common/http';
+
+import { ReactiveFormsModule} from '@angular/forms';
+import { MatNativeDateModule } from '@angular/material/core';
+import {BrowserModule} from '@angular/platform-browser';
+import {platformBrowserDynamic} from '@angular/platform-browser-dynamic';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+
 
 @NgModule({
   declarations: [
@@ -25,8 +36,14 @@ import { FormulaireTableComponent } from './formulaire-table/formulaire-table.co
     CommonModule,
     FormulaireRoutingModule,
     FormsModule,
+    HttpClientModule,
+    ReactiveFormsModule,
+    MatNativeDateModule,
     DragDropModule,
-    MatIconModule
+    MatIconModule,
+    MatTreeModule,
+    TreeTableModule
   ]
 })
 export class FormulaireModule { }
+

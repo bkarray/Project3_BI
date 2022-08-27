@@ -61,6 +61,9 @@ export class FormulaireService {
   getFields(id:any){
     return this.http.get(this.APIUrl+'/fields/'+id)
   }
+  postField(val:any){
+    return this.http.post(this.APIUrl+'/fields/',val)
+  }
   getTables(id:any){
     return this.http.get(this.APIUrl+'/table/'+id)
   }
@@ -72,5 +75,38 @@ export class FormulaireService {
   }
   getAllFields(id:any){
     return this.http.get(this.APIUrl+'/getAllFields/'+id)
+  }
+  updateField(val:any){
+    return this.http.put(this.APIUrl+'/fields/',val)
+  }
+  creatFieldToServ(val:any){
+    return this.http.post(this.APIUrl+'/fields/',val)   
+  }
+  workingServices(id:any){
+    return this.http.get(this.APIUrl+'/workingServices/'+id)
+  }
+  getServsExamples(){
+    return this.http.get(this.APIUrl+'/servsExamples/')
+  }
+  deleteFoemulaire(id:any){
+    return this.http.delete(this.APIUrl+'/formulaire/'+id)
+  }
+  updateFieldPlace(id:any,val:any){
+    return this.http.put(this.APIUrl+'/updateFieldPlace/'+id,val)
+  }
+  creatRelationUserServ(val:any){
+    return this.http.post(this.APIUrl+'/relationUserServ/',val)
+  }
+  getUsersofServ(id:any){
+    return this.http.get(this.APIUrl+'/getUsersofServ/'+id)
+  }
+  upDateFieldVal(val:any){
+    return this.http.post(this.APIUrl+'/updateRow/',val)
+  }
+  addNewRow(val:any){
+    return this.http.post(this.APIUrl+'/addRow/',val)
+  }
+  updateReponseEtap(id:any,val:any){
+    return this.http.put(this.APIUrl+'/updateReponseEtap/'+id,val)
   }
 }

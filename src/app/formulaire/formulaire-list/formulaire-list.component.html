@@ -1,11 +1,18 @@
 <div class="container">
+  <div class="sevBtnSpace">
+    <a class="myButton" (click)="openServForm()">creat Serv</a>
+  </div>
+  
     <table>
         <tbody class="blueTable" *ngFor="let formulaire of formulaires;let index=index">
         <tr>
-            <td>{{formulaire.Formulaire_Name}}</td>
+            <td (click)="openFormPage(formulaire.Formulaire_Id)">{{formulaire.Formulaire_Name}}</td>
             <td></td>
             <td></td>
-            <td></td>
+            <td class="cancelIcon" (click)="opendeleteForm(formulaire.Formulaire_Id,formulaire.Formulaire_Name)"><span class="material-symbols-outlined">
+              cancel
+              </span></td>
+           
             <td><a class="d-flex justify-content-end" (click)="open(index)">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -25,14 +32,14 @@
         </tr>
         <tr *ngIf="formulaire.isOpen"> 
         <td colspan="5">
-            <tr *ngFor="let reponse of formulaire.reponses">
-                <td></td>
-                <td>{{reponse.reponse_Name}}</td>
-                <td><p *ngIf="reponse.reponse_level==null">etap n°{{reponse.currentServ.Serv_order}}</p> 
-                <p *ngIf="reponse.reponse_level!=null">reponse est executé </p></td>
+            <tr *ngFor="let reponse of formulaire.reponses;let indexR=index" class="boder" (click)="openTable(formulaire.Formulaire_Id,reponse.Reponse_Id)"> 
+                <td ></td>
+                <td (click)="openReponseFormPage(index,indexR)">{{reponse.reponse_Name}}</td>
+                <td><p *ngIf="reponse.reponse_level!=null">etap n°{{reponse.currentServ.Serv_order}}</p> 
+                <p *ngIf="reponse.reponse_level==null">reponse est executé </p></td>
                 <td><p *ngIf="reponse.reponse_level!=null">{{reponse.currentServ.Serv_Name}}</p></td>
                 <td><p *ngIf="reponse.reponse_level!=null">{{reponse.currentServ.userName}}</p></td>
-                <td (click)="openTable(formulaire.Formulaire_Id,reponse.Reponse_Id)" *ngIf="reponse.reponse_level!=null">open</td>
+                
     
             </tr>
             <tr>
@@ -67,11 +74,49 @@
     <div>
       <p *ngFor="let serv of services;let index=index">{{serv.Serv_Name}}     <i class="material-icons"(click)="deleteServ(index)" >close</i></p>
       <p *ngIf="!serviceFormIsOpen"><a (click)="openServiceForm()" class="myButton">+</a></p>
-      <p *ngIf="serviceFormIsOpen" ><input type="text" [(ngModel)]="newServName" class="inputServ"></p>
+      <p *ngIf="serviceFormIsOpen" ><select [(ngModel)]="newServName" class="inputServ">
+        <option value="">choisir un service</option>
+        <option *ngFor="let serv of servsExamples" value="{{serv.Serv_Name}}">{{serv.Serv_Name}}</option>
+      </select></p>
       <p *ngIf="serviceFormIsOpen"><a (click)="addNewServ()" class="myButton">confirme</a></p>
     </div>
     <button href="#" class="btn btn-warning mt-3" (click)="addNewFormulaire()">
         <i class="fa fa-chevron-right"></i> Creat Formulaire
       </button>
+</div>
+
+<div class="listItems" *ngIf="todelete">
+  <h3>are you sur to delete {{deleteFormName}}!?</h3>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <a class="myButton" (click)="opendeleteForm(null,'')">cancel</a>
+  <a class="myButton" (click)="deleteFormulaire()">yes</a>
+  
+</div>
+<div class="listItems" *ngIf="servFormIsOpen">
+  <h3>new Service</h3>
+  <br>
+  <br>
+  <input type="text" placeholder="New Serv Name..." [(ngModel)]="servToCreate">
+  <br>
+  <br>
+  <h5>Users:</h5>
+  <p *ngFor="let user of usersNewServ;let index=index">{{user.U_FirstName}}  {{user.U_LastName}}<i class="material-icons"(click)="deleteUser(index)" >close</i></p>
+  <a *ngIf="!userForm" (click)="addUserForm()" class="myButton">+</a>
+  <select *ngIf="userForm" [(ngModel)]="newUserId">
+    <option value="0">choisir un utilisateur</option>
+    <option *ngFor="let user of users" value="{{user.U_Id}}">{{user.U_FirstName}}  {{user.U_LastName}}</option>
+  </select>
+  <a *ngIf="userForm" (click)="addUser()" class="myButton">confirme</a>
+
+<br>
+<br>
+
+  <a class="myButton" (click)="closeServForm()">cancel</a>
+  <a class="myButton" (click)="creatServ()">creat</a>
+
 </div>
 </div>

@@ -3,24 +3,27 @@
 <div class="infoRponse">
     <h3>Exemplaire:{{formulaire.Formulaire_Name}}==>{{formulaire.Formulaire_Status}}</h3>
     <br>
-  <p>Reponse==> <input type="text" [(ngModel)]="reponseStatus" placeholder="reponceStatus..."></p>  
+  <p>Reponse==> <input type="text" [(ngModel)]="reponse.reponse_status" placeholder="reponceStatus..."></p>  
 </div>
 
  <div class="infoRponse">
     <h3>Fontions:</h3>
     <table>
-        <tr *ngFor="let serv Of services">
+        <tr *ngFor="let serv Of services;let index=index">
+          <td>etape n°{{serv.Serv_order}}</td>
         <td>{{serv.Serv_Name}}</td>
-        <td><select [(ngModel)]="serv.Serv_User">
+        <td><select *ngIf="isAdmin" (change)="updateServ(index)" [(ngModel)]="serv.Serv_User">
             <option value="null">choisire l'utilisateur</option>
-            <option *ngFor="let user of users" value="{{user.U_Id}}"> {{user.U_FirstName}} {{user.U_LastName}}</option>
-        </select></td>
+            <option *ngFor="let user of serv.users" value="{{user.U_Id}}"> {{user.U_FirstName}} {{user.U_LastName}}</option>
+        </select>
+      <p *ngIf="!isAdmin">{{serv.userName}}</p></td>
         </tr>
     </table>
      
   <div class="btns">
     <a class="myButton" (click)="startReponse()" >Start</a>
-    <a class="myButton" (click)="creatReponse()">creat response</a>
+    <a class="myButton" *ngIf="isAdmin&&!isCreated" (click)="creatReponse()">creat response</a>
+    <a class="myButton" *ngIf="!isAdmin||isCreated" (click)="creatReponse()">return</a>
   </div>
 </div> 
 

@@ -10,8 +10,8 @@ export const routes: Routes = [
  path: '',
  children: [
   {path:'list',component:FormulaireListComponent},
-  {path:'new/:id',component:FormulaireCreatComponent},
-  {path:'reponse/:idF/:idR',component:FormulaireReponseComponent},
+  {path:'new/:id/:generated',component:FormulaireCreatComponent},
+  {path:'reponse/:idF/:idR/:isCreated',component:FormulaireReponseComponent},
   {path:'table/:idF/:idR',component:FormulaireTableComponent}
  ] ,
  }

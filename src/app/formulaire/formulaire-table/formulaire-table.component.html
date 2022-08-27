@@ -4,22 +4,190 @@
      <table>
         <tbody>
             <tr *ngFor="let serv of servs">
+            <td>etape n°{{serv.Serv_order}}</td>
             <td>{{serv.Serv_Name}}</td>
             <td>{{serv.userName}}</td>
             </tr>
         </tbody>
      </table>
+    <h3 *ngIf="reponseIsOnWork">etape n°{{etapNum}}</h3>
+    <h3 *ngIf="!reponseIsOnWork">reponse est executé </h3>
 </div>
 <div class="infoRponse">
-<table>
-   <thead>
-    <tr>
-       <th *ngFor="let field of fields">{{field.Name}}</th> 
-    </tr>
-   </thead>
-   <tbody>
+<p-treeTable [value]="data" [columns]="fields">
+   <ng-template pTemplate="header" let-columns>
+       <tr >
+         
+           <th *ngFor="let field of fields">
+               {{field.Name}}
+           </th>
+       </tr>
+   </ng-template>
+ 
+
+   <ng-template pTemplate="body" let-rowNode let-rowData="rowData" let-columns="fields" >
+  
+
+   
     
-   </tbody>
+
+       <tr>
+         
+           <td *ngFor="let field of fields; let i = index">
+            <p-treeTableToggler [rowNode]="rowNode" *ngIf="i==0"></p-treeTableToggler>
+            <p *ngIf="field.Status=='consulté'">{{fieldVal(rowNode,field.Name)}}</p>
+            <div *ngIf="(field.Status=='modifié')&&(inRow(field.Name,rowNode.level))" [ngSwitch]="field.Type" >
+            <input (change)="changeInField(field.Table_Id,field.Name,rowNode['node'][field.Name],rowNode['node']['id'])" 
+            type="date" 
+            *ngSwitchCase="'date'" style="width: 100px ;"  [(ngModel)]="rowNode['node'][field.Name]">
+            <input (change)="changeInField(field.Table_Id,field.Name,rowNode['node'][field.Name],rowNode['node']['id'])" 
+            type="number" 
+            *ngSwitchCase="'integer'" style="width: 100px ;" [(ngModel)]="rowNode['node'][field.Name]">
+            <input (change)="changeInField(field.Table_Id,field.Name,rowNode['node'][field.Name],rowNode['node']['id'])" 
+            type="checkbox" 
+            *ngSwitchCase="'boolean'" style="width: 100px ;" [(ngModel)]="rowNode['node'][field.Name]">
+            <input (change)="changeInField(field.Table_Id,field.Name,rowNode['node'][field.Name],rowNode['node']['id'])" 
+            type="number" step="0.01"
+            *ngSwitchCase="'real'" style="width: 100px ;" [(ngModel)]="rowNode['node'][field.Name]">
+            <div *ngSwitchCase="'character varying(255)'" style="width: 100px ;">
+                <input (change)="changeInField(field.Table_Id,field.Name,rowNode['node'][field.Name],rowNode['node']['id'])" type="text" *ngIf="field.choises==null" [(ngModel)]="rowNode['node'][field.Name]">
+                <select (change)="changeInField(field.Table_Id,field.Name,rowNode['node'][field.Name],rowNode['node']['id'])" *ngIf="field.choises!=null" [(ngModel)]="rowNode['node'][field.Name]">
+                    <option value="">choisire</option>
+                    <option *ngFor="let choix of field.choisesList" value="{{choix}}">{{choix}}</option>
+                </select>
+            </div>
+            <p *ngSwitchDefault>indeterminee</p>
+        </div>
+           </td>
+       </tr>
+       <tr *ngIf="(rowNode.node.children)&&(rowNode.node.children.length==0)&&(spaceTable(rowNode.level+1)!=-1)&&(!rowNode.node.childrenForm)&&(etapNum==1)&&isWorking">
+         
+        <td *ngFor="let field of fields; let index=index">
+              <a class="myButton" *ngIf="spaceTable(rowNode.level+1)==index" (click)="addNewRelationForm(rowNode)">+</a>
+          </td>
+           </tr>
+
+        <tr *ngIf="(rowNode.node.children)&&(rowNode.node.children.length==0)&&(spaceTable(rowNode.level+1)!=-1)&&(rowNode.node.childrenForm)">
+            <td *ngFor="let field of fields; let index=index">
+                <div *ngIf="inRow(field.Name,rowNode.level+1)" [ngSwitch]="field.Type" >
+                    <input 
+                    type="date" 
+                    *ngSwitchCase="'date'" style="width: 100px ;"  [(ngModel)]="newRow[field.Name]">
+                    <input 
+                    type="number" 
+                    *ngSwitchCase="'integer'" style="width: 100px ;" [(ngModel)]="newRow[field.Name]">
+                    <input 
+                    type="checkbox" 
+                    *ngSwitchCase="'boolean'" style="width: 100px ;" [(ngModel)]="newRow[field.Name]">
+                    <input 
+                    type="number" step="0.01"
+                    *ngSwitchCase="'real'" style="width: 100px ;" [(ngModel)]="newRow[field.Name]">
+                    <div *ngSwitchCase="'character varying(255)'" style="width: 100px ;">
+                        <input type="text" *ngIf="field.choises==null" [(ngModel)]="newRow[field.Name]">
+                        <select *ngIf="field.choises!=null" [(ngModel)]="newRow[field.Name]">
+                            <option value="">choisire</option>
+                            <option *ngFor="let choix of field.choisesList" value="{{choix}}">{{choix}}</option>
+                        </select>
+                    </div>
+                    <p *ngSwitchDefault>indeterminee</p>
+                </div>
+              
+            </td>
+
+        </tr>
+        
+            <tr *ngIf="(rowNode.node.children)&&(rowNode.node.children.length==0)&&(spaceTable(rowNode.level+1)!=-1)&&(rowNode.node.childrenForm)">
+         
+                <td *ngFor="let field of fields; let index=index">
+                      <a class="myButton" *ngIf="spaceTable(rowNode.level+1)==index" (click)="addNewRelation(rowNode)">confirmer</a>
+                  </td>
+                   </tr>
+        
+
+       <tr *ngIf="rowNode.node.last&&!rowNode.node.openForm&&(etapNum==1)&&isWorking">
+         
+         <td *ngFor="let field of fields; let index=index">
+               <a class="myButton" *ngIf="spaceTable(rowNode.level)==index" (click)="openAddForm(rowNode)">+</a>
+           </td>
+            </tr>
+            <tr *ngIf="rowNode.node.last&&rowNode.node.openForm">
+                <td *ngFor="let field of fields; let index=index">
+                    <div *ngIf="inRow(field.Name,rowNode.level)" [ngSwitch]="field.Type" >
+                        <input 
+                        type="date" 
+                        *ngSwitchCase="'date'" style="width: 100px ;"  [(ngModel)]="newRow[field.Name]">
+                        <input 
+                        type="number" 
+                        *ngSwitchCase="'integer'" style="width: 100px ;" [(ngModel)]="newRow[field.Name]">
+                        <input 
+                        type="checkbox" 
+                        *ngSwitchCase="'boolean'" style="width: 100px ;" [(ngModel)]="newRow[field.Name]">
+                        <input 
+                        type="number" step="0.01"
+                        *ngSwitchCase="'real'" style="width: 100px ;" [(ngModel)]="newRow[field.Name]">
+                        <div *ngSwitchCase="'character varying(255)'" style="width: 100px ;">
+                            <input type="text" *ngIf="field.choises==null" [(ngModel)]="newRow[field.Name]">
+                            <select *ngIf="field.choises!=null" [(ngModel)]="newRow[field.Name]">
+                                <option value="">choisire</option>
+                                <option *ngFor="let choix of field.choisesList" value="{{choix}}">{{choix}}</option>
+                            </select>
+                        </div>
+                        <p *ngSwitchDefault>indeterminee</p>
+                    </div>
+                  
+                </td>
+            </tr>
+            <tr *ngIf="rowNode.node.last&&rowNode.node.openForm">
+         
+                <td *ngFor="let field of fields; let index=index">
+                      <a class="myButton" *ngIf="spaceTable(rowNode.level)==index" (click)="addNewRow(rowNode)">confirmer</a>
+                  </td>
+                   </tr>
+   </ng-template>
+</p-treeTable>
+<div class="btns">
+    <a class="myButton" (click)="returnList()" >return</a> 
+    <a *ngIf="reponseIsOnWork&&isWorking" class="myButton" (click)="nextServ()">next</a>  
+</div>
+</div>
+
+<div class="listItems" *ngIf="startNew">
+<h1>welcome to this new reponse {{reponse.reponse_Name}}</h1>
+<p>creat your first ligne:</p>
+<table style="width:80% ;">
+    <tr *ngFor="let field of fields">
+      <td *ngIf="inRow(field.Name,0)">
+        {{field.Name}}
+      </td>
+      <td *ngIf="inRow(field.Name,0)">
+        <div [ngSwitch]="field.Type" >
+            <input 
+            type="date" 
+            *ngSwitchCase="'date'" style="width: 100px ;"  [(ngModel)]="newRow[field.Name]">
+            <input 
+            type="number" 
+            *ngSwitchCase="'integer'" style="width: 100px ;" [(ngModel)]="newRow[field.Name]">
+            <input 
+            type="checkbox" 
+            *ngSwitchCase="'boolean'" style="width: 100px ;" [(ngModel)]="newRow[field.Name]">
+            <input 
+            type="number" step="0.01"
+            *ngSwitchCase="'real'" style="width: 100px ;" [(ngModel)]="newRow[field.Name]">
+            <div *ngSwitchCase="'character varying(255)'" >
+                <input style="width: 100px ;" type="text" *ngIf="field.choises==null" [(ngModel)]="newRow[field.Name]">
+                <select style="width: 100px ;" *ngIf="field.choises!=null" [(ngModel)]="newRow[field.Name]">
+                    <option value="">choisire</option>
+                    <option *ngFor="let choix of field.choisesList" value="{{choix}}">{{choix}}</option>
+                </select>
+            </div>
+            <p *ngSwitchDefault>indeterminee</p>
+        </div>
+
+      </td>
+    </tr>
 </table>
+<br>
+<br>
+<a class="myButton" (click)="addFirstRow()">confirmer</a>
 </div>
 </div>

@@ -230,7 +230,7 @@ table{
  td , th{
   padding: 15px 20px;
   text-align: center;
-  width: 25% ;
+  width: auto ;
   
  
  }
@@ -251,7 +251,9 @@ table{
  }
  tr:nth-child(even){
   background-color: #eeeeee;
+  border-radius: 100px;
  }
+
 
 .grab {
   cursor: -webkit-grab;
@@ -362,17 +364,19 @@ width: 500px;
 
 
 .listItems{
-  height:35%;
-  width: 35%;
+  height:60%;
+  width: 70%;
   position:fixed;
   border-style: groove;
   top:25%;
-  right: 40%;
+  right: 20%;
   bottom: 20px;
   z-index:100;
   text-align:center;
   font-family: "Lato", sans-serif;
   background-color: #599bb3;
+  overflow:hidden;
+  overflow-y:scroll;
 
 }
 
@@ -428,4 +432,14 @@ width: 500px;
 .btns{
   margin: 30px;
   text-align: right;
+}
+
+.example-tree-invisible {
+  display: none;
+}
+
+.example-tree {
+  margin-top: 0;
+  margin-bottom: 0;
+  width: 100%;
 }
