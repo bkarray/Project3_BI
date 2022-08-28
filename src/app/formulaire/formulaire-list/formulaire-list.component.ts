@@ -38,6 +38,11 @@ export class FormulaireListComponent implements OnInit {
   newUserId:Number=0
   servList:boolean=false
   creationFormulaire:boolean=false
+  servToShow:any=''
+  usersOfServToShow:any=[]
+  userFormShow:boolean=false
+  servShowIsOpen:boolean=false
+  usersToAddShow:any=[]
 
 
   ngOnInit(): void {
@@ -52,14 +57,67 @@ export class FormulaireListComponent implements OnInit {
     this.todelete=!this.todelete
 
   }
-  deletServExample(index:any){
-  this.FormulaireService.deleteServ(this.servsExamples[index].Serv_Id).subscribe((res:any)=>{
-    this.servsExamples.splice(index,1)
-  })
+  deleteServ(index:any){
+
+this.FormulaireService.putServInArchive(this.servsExamples[index].Serv_Id).subscribe((res:any)=>{
+  this.servsExamples.splice(index,1)
+})
+  }
+  openServShow(index:any){
+    this.servToShow=this.servsExamples[index].Serv_Name
+    this.FormulaireService.getUsersofServ(this.servsExamples[index].Serv_Id).subscribe((users:any)=>{
+      this.usersOfServToShow=users
+      this.servShowIsOpen=!this.servShowIsOpen
+      this.servList=!this.servList
+    })
+
+  }
+  deleteUserShow(index:any){
+     let serv=this.servsExamples.find((e:any)=> e.Serv_Name==this.servToShow)
+    let deleteRelation={
+      User_Id:this.usersOfServToShow[index].U_Id,
+      Serv_Id:serv.Serv_Id
+    }
+    console.log(deleteRelation)
+    this.FormulaireService.deleteServUserRelation(deleteRelation).subscribe((res:any)=>{
+      this.usersOfServToShow.splice(index,1)
+    })
+  }
+  openUserFormShow(){
+    this.usersToAddShow=this.users.filter((e:any)=> this.usersOfServToShow.findIndex((user:any)=>e.U_Id==user.U_Id)==-1)
+    this.newUserId=0
+    this.userFormShow=!this.userFormShow
+  }
+  closeUserFormShow(){
+    this.usersToAddShow=[]
+    this.newUserId=0
+    this.userFormShow=!this.userFormShow
+  }
+  closeServShow(){
+    this.servShowIsOpen=!this.servShowIsOpen
+      this.servList=!this.servList
+      this.servToShow=''
+      this.usersOfServToShow=[]
+  }
+  addUserShow(){
+    let serv=this.servsExamples.find((e:any)=> e.Serv_Name==this.servToShow)
+    let newRelation={
+      User_Id:Number(this.newUserId),
+      Serv_Id:serv.Serv_Id
+    }
+    this.FormulaireService.creatRelationUserServ(newRelation).subscribe((res:any)=>{
+      let user=this.users.find((e:any)=> e.U_Id==Number(this.newUserId))
+      this.usersOfServToShow.push(user)
+      this.closeUserFormShow()
+    })
   }
 
 
   openServForm(){
+    this.usersNewServ.forEach((user:any)=>{
+      this.users.push(user)
+    })
+    this.usersNewServ=[]
     this.servFormIsOpen=!this.servFormIsOpen
   }
   deleteUser(index:any){
@@ -128,6 +186,11 @@ if((this.servToCreate!='')&&(this.servsExamples.findIndex((e:any)=> e.Serv_Name=
   })
   serv['isAdded']=false
   this.servsExamples.push(serv)
+  this.newServName=''
+  this.usersNewServ.forEach((user:any)=>{
+    this.users.push(user)
+  })
+  this.users=[]
   if(!this.creationFormulaire) this.addServForm()
   else {this.servFormIsOpen=!this.servFormIsOpen
   this.creatFormIsOpen=!this.creatFormIsOpen}
@@ -240,6 +303,7 @@ this.serviceFormIsOpen=!this.serviceFormIsOpen
     this.FormulaireService.getAllFormulaire().subscribe((data:any)=>{
       this.authService.getAllUsers().subscribe((users:any)=>{
        this.users=users
+       console.log("u=",this.users)
        this.FormulaireService.getServsExamples().subscribe((res:any)=>{
         console.log(res)
         res.forEach((serv:any)=>{

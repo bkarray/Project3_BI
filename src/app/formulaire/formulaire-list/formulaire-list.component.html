@@ -32,10 +32,10 @@
         </tr>
         <tr *ngIf="formulaire.isOpen"> 
         <td colspan="5">
-            <tr *ngFor="let reponse of formulaire.reponses;let indexR=index" class="boder" (click)="openTable(formulaire.Formulaire_Id,reponse.Reponse_Id)"> 
-                <td ></td>
+            <tr *ngFor="let reponse of formulaire.reponses;let indexR=index" class="boder"> 
+                <td ><a  class="myButton"  (click)="openTable(formulaire.Formulaire_Id,reponse.Reponse_Id)">open</a></td>
                 <td (click)="openReponseFormPage(index,indexR)">{{reponse.reponse_Name}}</td>
-                <td><p *ngIf="reponse.reponse_level!=null">etap n°{{reponse.currentServ.Serv_order}}</p> 
+                <td><p *ngIf="reponse.reponse_level!=null">etape n°{{reponse.currentServ.Serv_order}}</p> 
                 <p *ngIf="reponse.reponse_level==null">reponse est executé </p></td>
                 <td><p *ngIf="reponse.reponse_level!=null">{{reponse.currentServ.Serv_Name}}</p></td>
                 <td><p *ngIf="reponse.reponse_level!=null">{{reponse.currentServ.userName}}</p></td>
@@ -58,7 +58,7 @@
     </table>
     <div class="d-flex justify-content-end">
         <button class="btn btn-warning mt-3" (click)="openForm()"  >
-          <i class="fa fa-chevron-right"></i> cree formulaire
+          <i class="fa fa-chevron-right"></i> create formulaire
         </button>    
       </div>
 <div class="listItems" *ngIf="creatFormIsOpen">
@@ -85,7 +85,7 @@
      </table>
     </div>
     <button href="#" class="btn btn-warning mt-3" (click)="addNewFormulaire()">
-        <i class="fa fa-chevron-right"></i> Creat Formulaire
+        <i class="fa fa-chevron-right"></i> Create Formulaire
       </button>
 </div>
 
@@ -120,7 +120,7 @@
 <br>
 
   <a class="myButton" (click)="closeServForm()">cancel</a>
-  <a class="myButton" (click)="creatServ()">creat</a>
+  <a class="myButton" (click)="creatServ()">create</a>
 
 </div> 
 <div *ngIf="servList" class="listItems">
@@ -132,8 +132,35 @@
 <br>
 
 <ul>
-  <li *ngFor="let serv of servsExamples;"> {{serv.Serv_Name}}</li>
+  <li *ngFor="let serv of servsExamples;let index=index" (click)="openServShow(index)"> {{serv.Serv_Name}}<span (click)="deleteServ(index)" class="material-symbols-outlined deleteServ">
+    cancel
+    </span></li>
 </ul>
 <a class="myButton" (click)="addServForm()">+</a>
+</div>
+ <div class="listItems" *ngIf="servShowIsOpen">
+  <br>
+  <h3>{{servToShow}}</h3>
+  <br>
+
+  <br>
+  <h5>Users:</h5>
+  <p *ngFor="let user of usersOfServToShow;let index=index">{{user.U_FirstName}}  {{user.U_LastName}}<i class="material-icons"(click)="deleteUserShow(index)" >close</i></p>
+  <a *ngIf="!userFormShow" (click)="openUserFormShow()" class="myButton">+</a>
+  <br>
+  <select *ngIf="userFormShow" [(ngModel)]="newUserId">
+    <option value="0">choisir un utilisateur</option>
+    <option *ngFor="let user of usersToAddShow" value="{{user.U_Id}}">{{user.U_FirstName}}  {{user.U_LastName}}</option>
+  </select>
+  <br>
+  <br>
+  <a *ngIf="userFormShow" (click)="closeUserFormShow()" class="myButton">cancel</a>
+  <a *ngIf="userFormShow" (click)="addUserShow()" class="myButton">confirme</a>
+
+<br>
+<br>
+
+  <a class="myButton" (click)="closeServShow()">return</a>
+
 </div>
 </div>

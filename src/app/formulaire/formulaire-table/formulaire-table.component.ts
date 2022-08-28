@@ -103,6 +103,23 @@ export class FormulaireTableComponent implements OnInit {
       Value:val,
       id:Id
     }
+    
+    this.FormulaireService.upDateFieldVal(newChange).subscribe((res:any)=>{
+      
+    })
+  }
+  changeInFieldDate(tableId:any,Name:any,val:any,Id:any){
+    //console.log(val)
+    if (val==null) val=0
+    let date=new Date(val)
+    console.log(date.toString())
+    let newChange={
+      Table_Id:tableId,
+      Name:Name,
+      Value:val.toString(),
+      id:Id
+    }
+    
     this.FormulaireService.upDateFieldVal(newChange).subscribe((res:any)=>{
       
     })
@@ -141,7 +158,7 @@ if(!this.formIsOpen){
           Name:field.Name,
           Value:this.newRow[field.Name]
         }
-        val['row'].push(newVAl)
+        if(newVAl.Value!='') { val['row'].push(newVAl)}
       }
     })
     val['row'].push({
@@ -177,7 +194,7 @@ this.getInfo()
           Name:field.Name,
           Value:this.newRow[field.Name]
         }
-        val['row'].push(newVAl)
+        if(newVAl.Value!='')  val['row'].push(newVAl)
       }
     })
     val['row'].push({
@@ -224,7 +241,7 @@ this.getInfo()
           Name:field.Name,
           Value:this.newRow[field.Name]
         }
-        val['row'].push(newVAl)
+        if(newVAl.Value!='')  val['row'].push(newVAl)
       }
     })
     val['row'].push({

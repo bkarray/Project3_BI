@@ -109,7 +109,13 @@ export class FormulaireService {
   updateReponseEtap(id:any,val:any){
     return this.http.put(this.APIUrl+'/updateReponseEtap/'+id,val)
   }
-  deleteServ(id:any){
-    return this.http.delete(this.APIUrl+'/services/'+id)
+  putServInArchive(id:any){
+    return this.http.delete(this.APIUrl+'/putServInArchive/'+id)
+  }
+  putFieldInArchive(val:any){
+    return this.http.put(this.APIUrl+'/putFieldInArchive/',val)
+  }
+  deleteServUserRelation(val:any){
+    return this.http.post(this.APIUrl+'/deleteServUser/',val)
   }
 }

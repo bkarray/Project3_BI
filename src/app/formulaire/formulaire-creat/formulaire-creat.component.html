@@ -44,7 +44,7 @@
         </select>
         <i *ngIf="field.editSataus||(field.Status==null)" class="material-icons editIcon" (click)="editSatus(index)">edit</i>
      </td>
-     <td style="text-align:left ;"><span *ngIf="(field.Name!='ID')&&!isGenerated" class="material-symbols-outlined" (click)="deleteField(index)">
+     <td style="text-align:left ;"><span *ngIf="(field.Name!='ID')" class="material-symbols-outlined" (click)="deleteField(index)">
         cancel
         </span></td>
 </tr>
@@ -64,16 +64,22 @@
     <td><input *ngIf="newFieldType=='list'" type="text" [(ngModel)]="newfieldChoises" placeholder="separer les choix par ';'...">
     <td> <input type="text" [(ngModel)]="newFieldStatus"></td>
     <td></td>
+    <td *ngIf="isGenerated"><select [(ngModel)]="newFieldLevel">
+        <option value="">choisire le niveau</option>
+        <option *ngFor="let table of formulaire.tables" value="{{table.Table_level}}">{{table.Table_level}} </option>
+        <option value="new">new...</option>
+    </select></td>
 </tr>
 <tr *ngIf="fieldFormIsOpen">
     <td></td>
     <td></td>
     <td></td>
-    <td></td>
+    <td><a class="myButton" (click)="openfieldForm()">cancel</a></td>
     <td><a class="myButton" (click)="addnewfield()">confirmer</a></td>
+    <td *ngIf="isGenerated"></td>
 
 </tr>
-<tr *ngIf="!fieldFormIsOpen&&!isGenerated">
+<tr *ngIf="!fieldFormIsOpen">
     <td></td>
     <td></td>
     <td></td>
@@ -91,7 +97,7 @@
         <option *ngFor="let serv of servsEtap" value="{{serv.Serv_order}}">serv n°{{serv.Serv_order}}</option>
         <option value="{{currentsrvOrd}}">new...</option>
     </select>
-<p>etap n°{{shownServNum}}</p>
+<p>etape n°{{shownServNum}}</p>
 <select [(ngModel)]="currentsrvName" >
     <option *ngIf="currentsrvName==''" value="">choisir un service</option>
 <option *ngFor="let serv of formulaire.services" value="{{serv.Serv_Name}}">{{serv.Serv_Name}}</option>

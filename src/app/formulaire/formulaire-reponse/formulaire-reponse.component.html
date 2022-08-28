@@ -22,7 +22,7 @@
      
   <div class="btns">
     <a class="myButton" (click)="startReponse()" >Start</a>
-    <a class="myButton" *ngIf="isAdmin&&!isCreated" (click)="creatReponse()">creat response</a>
+    <a class="myButton" *ngIf="isAdmin&&!isCreated" (click)="creatReponse()">create response</a>
     <a class="myButton" *ngIf="!isAdmin||isCreated" (click)="creatReponse()">return</a>
   </div>
 </div> 
