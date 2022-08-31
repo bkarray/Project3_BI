@@ -20,6 +20,7 @@ export class AuthService {
   public host:string="https://localhost:8443";
   public authenticated!: boolean;
   public authenticatedUser: any;
+
   private users: any = [];
   readonly APIUrl = 'http://127.0.0.1:8000';
   constructor(private http:HttpClient,private router: Router) {
@@ -56,6 +57,16 @@ export class AuthService {
     return this.http.get(this.APIUrl+'/userAll/')
   }
 
+  getNotification(id:any){
+    return this.http.get(this.APIUrl+'/gestionDesNotification/'+id)
+  }
+  deleteNotification(id:any){
+    return this.http.delete(this.APIUrl+'/gestionDesNotification/'+id)
+  }
+  addNotification(val:any){
+    return this.http.post(this.APIUrl+'/gestionDesNotification/',val)
+  }
+
 
   login(username:string,password:string){
     this.getUser().subscribe((data: any) => {
@@ -78,7 +89,20 @@ export class AuthService {
   }
   loadUser(){
     let user=localStorage.getItem('authenticatedUser');
-    if(user){
+    if(user){     
+  this.getNotification(JSON.parse(user).U_Id).subscribe((res:any)=>{
+    res.forEach((notif:any)=>{
+      console.log(notif)
+      Notification.requestPermission(function(permission){
+        var notification = new Notification("Formulaire",{body:notif.Msg,icon:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYGVl6GAR64RdjwzLjWGVgs-7Xy6AvniApuQ&usqp=CAU', dir:'auto'});
+      
+    });
+    this.deleteNotification(notif.Notification_Id).subscribe((res2:any)=>{})
+    })
+})
+
+      
+
       this.authenticatedUser=JSON.parse(user);
       this.authenticated=true;
     }

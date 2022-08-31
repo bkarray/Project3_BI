@@ -38,6 +38,7 @@ export class FormulaireTableComponent implements OnInit {
    startNew:boolean=false
   ngOnInit(): void {
     this.getData()
+
     
 
   }
@@ -48,7 +49,7 @@ export class FormulaireTableComponent implements OnInit {
   }
 
   nextServ(){
-   let nextServ
+   let nextServ: any=null
   
    if(this.etapNum+1>this.servs.length) {
     nextServ=null
@@ -62,21 +63,34 @@ export class FormulaireTableComponent implements OnInit {
     Serv_Id:nextServ
    }
    this.FormulaireService.updateReponseEtap(this.reponse.Reponse_Id,newLevel).subscribe((res:any)=>{
-    this.formulair={}
-    this.reponse={}
+    this.FormulaireService.sendMail(this.reponse.Reponse_Id).subscribe((res2:any)=>{
+      console.log(newLevel.Serv_Id)
+      if(newLevel.Serv_Id!=null){
+        let serv=this.servs.find((e:any)=>e.Serv_Id==newLevel.Serv_Id)
+        console.log(serv)
+        let newNotif={
+        Msg:'vérifier le formulaire '+this.formulair.Formulaire_Name+' sur la réponse '+this.reponse.reponse_Name+' car ils attendent vos modifications',
+        User_Id:serv.Serv_User
+      }
+      this.authService.addNotification(newNotif).subscribe((res3:any)=>{})}
+      
+      this.formulair={}
+      this.reponse={}
+  
+      this.fields=[]
+      this.data=[]
+  
+      this.servs=[]
+      this.isWorking=false
+      this.reponseIsOnWork=false
+      this.etapNum=0
+      this.userId=null
+      this.newRow={}
+      this.formIsOpen=false
+      this.startNew=false
+      this.ngOnInit()
+    })
 
-    this.fields=[]
-    this.data=[]
-
-    this.servs=[]
-    this.isWorking=false
-    this.reponseIsOnWork=false
-    this.etapNum=0
-    this.userId=null
-    this.newRow={}
-    this.formIsOpen=false
-    this.startNew=false
-    this.ngOnInit()
    })
   }
 

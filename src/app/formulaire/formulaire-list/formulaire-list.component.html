@@ -42,7 +42,7 @@
                 
     
             </tr>
-            <tr>
+            <tr *ngIf="isAdmin">
                 <td></td>
                 <td></td>
                 <td><input *ngIf="reponseFormIsOpen"  type="text" placeholder="Reponse Name..." [(ngModel)]="newReponseName"></td>
@@ -57,7 +57,7 @@
         </tbody>
     </table>
     <div class="d-flex justify-content-end">
-        <button class="btn btn-warning mt-3" (click)="openForm()"  >
+        <button class="btn btn-warning mt-3" (click)="openForm()"  *ngIf="isAdmin">
           <i class="fa fa-chevron-right"></i> create formulaire
         </button>    
       </div>
@@ -67,7 +67,7 @@
       </i>
     <p>New Formulaire name:</p>
     <input type="text" [(ngModel)]="newFormulaireName">
-    <p>New Formulaire status:</p>
+    <p>New Formulaire description:</p>
     <input type="text" [(ngModel)]="newFormulaireStatus">
     <br>
     <p>services:</p>
@@ -85,7 +85,7 @@
      </table>
     </div>
     <button href="#" class="btn btn-warning mt-3" (click)="addNewFormulaire()">
-        <i class="fa fa-chevron-right"></i> Create Formulaire
+        <i class="fa fa-chevron-right" ></i> Create Formulaire
       </button>
 </div>
 

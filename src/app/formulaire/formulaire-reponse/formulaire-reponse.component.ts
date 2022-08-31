@@ -37,10 +37,8 @@ export class FormulaireReponseComponent implements OnInit {
     this.router.navigate(['/formulaire/list/'])
   }
   updateServ(index:any){
-    let test=true
-    let test_table=this.services.filter((e:any)=> e.Serv_User==this.services[index].Serv_User)
-    if(test_table.length!=1) test=false
-  if(this.isCreated&&test){
+
+  if(this.isCreated){
     let servToUpDate={
       Serv_Id:this.services[index].Serv_Id,
       Formulaire_Id:this.services[index].Formulaire_Id,
@@ -50,7 +48,19 @@ export class FormulaireReponseComponent implements OnInit {
       Serv_Refer:this.services[index].Serv_Refer,
       serv_reponse:this.services[index].serv_reponse,
     }
-    this.FormulaireService.updateService(servToUpDate).subscribe((res:any)=>{})
+    this.FormulaireService.updateService(servToUpDate).subscribe((res:any)=>{
+      console.log("res=",res)
+      if(servToUpDate.Serv_Id==this.reponse.reponse_level){
+        this.FormulaireService.sendMail(this.reponse.Reponse_Id).subscribe((res1:any)=>{
+          console.log("res1=",res1)
+          let newNotif={
+            Msg:'vérifier le formulaire '+this.formulaire.Formulaire_Name+' sur la réponse '+this.reponse.reponse_Name+' car ils attendent vos modifications',
+            User_Id:servToUpDate.Serv_User
+          }
+          this.authService.addNotification(newNotif).subscribe((res2:any)=>{console.log("res2=",res2)})
+        })
+      }
+    })
   }
   }
   
@@ -80,9 +90,21 @@ export class FormulaireReponseComponent implements OnInit {
            
             this.reponse.reponse_level=firstServ
             console.log(this.reponse)
-            this.FormulaireService.updateReponse(this.reponse).subscribe((res:any)=>{
-              if(testing==1)this.router.navigate(['/formulaire/table/',this.formulaire.Formulaire_Id,this.reponse.Reponse_Id])
-              else this.router.navigate(['/formulaire/list/'])
+            this.FormulaireService.updateReponse(this.reponse).subscribe((res1:any)=>{
+              this.FormulaireService.sendMail(this.reponse.Reponse_Id).subscribe((res2:any)=>{
+                console.log(res2)
+                if(this.reponse.reponse_level!=null){
+                  //let serv=this.services.find((e:any)=>e.Serv_Id==firstServ)
+                  let newNotif={
+                  Msg:'vérifier le formulaire '+this.formulaire.Formulaire_Name+' sur la réponse '+this.reponse.reponse_Name+' car ils attendent vos modifications',
+                  User_Id:Number(serv.Serv_User)
+                }
+                this.authService.addNotification(newNotif).subscribe((res3:any)=>{console.log(res3)})
+                }
+                if(testing==1)this.router.navigate(['/formulaire/table/',this.formulaire.Formulaire_Id,this.reponse.Reponse_Id])
+                else this.router.navigate(['/formulaire/list/'])
+              })
+
               console.log(res)
             })
           }

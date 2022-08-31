@@ -43,6 +43,7 @@ export class FormulaireListComponent implements OnInit {
   userFormShow:boolean=false
   servShowIsOpen:boolean=false
   usersToAddShow:any=[]
+  isAdmin:boolean=false
 
 
   ngOnInit(): void {
@@ -181,16 +182,15 @@ if((this.servToCreate!='')&&(this.servsExamples.findIndex((e:any)=> e.Serv_Name=
       Serv_Id:serv.Serv_Id
     }
     this.FormulaireService.creatRelationUserServ(newRelation).subscribe((res:any)=>{
-
+      this.users.push(user)
     })
   })
   serv['isAdded']=false
   this.servsExamples.push(serv)
-  this.newServName=''
-  this.usersNewServ.forEach((user:any)=>{
-    this.users.push(user)
-  })
-  this.users=[]
+  this.servToCreate=''
+
+
+  this.usersNewServ=[]
   if(!this.creationFormulaire) this.addServForm()
   else {this.servFormIsOpen=!this.servFormIsOpen
   this.creatFormIsOpen=!this.creatFormIsOpen}
@@ -246,7 +246,7 @@ if(this.services.length!=0){
       this.FormulaireService.addNewFormulaire(newFormulaireName).subscribe((formulaire:any)=>{
         let newTable={
           Formulaire_Id:formulaire.Formulaire_Id,
-          Table_Name:formulaire.Formulaire_Name.replace(/\s/g, '')+'0',
+          Table_Name:formulaire.Formulaire_Name.replace(/\s/g, '').replaceAll(' ','').replaceAll('(','').replaceAll(')','').replaceAll('-','').replaceAll('"','')+'0',
           Table_level:0
 
         }
@@ -300,6 +300,8 @@ this.serviceFormIsOpen=!this.serviceFormIsOpen
   }
 
   getForms(){
+    this.authService.loadUser();
+    this.isAdmin=this.authService.isAdmin()
     this.FormulaireService.getAllFormulaire().subscribe((data:any)=>{
       this.authService.getAllUsers().subscribe((users:any)=>{
        this.users=users

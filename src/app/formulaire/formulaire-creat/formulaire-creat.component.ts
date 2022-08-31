@@ -269,7 +269,7 @@ this.fields[index].editName=!this.fields[index].editName
           this.lastTableIndex++;
           let newTable={
             Formulaire_Id:this.formulaire.Formulaire_Id,
-            Table_Name:this.formulaire.Formulaire_Name.replace(/\s/g, '').toLowerCase()+this.lastTableIndex,
+            Table_Name:this.formulaire.Formulaire_Name.replace(/\s/g, '').toLowerCase().replace(/\s/g, '').replaceAll(' ','').replaceAll('(','').replaceAll(')','').replaceAll('-','').replaceAll('"','')+this.lastTableIndex,
             Table_level:this.lastTableIndex
     
           }
@@ -285,11 +285,11 @@ this.fields[index].editName=!this.fields[index].editName
             }
     
             console.log(this.formulaire.tables,this.lastTableIndex)
-            let val={
+            if(this.formulaire.tables.length!=0){let val={
               Table_Name_inf:table.Table_Name,
               Table_Name_sup:this.formulaire.tables[this.lastTableIndex].Table_Name
             }
-            this.FormulaireService.addForeignKey(val).subscribe((res:any)=>{
+            this.FormulaireService.addForeignKey(val).subscribe((res:any)=>{})}
 
 
               let newField={
@@ -379,7 +379,7 @@ this.fields[index].editName=!this.fields[index].editName
               this.lastTableIndex++
               
 
-            })
+            
           })
 
 
@@ -395,29 +395,40 @@ this.fields[index].editName=!this.fields[index].editName
 
   }
   generatFields(){
-    let i=0
-    this.formulaire.tables.forEach((tab:any)=>{
+    let test=false
+    this.formulaire.tables.forEach((tab:any,i:any)=>{
 
-
-         if(tab.fields.length==0){
-          if(i==this.formulaire.tables.length-1){
-            this.FormulaireService.deleteTable(tab.Table_Id).subscribe((res:any)=>{
-              this.formulaire.tables.splice(-1)
-              this.lastTableIndex--
-            })
-          }
-          else{
+      if(tab.fields.length==0){
+        if(i==this.formulaire.tables.length-1){
+          this.FormulaireService.deleteTable(tab.Table_Id).subscribe((res:any)=>{
+            this.formulaire.tables.splice(this.formulaire.tables.length-1,1)
+            this.lastTableIndex--
+          })
+        }
+        else{
+          if(!((this.formulaire.tables.length==1)&&(i==0))) {
             for(let j=i;j<this.formulaire.tables.length-1;j++){
-              this.formulaire.tables[j]=this.formulaire.tables[j+1]
-            }
-            this.FormulaireService.deleteTable(this.formulaire.tables[this.formulaire.tables.length-1]).subscribe((res:any)=>{
-              this.formulaire.tables.splice(-1)
-              this.lastTableIndex--
+            this.formulaire.tables[j].fields=[]
+            this.formulaire.tables[j].fields=this.formulaire.tables[j+1].fields
+            this.formulaire.tables[j].fields.forEach((field:any)=>{
+              field.Table_Id=this.formulaire.tables[j].Table_Id
             })
           }
-         }
+          this.FormulaireService.deleteTable(this.formulaire.tables[this.formulaire.tables.length-1].Table_Id).subscribe((res:any)=>{
+            this.formulaire.tables.splice(this.formulaire.tables.length-1,1)
+            this.lastTableIndex--
+          })
+          test=true
+        }
+        }
 
-         tab.fields.forEach((field:any)=>{ 
+       }
+
+    })
+   
+    if(!test){this.formulaire.tables.forEach((tab:any)=>{
+
+          tab.fields.forEach((field:any)=>{ 
           let newField={
             Table_Id:field.Table_Id,
             Name:field.Name,
@@ -430,11 +441,14 @@ this.fields[index].editName=!this.fields[index].editName
       
           }    
           this.FormulaireService.addNewfields(newField).subscribe((res:any)=>{ })})
-         i++
+         
     })
     this.shownServNum=this.currentsrvOrd
 
-   this.isGenerated=true
+   this.isGenerated=true}
+   else{
+    alert("verifier l'organization des colones")
+   }
   }
   drop(event: CdkDragDrop<any>) {
 
@@ -487,7 +501,7 @@ this.fields[index].editName=!this.fields[index].editName
       this.lastTableIndex++;
       let newTable={
         Formulaire_Id:this.formulaire.Formulaire_Id,
-        Table_Name:this.formulaire.Formulaire_Name.replace(/\s/g, '').toLowerCase()+this.lastTableIndex,
+        Table_Name:this.formulaire.Formulaire_Name.replace(/\s/g, '').toLowerCase().replace(/\s/g, '').replaceAll(' ','').replaceAll('(','').replaceAll(')','').replaceAll('-','').replaceAll('"','')+this.lastTableIndex,
         Table_level:this.lastTableIndex
 
       }
@@ -618,6 +632,7 @@ else{
       })}
   }
   getNewFormulaire(){
+    this.authService.loadUser();
     this.route.params.subscribe((param:any)=>{
       this.FormulaireService.getFormulaireById(param.id).subscribe((form:any)=>{
         this.FormulaireService.getTables(param.id).subscribe((tables:any)=>{

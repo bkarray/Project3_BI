@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class FormulaireService {
-
+  
   readonly APIUrl = 'http://127.0.0.1:8000';
   readonly PhotoUrl = 'http://127.0.0.1:8000/media/';
   constructor(private http: HttpClient) {}
@@ -117,5 +117,8 @@ export class FormulaireService {
   }
   deleteServUserRelation(val:any){
     return this.http.post(this.APIUrl+'/deleteServUser/',val)
+  }
+  sendMail(id:any){
+    return this.http.post(this.APIUrl+'/sendMail/'+id,{})
   }
 }
