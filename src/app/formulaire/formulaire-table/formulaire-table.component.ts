@@ -89,6 +89,7 @@ export class FormulaireTableComponent implements OnInit {
       this.formIsOpen=false
       this.startNew=false
       this.ngOnInit()
+      window.location.reload;
     })
 
    })
@@ -384,10 +385,13 @@ this.FormulaireService.getReponseById(res.idR).subscribe((reponse:any)=>{
       console.log("2",reponseToSearch)
       this.FormulaireService.getServicesByReponse(res.idF,reponseToSearch).subscribe((servs:any)=>{
         servs.forEach((serv:any)=>{
-          this.authService.getUserById(serv.Serv_User).subscribe((user:any)=>{
+        if(serv.Serv_User!=null)  {this.authService.getUserById(serv.Serv_User).subscribe((user:any)=>{
   
             serv['userName']=user[0].U_FirstName+" "+user[0].U_LastName
-          })
+          })}
+          else {
+            serv['userName']="indéterminée"
+          }
         })
         this.servs=servs
         

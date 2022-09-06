@@ -20,6 +20,7 @@ import { OrderModule } from './order/order.module';
 import { AuthModule } from './auth/auth.module';
 import { AddressModule } from './address/address.module';
 import { NgChartsModule } from 'ng2-charts';
+import { UserNotifactionsComponent } from './basics/user-notifactions/user-notifactions.component';
 
 @NgModule({
   declarations: [
@@ -30,6 +31,7 @@ import { NgChartsModule } from 'ng2-charts';
     HomeComponent,
     SidebarComponent,
     UserMenuComponent,
+    UserNotifactionsComponent,
     
 
 

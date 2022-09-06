@@ -151,7 +151,7 @@
 </div>
 </div>
 
-<div class="listItems" *ngIf="startNew&&isWorking">
+<!-- <div class="listItems" *ngIf="startNew&&isWorking">
 <h1>welcome to this new reponse {{reponse.reponse_Name}}</h1>
 <p>create your first ligne:</p>
 <table style="width:80% ;">
@@ -189,5 +189,66 @@
 <br>
 <br>
 <a class="myButton" (click)="addFirstRow()">confirmer</a>
-</div>
+</div> -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="bg" *ngIf="startNew&&isWorking"><div class="testbox" *ngIf="startNew&&isWorking">
+    <form >
+      <div class="banner">
+        <h1>welcome to this new reponse {{reponse.reponse_Name}}</h1>
+      </div>
+      <div *ngFor="let field of fields" class="question" >
+        <label *ngIf="inRow(field.Name,0)&&(field.Name!='ID_0')" class="fieldName">{{field.Name}}:</label>
+        <div *ngIf="inRow(field.Name,0)&&(field.Status=='modifié')" class="question-answer" [ngSwitch]="field.Type">
+                <input 
+                type="date" 
+                *ngSwitchCase="'date'" style="width: 100px ;"  [(ngModel)]="newRow[field.Name]" [ngModelOptions]="{standalone: true}">
+                <input 
+                type="number" 
+                *ngSwitchCase="'integer'" style="width: 100px ;" [(ngModel)]="newRow[field.Name]" [ngModelOptions]="{standalone: true}">
+                <input 
+                type="checkbox" 
+                *ngSwitchCase="'boolean'" style="width: 100px ;" [(ngModel)]="newRow[field.Name]" [ngModelOptions]="{standalone: true}">
+                <input 
+                type="number" step="0.01"
+                *ngSwitchCase="'real'" style="width: 100px ;" [(ngModel)]="newRow[field.Name]" [ngModelOptions]="{standalone: true}">
+                <div *ngSwitchCase="'character varying(255)'" >
+                    <input style="width: 100px ;" type="text" *ngIf="field.choises==null" [(ngModel)]="newRow[field.Name]" [ngModelOptions]="{standalone: true}">
+                    <select style="width: 100px ;" *ngIf="field.choises!=null" [(ngModel)]="newRow[field.Name]" [ngModelOptions]="{standalone: true}">
+                        <option value="">choisir</option>
+                        <option *ngFor="let choix of field.choisesList" value="{{choix}}">{{choix}}</option>
+                    </select>
+                </div>
+                <p *ngSwitchDefault>undetermined</p>
+          
+        </div>
+      </div>
+      <div class="btn-block">
+        <button (click)="addFirstRow()">Start</button>
+      </div>
+    </form>
+  </div></div>
+
+
+
+
+
+
+
+
+
+
 </div>

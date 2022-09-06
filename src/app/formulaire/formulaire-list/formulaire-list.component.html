@@ -1,6 +1,6 @@
-<div class="container">
-  <div class="sevBtnSpace">
-    <a class="myButton" (click)="openServList()">Serv</a>
+ <div class="container">
+  <div class="btn-block" style="text-align:right ;">
+    <button (click)="openServList()">Serv</button>
   </div>
   
     <table>
@@ -27,6 +27,8 @@
                   />
                 </svg>
               </a></td>
+              
+
 
             
         </tr>
@@ -39,6 +41,9 @@
                 <p *ngIf="reponse.reponse_level==null">reponse est executé </p></td>
                 <td><p *ngIf="reponse.reponse_level!=null">{{reponse.currentServ.Serv_Name}}</p></td>
                 <td><p *ngIf="reponse.reponse_level!=null">{{reponse.currentServ.userName}}</p></td>
+                <td (click)="putReponseInArchive(reponse.Reponse_Id,index,indexR)"><span class="material-symbols-outlined">
+                  cancel
+                  </span></td>
                 
     
             </tr>
@@ -48,6 +53,7 @@
                 <td><input *ngIf="reponseFormIsOpen"  type="text" placeholder="Reponse Name..." [(ngModel)]="newReponseName"></td>
                 <td><a *ngIf="reponseFormIsOpen"  class="myButton" (click)="addNewReponse(formulaire.Formulaire_Id)">confirmer</a></td>
                 <td><a *ngIf="!reponseFormIsOpen" class="myButton" (click)="openReponseForm()">+</a></td>
+                <td></td>
     
             </tr>
         </td>
@@ -56,40 +62,54 @@
 
         </tbody>
     </table>
-    <div class="d-flex justify-content-end">
-        <button class="btn btn-warning mt-3" (click)="openForm()"  *ngIf="isAdmin">
-          <i class="fa fa-chevron-right"></i> create formulaire
+    <div class="btn-block" style="text-align:right ;">
+        <button (click)="openForm()"  *ngIf="isAdmin">
+        create formulaire
         </button>    
       </div>
-<div class="listItems" *ngIf="creatFormIsOpen">
-    <i (click)="closeForm()" class="material-icons close">
-        close
-      </i>
-    <p>New Formulaire name:</p>
-    <input type="text" [(ngModel)]="newFormulaireName">
-    <p>New Formulaire description:</p>
-    <input type="text" [(ngModel)]="newFormulaireStatus">
-    <br>
-    <p>services:</p>
-    <div style="padding-left: 35%;">
-     <table style="width: 50% ;">
-      <tr *ngFor="let serv of servsExamples;let index=index" >
-        <td>{{serv.Serv_Name}}</td>
-        <td><input type="checkbox" [(ngModel)]="serv.isAdded" (change)="addOrRemoveServ(index)"></td>
-      </tr>
-      <tr>
-        
-        <td><a class="myButton" (click)="goToCreatServForm()" >+</a></td>
-        <td></td>
-      </tr>
-     </table>
+<div class="bg" *ngIf="creatFormIsOpen||todelete||servFormIsOpen||servShowIsOpen||servList">
+<div class="testbox" *ngIf="creatFormIsOpen">
+  <form >
+    <div class="banner">
+      <h1>Form Creation</h1>
     </div>
-    <button href="#" class="btn btn-warning mt-3" (click)="addNewFormulaire()">
-        <i class="fa fa-chevron-right" ></i> Create Formulaire
-      </button>
+    <div class="item">
+      <label for="name">Name<span class="red">*</span></label>
+      <div class="name-item">
+        <input id="name" type="text" name="name" placeholder="Name" [(ngModel)]="newFormulaireName" [ngModelOptions]="{standalone: true}"/>
+        <input type="text" name="name" placeholder="Description" [(ngModel)]="newFormulaireStatus" />
+      </div>
+    </div>
+    <div class="question">
+      <label>Services:</label>
+      <div class="question-answer">
+        <div>
+          <ul class="ks-cboxtags">
+            <li *ngFor="let serv of servsExamples;let index=index"><input type="checkbox" id="{{serv.Serv_Name}}" [(ngModel)]="serv.isAdded" (change)="addOrRemoveServ(index)" [ngModelOptions]="{standalone: true}"><label for="{{serv.Serv_Name}}">{{serv.Serv_Name}}</label></li>
+            <li><input type="checkbox" id="+"  (click)="goToCreatServForm()" value="false"><label for="+"></label></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="btn-block">
+      <button class="redBackGround" (click)="closeForm()">Cancel</button>
+      <button (click)="addNewFormulaire()">Create Formulaire</button>
+      
+    </div>
+  </form>
 </div>
 
-<div class="listItems" *ngIf="todelete">
+
+
+
+
+
+
+
+
+
+
+<!-- <div class="listItems" *ngIf="todelete">
   <h3>are you sur to delete {{deleteFormName}}!?</h3>
   <br>
   <br>
@@ -99,8 +119,38 @@
   <a class="myButton" (click)="opendeleteForm(null,'')">cancel</a>
   <a class="myButton" (click)="deleteFormulaire()">yes</a>
   
+</div> -->
+
+
+
+
+<div class="deletePopUp" *ngIf="todelete">
+<div class="modal-dialog modal-confirm">
+  <div class="modal-content">
+    <div class="modal-header flex-column">
+      <div class="icon-box">
+        <i class="material-icons">&#xE5CD;</i>
+      </div>						
+      <h4 class="modal-title w-100">Are you sure?</h4>	
+    </div>
+    <div class="modal-body">
+      <p>Do you really want to delete {{deleteFormName}}? This process cannot be undone.</p>
+    </div>
+    <div class="modal-footer justify-content-center">
+      <button type="button" class="btn btn-secondary" (click)="opendeleteForm(null,'')">Cancel</button>
+      <button type="button" class="btn btn-danger" (click)="deleteFormulaire()">Delete</button>
+    </div>
+  </div>
+
 </div>
- <div class="listItems" *ngIf="servFormIsOpen">
+</div>
+
+
+
+
+
+
+ <!-- <div class="listItems" *ngIf="servFormIsOpen">
   <h3>new Service</h3>
   <br>
   <br>
@@ -122,23 +172,138 @@
   <a class="myButton" (click)="closeServForm()">cancel</a>
   <a class="myButton" (click)="creatServ()">create</a>
 
-</div> 
-<div *ngIf="servList" class="listItems">
-  <i (click)="openServList()" class="material-icons close">
-    close
-  </i>
-  <br>
-<h3>les services</h3>
-<br>
+</div>  -->
 
-<ul>
-  <li *ngFor="let serv of servsExamples;let index=index" (click)="openServShow(index)"> {{serv.Serv_Name}}<span (click)="deleteServ(index)" class="material-symbols-outlined deleteServ">
-    cancel
-    </span></li>
-</ul>
-<a class="myButton" (click)="addServForm()">+</a>
+
+
+
+<div class="listServ" *ngIf="servFormIsOpen">
+  <div class="leaderboard">
+    <div class="head" style="display:table ;">
+      <span class="material-symbols-outlined">
+        settings
+        </span>
+        <input type="text" style="color: black;" class="head leftMvt" placeholder="New Serv Name..." [(ngModel)]="servToCreate">
+        <i (click)="closeServForm()" class="material-icons close">
+          close
+        </i>
+    </div>
+    <div class="body">
+      <ol>
+       <li *ngFor="let user of usersNewServ;let index=index" class="ling"><mark (click)="openServShow(index)">{{user.U_FirstName}}  {{user.U_LastName}}</mark><small><span (click)="deleteUser(index)"  class="material-symbols-outlined deleteServ">
+        cancel
+        </span></small> </li>
+        <li class="ling" (click)="addUserForm()"> <mark>add new User...</mark></li>
+       
+      </ol>
+ 
+
+      <div class="select-dropdown"  *ngIf="userForm">
+        <select [(ngModel)]="newUserId">
+          <option value="0">choisir un utilisateur</option>
+          <option *ngFor="let user of users" value="{{user.U_Id}}">{{user.U_FirstName}}  {{user.U_LastName}}</option>
+        </select>
+      </div>
+
+      <div class="btn-block-serv" *ngIf="userForm" >
+      
+        <span  (click)="addUserForm()" class=" returnBtn material-symbols-outlined">
+          keyboard_return
+          </span>
+        <span  (click)="addUser()" class="addBtn material-symbols-outlined">
+          add_circle
+          </span>
+        
+      </div>
+      <div class="btn-block">
+        <button (click)="creatServ()" >create</button>
+      </div>
+    </div>
+
+  </div>
 </div>
- <div class="listItems" *ngIf="servShowIsOpen">
+
+
+
+
+
+
+
+<div class="listServ" *ngIf="servList">
+  <div class="leaderboard">
+    <div class="head" style="display:table ;">
+      <span class="material-symbols-outlined">
+        settings
+        </span>
+      <h1 class="head leftMvt" >Services</h1>
+      <i (click)="openServList()" class="material-icons close">
+        close
+      </i>
+    </div>
+    <div class="body">
+      <ol>
+       <li *ngFor="let serv of servsExamples;let index=index"class="ling"><mark  (click)="openServShow(index)" >{{serv.Serv_Name}}</mark><small><span (click)="deleteServ(index)"  class="material-symbols-outlined deleteServ">
+        cancel
+        </span></small> </li>
+        <li class="ling" (click)="addServForm()"> <mark>add new Serv...</mark></li>
+       
+      </ol>
+    </div>
+ 
+  </div>
+</div>
+
+
+
+
+
+<div class="listServ" *ngIf="servShowIsOpen">
+  <div class="leaderboard">
+    <div class="head" style="display:table ;">
+      <span class="material-symbols-outlined">
+        settings
+        </span>
+      <h1 class="head leftMvt" >{{servToShow}}</h1>
+      <i (click)="closeServShow()" class="material-icons close">
+        close
+      </i>
+    </div>
+    <div class="body">
+      <ol>
+       <li *ngFor="let user of usersOfServToShow;let index=index"  class="ling"><mark>{{user.U_FirstName}}  {{user.U_LastName}}</mark><small><span (click)="deleteUserShow(index)"  class="material-symbols-outlined deleteServ">
+        cancel
+        </span></small> </li>
+        <li class="ling" (click)="openUserFormShow()"> <mark>add new User...</mark></li>
+       
+      </ol>
+
+      <div class="select-dropdown"  *ngIf="userFormShow">
+        <select [(ngModel)]="newUserId">
+          <option value="0">choisir un utilisateur</option>
+          <option *ngFor="let user of usersToAddShow" value="{{user.U_Id}}">{{user.U_FirstName}}  {{user.U_LastName}}</option>
+        </select>
+      </div>
+
+      <div class="btn-block-serv" *ngIf="userFormShow" >
+      
+        <span  (click)="closeUserFormShow()" class=" returnBtn material-symbols-outlined">
+          keyboard_return
+          </span>
+        <span  (click)="addUserShow()" class="addBtn material-symbols-outlined">
+          add_circle
+          </span>
+        
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+
+
+
+ <!-- <div class="listItems" *ngIf="servShowIsOpen">
   <br>
   <h3>{{servToShow}}</h3>
   <br>
@@ -161,6 +326,6 @@
 <br>
 
   <a class="myButton" (click)="closeServShow()">return</a>
-
+-->
 </div>
-</div>
+</div> 

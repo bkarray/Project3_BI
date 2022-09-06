@@ -47,8 +47,10 @@ export class FormulaireCreatComponent implements OnInit {
   isGenerated:boolean=false
   lastTableIndex:number=0;
   shownServNum:any=1
+  Types:any=[]
 
   ngOnInit(): void { 
+  this.Types=[{Name:'String',value:'character varying(255)'},{Name:'date',value:'date'},{Name:'list',value:'list'}]
 this.getNewFormulaire()
   }
 
@@ -83,6 +85,10 @@ if(!this.isGenerated){
   editSatus(index:any){
     this.fields[index].editSataus=!this.fields[index].editSataus
     console.log(this.fields[index])
+  }
+  spaces(index:any){
+if(index==0) return []
+else return this.formulaire.tables[index-1].fields
   }
   editDesc(index:any){
 this.fields[index].editDesc=!this.fields[index].editDesc
@@ -141,11 +147,6 @@ this.fields[index].editName=!this.fields[index].editName
     console.log() 
  
     this.formulaire.tables[0].fields.push(newField)
-    if(this.formulaire.tables.length!=1){
-      for(let i=1;i<this.formulaire.tables.length;i++){
-        this.formulaire.tables[i].spaces.push(0)
-      }
-    }
     let newField2= {
       Table_Id:this.formulaire.tables[0].Table_Id,
       Name:this.newFieldName.replaceAll(' ','_').replaceAll(';','_').toLowerCase(),
@@ -194,11 +195,6 @@ this.fields[index].editName=!this.fields[index].editName
           
           this.FormulaireService.addNewfields(newField).subscribe((res:any)=>{
             this.formulaire.tables[indexT].fields.push(newField)
-            if(this.formulaire.tables.length!=1){
-              for(let i=1;i<this.formulaire.tables.length;i++){
-                this.formulaire.tables[i].spaces.push(0)
-              }
-            }
             this.servsEtap.forEach((serv:any)=>{
               let newFieldServ={
                 Table_Id:this.formulaire.tables[indexT].Table_Id,
@@ -275,14 +271,10 @@ this.fields[index].editName=!this.fields[index].editName
           }
           this.FormulaireService.creatNewTable(newTable).subscribe((table:any)=>{
             table['fields']=[]
-            table['spaces']=[0]
+           
     
             this.lastTableIndex--
-            for(let i=0;i<=this.lastTableIndex;i++){
-              this.formulaire.tables[i].fields.forEach((x:any)=>{
-                table['spaces'].push(0) 
-              })
-            }
+
     
             console.log(this.formulaire.tables,this.lastTableIndex)
             if(this.formulaire.tables.length!=0){let val={
@@ -309,11 +301,6 @@ this.fields[index].editName=!this.fields[index].editName
                 
                 this.FormulaireService.addNewfields(newField).subscribe((res:any)=>{
                      table.fields.push(newField)
-                  if(this.formulaire.tables.length!=1){
-                    for(let i=1;i<this.formulaire.tables.length;i++){
-                      this.formulaire.tables[i].spaces.push(0)
-                    }
-                  }
                   this.servsEtap.forEach((serv:any)=>{
                     let newFieldServ={
                       Table_Id:table.Table_Id,
@@ -468,8 +455,7 @@ this.fields[index].editName=!this.fields[index].editName
         );
       }
       
-      this.formulaire.tables[Number(event.container.id)].spaces.splice(-1)
-      if(Number(event.previousContainer.id)!=0)this.formulaire.tables[Number(event.previousContainer.id)].spaces.push(0)
+ 
       for(let i=0;i<this.formulaire.tables.length;i++){
           
       
@@ -507,14 +493,8 @@ this.fields[index].editName=!this.fields[index].editName
       }
       this.FormulaireService.creatNewTable(newTable).subscribe((table:any)=>{
         table['fields']=[]
-        table['spaces']=[0]
 
         this.lastTableIndex--
-        for(let i=0;i<=this.lastTableIndex;i++){
-          this.formulaire.tables[i].fields.forEach((x:any)=>{
-            table['spaces'].push(0) 
-          })
-        }
 
         console.log(this.formulaire.tables,this.lastTableIndex)
         let val={
@@ -542,6 +522,7 @@ this.fields[index].editName=!this.fields[index].editName
       let indexP=this.servsEtap.findIndex((e:any)=> e.Serv_order==this.fields[1].Serv_Id)
       if(indexP!=-1) this.servsEtap[indexP].fields=this.fields
       this.fields=this.servsEtap[index].fields
+      this.fields.sort((a:any, b:any) => a.Name.localeCompare(b.Name))
       console.log(this.fields)
       this.currentsrvName=this.servsEtap[index].Serv_Name
       this.formulaire.tables.forEach((table:any)=>{
@@ -558,6 +539,7 @@ else{
       field.Serv_Id=null
     }
   })
+  this.fields.sort((a:any, b:any) => a.Name.localeCompare(b.Name))
 }
   }
 
@@ -630,7 +612,33 @@ else{
           })}
         })
       })}
+      else{
+        if(Number(this.shownServNum)+1<=Number(this.currentsrvOrd)){
+        this.shownServNum=Number(this.shownServNum)+1
+        this.fieldsToShow()}
+      }
+
   }
+  prevServ(){
+    
+    if(Number(this.shownServNum)-1>0){
+      this.shownServNum=Number(this.shownServNum)-1
+      this.fieldsToShow()}
+  }
+
+ changeServName(){
+  if(this.currentsrvOrd!=this.shownServNum){
+   let updateServ={
+    Serv_order:Number(this.shownServNum),
+    Formulaire_Id:this.formulaire.Formulaire_Id,
+    newName:this.currentsrvName
+   }
+   this.FormulaireService.updateServName(updateServ).subscribe((res:any)=>{
+    console.log(res)
+   })
+  }
+ }
+
   getNewFormulaire(){
     this.authService.loadUser();
     this.route.params.subscribe((param:any)=>{
@@ -641,7 +649,6 @@ else{
             if(param.generated==1){
               this.isGenerated=true
             }
-            let numSpac=0
             let level=0
             for(let i=0;i<tables.length;i++){
               let index=tables.findIndex((e:any)=> e.Table_level==level)
@@ -656,10 +663,7 @@ else{
                 this.fields.push(field)
               })
                 
-              tables[index]['spaces']=[]
-                console.log(numSpac,tables[index])
-                for(let i=0;i<numSpac;i++){tables[index]['spaces'].push(0)}
-                numSpac=fields.length
+              
               })  
               level++
             }
@@ -690,6 +694,7 @@ else{
 
               this.currentsrvName=servs[0].Serv_Name
               this.numservs=this.formulaire.services.length
+              this.fields.sort((a:any, b:any) => a.Name.localeCompare(b.Name))
               console.log(this.formulaire,this.fields)
               
 

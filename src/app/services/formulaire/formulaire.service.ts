@@ -121,4 +121,13 @@ export class FormulaireService {
   sendMail(id:any){
     return this.http.post(this.APIUrl+'/sendMail/'+id,{})
   }
+  updateServName(val:any){
+    return this.http.put(this.APIUrl+'/updateServName/',val)
+  }
+  putReponseInArchive(id:any){
+    return this.http.get(this.APIUrl+'/putReponseInArchive/'+id)
+  }
+  verifierUserWork(id:any){
+    return this.http.get(this.APIUrl+'/verifierUserWork/'+id)
+  }
 }

@@ -1,4 +1,4 @@
-<div class="pagecontainer">
+<!-- <div class="pagecontainer">
   <div class="formcontainer">
     <h3>Se connecter</h3>
     <div class="carrecontainer">
@@ -47,4 +47,71 @@
       </form>
     </div>
   </div>
-</div>
+</div> -->
+
+
+
+<div class="overlay">
+  <!-- LOGN IN FORM by Omar Dsoky -->
+  <form [formGroup]="log" (ngSubmit)="onSubmit()">
+     <!--   con = Container  for items in the form-->
+     <div class="con">
+     <!--     Start  header Content  -->
+     <header class="head-form">
+        <h2>Log In</h2>
+        <!--     A welcome message or an explanation of the login form -->
+        <p>login here using your email and password</p>
+     </header>
+     <!--     End  header Content  -->
+     <br>
+     <div class="field-set">
+       
+        <!--   user name -->
+           <span class="input-item">
+             <i class="fa fa-user-circle"></i>
+           </span>
+          <!--   user name Input-->
+           <input style="height:35px ;" class="form-input" id="txt-input" type="text" required
+            placehoder="unter login"
+            [(ngModel)]="U_login"
+            formControlName="login">
+       
+        <br>
+       
+             <!--   Password -->
+       
+        <span class="input-item">
+          <i class="fa fa-key"></i>
+         </span>
+        <!--   Password Input-->
+        <input class="form-input" style="height:35px ;" type="password" placeholder="Password" id="pwd"  name="password" required
+        [(ngModel)]="U_pwd"
+        formControlName="password">
+       
+
+       
+       
+        <br>
+  <!--        buttons -->
+  <!--      button LogIn -->
+        <button class="log-in" type="submit"> Log In </button>
+     </div>
+    
+  <!--   other buttons -->
+     <div class="other">
+  <!--      Forgot Password button-->
+        <button class="btn submits frgt-pass">Forgot Password</button>
+  <!--     Sign Up button -->
+        <button class="btn submits sign-up" href="auth/register">Sign Up 
+  <!--         Sign Up font icon -->
+        <i class="fa fa-user-plus" aria-hidden="true"></i>
+        </button>
+  <!--      End Other the Division -->
+     </div>
+       
+  <!--   End Conrainer  -->
+    </div>
+    
+    <!-- End Form -->
+  </form>
+  </div>

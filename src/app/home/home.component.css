@@ -6,7 +6,7 @@
     align-items: center;
 }
 .homeHeader{
-    background-color: #286DA8;
+    background-color: #003865;
     width: 800px;
     height: 400px;
     display: flex;
@@ -33,7 +33,7 @@
 }
 .buttonText{
     text-decoration: none;
-    color: #286DA8;
+    color: #003865;
 }
 .leftContainer h1, p{ color: #D7CEC7;}
 .textSection{
@@ -50,7 +50,7 @@
   }
 
   .price {
-    color:#286DA8;
+    color:#003865;
     font-size: 14px;
   }
 
@@ -59,7 +59,7 @@
     outline: 0;
     padding: 10px;
     color: white;
-    background-color: #286DA8;
+    background-color: #003865;
     text-align: center;
     cursor: pointer;
     width: 100%;
@@ -77,7 +77,7 @@
       height: 50%;
   }
   .card a ,p,h3 {
-      color:#286DA8;
+      color:#003865;
   }
 .listcateg{
     color: white;

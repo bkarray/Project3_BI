@@ -219,11 +219,19 @@ this.FormulaireService.deleteFoemulaire(this.deleteFormID).subscribe((res:any)=>
   this.todelete=!this.todelete
 })
   }
+  putReponseInArchive(id:any,indexF:any,indexR:any){
+this.FormulaireService.putReponseInArchive(id).subscribe((res:any)=>{
+  this.formulaires[indexF].reponses.splice(indexR,1)
+})
+  }
   closeForm(){
     this.newFormulaireName=''
     this.newFormulaireStatus=''
     this.services.forEach((serv:any)=>{
       this.servsExamples.push(serv)
+    })
+    this.servsExamples.forEach((serv:any)=>{
+      serv.isAdded=false
     })
 
     this.services=[]
@@ -242,6 +250,8 @@ this.FormulaireService.deleteFoemulaire(this.deleteFormID).subscribe((res:any)=>
       Formulaire_Name:this.newFormulaireName,
       Formulaire_Status:this.newFormulaireStatus
     }
+    if (this.newFormulaireStatus=='') newFormulaireName.Formulaire_Status='no description';
+console.log(newFormulaireName)
 if(this.services.length!=0){    
       this.FormulaireService.addNewFormulaire(newFormulaireName).subscribe((formulaire:any)=>{
         let newTable={
@@ -250,6 +260,7 @@ if(this.services.length!=0){
           Table_level:0
 
         }
+
         this.FormulaireService.creatNewTable(newTable).subscribe((tab:any)=>{
           this.services.forEach((serv:any)=>{
             serv.Formulaire_Id=formulaire.Formulaire_Id
@@ -325,13 +336,21 @@ this.serviceFormIsOpen=!this.serviceFormIsOpen
             
               if(reponse.reponse_level!=null)this.FormulaireService.getServices(reponse.reponse_level).subscribe((servise:any)=>{
                 
-                this.authService.getUserById(servise.Serv_User).subscribe((user:any)=>{
+               if(servise.Serv_User!=null) {this.authService.getUserById(servise.Serv_User).subscribe((user:any)=>{
   
                   servise['userName']=user[0].U_FirstName+" "+user[0].U_LastName
                   reponse['currentServ']=servise
   
                   if(formulaire.reponses.findIndex((e:any)=> e.Reponse_Id==reponse.Reponse_Id)==-1) formulaire.reponses.push(reponse)
                 })
+              }
+              else{
+                servise['userName']='indéterminée'
+                reponse['currentServ']=servise
+
+                if(formulaire.reponses.findIndex((e:any)=> e.Reponse_Id==reponse.Reponse_Id)==-1) formulaire.reponses.push(reponse)
+              }
+
               })
               else reponse['currentUser']=null;
             })
@@ -349,5 +368,12 @@ this.serviceFormIsOpen=!this.serviceFormIsOpen
 })
    })
     //console.log(this.formulaires)
+
+
+
+
+
+
+
   }
 }

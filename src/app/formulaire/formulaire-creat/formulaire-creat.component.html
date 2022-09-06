@@ -1,6 +1,6 @@
 <div class="container">
 <div style="margin-bottom:40px ;">
- <h3>exemplaire: {{formulaire.Formulaire_Name}}</h3>
+ <h3 class="titelTop">exemplaire: {{formulaire.Formulaire_Name}}</h3>
   <table style="width:100% ;">
     <thead>
         <tr>
@@ -53,19 +53,14 @@
     <td>
         <select [(ngModel)]="newFieldType">
          <option *ngIf="newFieldType==''" value="">choisir un type</option>
-         <option value="list">list</option>
-         <option value="character varying(255)">string</option>
-         <option value="date">date</option>
-         <option value="boolean">boolean</option>
-         <option value="integer">number</option>
-         <option value="real">float</option>
+         <option *ngFor="let type of Types" value="{{type.value}}">{{type.Name}}</option>
         </select>
     </td>
     <td><input *ngIf="newFieldType=='list'" type="text" [(ngModel)]="newfieldChoises" placeholder="separer les choix par ';'...">
     <td> <input type="text" [(ngModel)]="newFieldStatus"></td>
     <td></td>
     <td *ngIf="isGenerated"><select [(ngModel)]="newFieldLevel">
-        <option value="">choisire le niveau</option>
+        <option value="">choisir le niveau</option>
         <option *ngFor="let table of formulaire.tables" value="{{table.Table_level}}">{{table.Table_level}} </option>
         <option value="new">new...</option>
     </select></td>
@@ -85,7 +80,7 @@
     <td></td>
     <td></td>
     <td><a class="myButton" (click)="openfieldForm()">+</a></td>
-
+<td></td>
   </tr>
     </tbody>
   </table>
@@ -93,12 +88,26 @@
 </div>
 
 <div *ngIf="isGenerated">
-    <select (change)="fieldsToShow()" [(ngModel)]="shownServNum">
-        <option *ngFor="let serv of servsEtap" value="{{serv.Serv_order}}">serv n°{{serv.Serv_order}}</option>
-        <option value="{{currentsrvOrd}}">new...</option>
-    </select>
+    <div class="servNav">
+        <ul class="servListing">
+            <li> <a><span (click)="prevServ()" *ngIf="isGenerated" class="material-symbols-outlined flechBtn">
+                arrow_back
+                </span></a></li>
+            <li>    <select (change)="fieldsToShow()" [(ngModel)]="shownServNum">
+                <option *ngFor="let serv of servsEtap" value="{{serv.Serv_order}}">serv n°{{serv.Serv_order}}</option>
+                <option value="{{currentsrvOrd}}">new...</option>
+            </select></li>
+            <li><a><span *ngIf="isGenerated" (click)="nextServ()" class="material-symbols-outlined flechBtnup">
+                arrow_forward
+                </span></a> </li>
+        </ul>
+    </div>
+
+
 <p>etape n°{{shownServNum}}</p>
-<select [(ngModel)]="currentsrvName" >
+
+
+<select [(ngModel)]="currentsrvName" (change)="changeServName()"  style="margin-bottom:20px ;">
     <option *ngIf="currentsrvName==''" value="">choisir un service</option>
 <option *ngFor="let serv of formulaire.services" value="{{serv.Serv_Name}}">{{serv.Serv_Name}}</option>
 </select>
@@ -114,7 +123,7 @@ class="example-list"
 (cdkDropListDropped)="drop($event)"
 cdkDropListOrientation="horizontal"
 id="{{index}}">
-<td *ngFor="let space of table.spaces"></td>
+<td *ngFor="let space of spaces(index)"></td>
 <td>ID</td>
 <td cdkDrag class="grab example-box" *ngFor="let field of table.fields">{{field.Name}}</td>
 
@@ -129,7 +138,6 @@ id="{{index}}">
     </table>
     <div class="currentserv">
         <a *ngIf="!isGenerated" class="myButton" (click)="generatFields()">Generat</a>
-        <a *ngIf="isGenerated" class="myButton" (click)="nextServ()">Next</a>
         <a *ngIf="isGenerated" class="myButton" (click)="End()">End</a>
         </div>
 
