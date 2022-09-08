@@ -13,7 +13,7 @@
           <td>etape n°{{serv.Serv_order}}</td>
         <td>{{serv.Serv_Name}}</td>
         <td><select *ngIf="isAdmin" (change)="updateServ(index)" [(ngModel)]="serv.Serv_User">
-            <option value="null">choisire l'utilisateur</option>
+            <option value="null">choose user</option>
             <option *ngFor="let user of serv.users" value="{{user.U_Id}}"> {{user.U_FirstName}} {{user.U_LastName}}</option>
         </select>
       <p *ngIf="!isAdmin">{{serv.userName}}</p></td>
@@ -31,4 +31,7 @@
 
 
 
+</div>
+<div class="bg" *ngIf="stopAll">
+  <div class="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
 </div>

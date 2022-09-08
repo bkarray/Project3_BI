@@ -50,7 +50,7 @@ export class FormulaireCreatComponent implements OnInit {
   Types:any=[]
 
   ngOnInit(): void { 
-  this.Types=[{Name:'String',value:'character varying(255)'},{Name:'date',value:'date'},{Name:'list',value:'list'}]
+  this.Types=[{Name:'String',value:'character varying(255)'},{Name:'date',value:'date'},{Name:'list',value:'list'},{Name:"integer",value:"integer"},{Name:"boolean",value:"boolean"},{Name:"float",value:"real"}]
 this.getNewFormulaire()
   }
 
@@ -88,7 +88,15 @@ if(!this.isGenerated){
   }
   spaces(index:any){
 if(index==0) return []
-else return this.formulaire.tables[index-1].fields
+else {let spaces:any=[]
+  for (let i = 0;  i< index; i++) {
+    this.formulaire.tables[i].fields.forEach((field:any)=>{
+      spaces.push(0);
+    })
+    
+  }
+  return spaces
+}
   }
   editDesc(index:any){
 this.fields[index].editDesc=!this.fields[index].editDesc
@@ -522,7 +530,12 @@ this.fields[index].editName=!this.fields[index].editName
       let indexP=this.servsEtap.findIndex((e:any)=> e.Serv_order==this.fields[1].Serv_Id)
       if(indexP!=-1) this.servsEtap[indexP].fields=this.fields
       this.fields=this.servsEtap[index].fields
-      this.fields.sort((a:any, b:any) => a.Name.localeCompare(b.Name))
+      this.fields.sort((a:any, b:any) => {
+        if(a.Name=='ID') return -1;
+        else if(b.Name=='ID') return 1
+
+        else return a.Name.localeCompare(b.Name)})
+
       console.log(this.fields)
       this.currentsrvName=this.servsEtap[index].Serv_Name
       this.formulaire.tables.forEach((table:any)=>{
@@ -634,7 +647,8 @@ else{
     newName:this.currentsrvName
    }
    this.FormulaireService.updateServName(updateServ).subscribe((res:any)=>{
-    console.log(res)
+   let index=this.servsEtap.findIndex((e:any)=>e.Serv_order==this.shownServNum)
+   this.servsEtap[index].Serv_Name=this.currentsrvName
    })
   }
  }
@@ -669,7 +683,11 @@ else{
             }
             this.FormulaireService.workingServices(param.id).subscribe((servs:any)=>{
               servs.forEach((serv:any)=>{
-                serv['fields']=[]
+                serv['fields']=[{
+                  Name:'ID',
+                  Type:'auto_number',
+                  Status:'consulté'
+                }]
                 this.FormulaireService.getFields(serv.Serv_Id).subscribe((fields:any)=>{
                   fields.forEach((field:any)=>{
                     field['editDesc']=false
@@ -680,6 +698,11 @@ else{
                     serv.fields.push(field)
                   })
                 })
+                serv.fields.sort((a:any, b:any) => {
+                  if(a.Name=='ID') return -1;
+                  else if(b.Name=='ID') return 1
+          
+                  else return a.Name.localeCompare(b.Name)})
               })
               this.servsEtap=servs
               this.currentsrvOrd=servs.length+1

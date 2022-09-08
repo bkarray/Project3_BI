@@ -25,7 +25,6 @@ export class FormulaireListComponent implements OnInit {
   serviceFormIsOpen:boolean=false
   newServName:any=''
   newReponseName:any=''
-  reponseFormIsOpen:boolean=false
   servsExamples:any=[]
   todelete:boolean=false
   deleteFormName:any=''
@@ -242,8 +241,9 @@ this.FormulaireService.putReponseInArchive(id).subscribe((res:any)=>{
     this.formulaires[index].isOpen=!this.formulaires[index].isOpen;
   }
 
-  openReponseForm(){
-  this.reponseFormIsOpen=!this.reponseFormIsOpen
+  openReponseForm(index:any){
+    this.formulaires[index].addReponseForm=!this.formulaires[index].addReponseForm
+
   }
   addNewFormulaire(){
     let newFormulaireName={
@@ -286,7 +286,8 @@ if(this.services.length!=0){
     
    }
    this.FormulaireService.creatNewReponce(newReponse).subscribe((res:any)=>{
-    this.reponseFormIsOpen=!this.reponseFormIsOpen
+    let index=this.formulaires.findIndex((e:any)=> e.Formulaire_Id==Formulaire_Id)
+    this.formulaires[index].addReponseForm=!this.formulaires[index].addReponseForm
     this.router.navigate(['/formulaire/reponse/',Formulaire_Id,res.Reponse_Id,0])
 
    })
@@ -330,6 +331,7 @@ this.serviceFormIsOpen=!this.serviceFormIsOpen
 
           formulaire['reponses']=[]
           formulaire['isOpen']=false
+          formulaire['addReponseForm']=false
 
             console.log(res)
             reponses.forEach((reponse:any)=>{

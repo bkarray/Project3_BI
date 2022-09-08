@@ -9,6 +9,7 @@
             <th></th>
              <th>description</th>
              <th *ngIf="isGenerated">fonction</th>
+             <th *ngIf="!isGenerated"></th>
              <th></th>
         </tr>
     </thead>
@@ -20,7 +21,7 @@
         <i class="material-icons editIcon" *ngIf="field.editName&&(field.Name!='ID')" (click)="closeNameForm(index)">edit</i></td>
     <td> <p *ngIf="!field.editType">{{field.Type}}<i class="material-icons editIcon" *ngIf="(field.Name!='ID')&&!isGenerated" (click)="openTypeForm(index)" >edit</i></p>
         <select *ngIf="field.editType" [(ngModel)]="field.Type" (change)="openTypeForm(index)" >
-            <option *ngIf="field.Type==''" value="">choisir un type</option>
+            <option *ngIf="field.Type==''" value="">choose Type</option>
             <option value="list">list</option>
             <option value="character varying(255)">string</option>
             <option value="date">date</option>
@@ -37,13 +38,14 @@
     <td *ngIf="isGenerated">
         <p *ngIf="!field.editSataus&&(field.Status!=null)&&(field.Name!='ID')">{{field.Status}} <i class="material-icons editIcon" (click)="editSatus(index)">edit</i></p>
         <select *ngIf="field.editSataus||(field.Status==null)" [(ngModel)]="field.Status" (change)="correctionField(index)">
-            <option *ngIf="field.Status==null" value="null">choisir la fonctinalite</option>
+            <option *ngIf="field.Status==null" value="null">choose function</option>
             <option value="consulté">consulté</option>
             <option value="modifié">modifié</option>
             <option value="invisible">invisible</option>
         </select>
         <i *ngIf="field.editSataus||(field.Status==null)" class="material-icons editIcon" (click)="editSatus(index)">edit</i>
      </td>
+     <td *ngIf="!isGenerated"></td>
      <td style="text-align:left ;"><span *ngIf="(field.Name!='ID')" class="material-symbols-outlined" (click)="deleteField(index)">
         cancel
         </span></td>
@@ -52,7 +54,7 @@
     <td><input type="text" [(ngModel)]="newFieldName" placeholder="field Name..."></td>
     <td>
         <select [(ngModel)]="newFieldType">
-         <option *ngIf="newFieldType==''" value="">choisir un type</option>
+         <option *ngIf="newFieldType==''" value="">choose type</option>
          <option *ngFor="let type of Types" value="{{type.value}}">{{type.Name}}</option>
         </select>
     </td>
@@ -60,10 +62,11 @@
     <td> <input type="text" [(ngModel)]="newFieldStatus"></td>
     <td></td>
     <td *ngIf="isGenerated"><select [(ngModel)]="newFieldLevel">
-        <option value="">choisir le niveau</option>
+        <option value="">choose level</option>
         <option *ngFor="let table of formulaire.tables" value="{{table.Table_level}}">{{table.Table_level}} </option>
         <option value="new">new...</option>
     </select></td>
+    <td *ngIf="!isGenerated"></td>
 </tr>
 <tr *ngIf="fieldFormIsOpen">
     <td></td>
@@ -72,6 +75,7 @@
     <td><a class="myButton" (click)="openfieldForm()">cancel</a></td>
     <td><a class="myButton" (click)="addnewfield()">confirmer</a></td>
     <td *ngIf="isGenerated"></td>
+    <td *ngIf="!isGenerated"></td>
 
 </tr>
 <tr *ngIf="!fieldFormIsOpen">
@@ -108,7 +112,7 @@
 
 
 <select [(ngModel)]="currentsrvName" (change)="changeServName()"  style="margin-bottom:20px ;">
-    <option *ngIf="currentsrvName==''" value="">choisir un service</option>
+    <option *ngIf="currentsrvName==''" value="">choose Service</option>
 <option *ngFor="let serv of formulaire.services" value="{{serv.Serv_Name}}">{{serv.Serv_Name}}</option>
 </select>
 </div>

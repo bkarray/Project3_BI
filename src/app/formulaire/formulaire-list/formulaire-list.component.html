@@ -50,9 +50,9 @@
             <tr *ngIf="isAdmin">
                 <td></td>
                 <td></td>
-                <td><input *ngIf="reponseFormIsOpen"  type="text" placeholder="Reponse Name..." [(ngModel)]="newReponseName"></td>
-                <td><a *ngIf="reponseFormIsOpen"  class="myButton" (click)="addNewReponse(formulaire.Formulaire_Id)">confirmer</a></td>
-                <td><a *ngIf="!reponseFormIsOpen" class="myButton" (click)="openReponseForm()">+</a></td>
+                <td><input *ngIf="formulaire.addReponseForm"  type="text" placeholder="Reponse Name..." [(ngModel)]="newReponseName"></td>
+                <td><a *ngIf="formulaire.addReponseForm"  class="myButton" (click)="addNewReponse(formulaire.Formulaire_Id)">confirmer</a></td>
+                <td><a *ngIf="!formulaire.addReponseForm" class="myButton" (click)="openReponseForm(index)">+</a></td>
                 <td></td>
     
             </tr>
@@ -200,7 +200,7 @@
 
       <div class="select-dropdown"  *ngIf="userForm">
         <select [(ngModel)]="newUserId">
-          <option value="0">choisir un utilisateur</option>
+          <option value="0">choose user</option>
           <option *ngFor="let user of users" value="{{user.U_Id}}">{{user.U_FirstName}}  {{user.U_LastName}}</option>
         </select>
       </div>
@@ -279,7 +279,7 @@
 
       <div class="select-dropdown"  *ngIf="userFormShow">
         <select [(ngModel)]="newUserId">
-          <option value="0">choisir un utilisateur</option>
+          <option value="0">choose user</option>
           <option *ngFor="let user of usersToAddShow" value="{{user.U_Id}}">{{user.U_FirstName}}  {{user.U_LastName}}</option>
         </select>
       </div>

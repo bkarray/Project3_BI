@@ -25,15 +25,19 @@ export class FormulaireReponseComponent implements OnInit {
   reponseStatus:any=''
   isAdmin:boolean=false
   isCreated:boolean=false
+  stopAll:boolean=false
   ngOnInit(): void {
+    this.stopAll=false
     this.getReponse()
   }
   startReponse(){
     if (!this.isCreated) this.creatServs(1)
+    this.stopAll=true
     if(this.isCreated)this.router.navigate(['/formulaire/table/',this.formulaire.Formulaire_Id,this.reponse.Reponse_Id])
   }
   creatReponse(){
     if (!this.isCreated) this.creatServs(0)
+    this.stopAll=true
     this.router.navigate(['/formulaire/list/'])
   }
   updateServ(index:any){
