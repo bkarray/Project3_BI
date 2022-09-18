@@ -47,7 +47,6 @@ export class FormulaireListComponent implements OnInit {
 
   ngOnInit(): void {
     this.getForms()
-    console.log(this.servsExamples)
   }
   @Output() emitter: EventEmitter<string> = new EventEmitter<string>();
 
@@ -204,12 +203,12 @@ if(this.newUserId!=0){    let index=this.users.findIndex((e:any)=> e.U_Id==Numbe
     this.usersNewServ.push(this.users[index])
     this.users.splice(index,1)
     this.newUserId=0
-    this.addUserForm()
+    this.userForm=!this.userForm
     console.log(this.usersNewServ)}
   }
 
   deleteFormulaire(){
-this.FormulaireService.deleteFoemulaire(this.deleteFormID).subscribe((res:any)=>{
+this.FormulaireService.deleteFormulaire(this.deleteFormID).subscribe((res:any)=>{
   let index=this.formulaires.findIndex((e:any)=> e.Formulaire_Id==this.deleteFormID)
   this.formulaires.splice(index,1)
   console.log(res)
@@ -234,7 +233,8 @@ this.FormulaireService.putReponseInArchive(id).subscribe((res:any)=>{
     })
 
     this.services=[]
-    this.openForm()
+    this.creationFormulaire=!this.creationFormulaire
+    this.creatFormIsOpen=!this.creatFormIsOpen
   }
 
   open(index:any){

@@ -47,10 +47,9 @@ export class FormulaireCreatComponent implements OnInit {
   isGenerated:boolean=false
   lastTableIndex:number=0;
   shownServNum:any=1
-  Types:any=[]
+  Types:any=[{Name:'String',value:'character varying(255)'},{Name:'date',value:'date'},{Name:'list',value:'list'},{Name:"integer",value:"integer"},{Name:"boolean",value:"boolean"},{Name:"float",value:"real"}]
 
   ngOnInit(): void { 
-  this.Types=[{Name:'String',value:'character varying(255)'},{Name:'date',value:'date'},{Name:'list',value:'list'},{Name:"integer",value:"integer"},{Name:"boolean",value:"boolean"},{Name:"float",value:"real"}]
 this.getNewFormulaire()
   }
 
@@ -87,16 +86,12 @@ if(!this.isGenerated){
     console.log(this.fields[index])
   }
   spaces(index:any){
-if(index==0) return []
-else {let spaces:any=[]
+let spaces:any=[]
   for (let i = 0;  i< index; i++) {
     this.formulaire.tables[i].fields.forEach((field:any)=>{
       spaces.push(0);
-    })
-    
-  }
-  return spaces
-}
+    })}
+return spaces
   }
   editDesc(index:any){
 this.fields[index].editDesc=!this.fields[index].editDesc
@@ -133,6 +128,89 @@ this.fields[index].editName=!this.fields[index].editName
     this.newFieldStatus='no description'
     this.fieldFormIsOpen=!this.fieldFormIsOpen
   }
+
+  AjoutFieldDansLeSystem(indexT:any){
+    let ord=0
+    if(this.formulaire.tables[indexT].fields.length!=0) ord=this.formulaire.tables[indexT].fields.length-1
+    let newField={
+      Table_Id:this.formulaire.tables[indexT].Table_Id,
+      Name:this.newFieldName.replaceAll(' ','_').replaceAll(';','_').toLowerCase(),
+      Type:this.newFieldType,
+      choises:this.newfieldChoises,
+      Status:'consulté',
+      Serv_Id:null,
+      Serv_description:this.newFieldStatus ,
+      Field_order:ord
+
+    }
+    if((this.fields.findIndex((e:any)=> e.Name==newField.Name)==-1)&&((this.newFieldName!='')&&(this.newFieldType!=''))||((this.newFieldType=='list')&&(this.newfieldChoises==''))){ 
+      console.log() 
+   
+      
+      this.FormulaireService.addNewfields(newField).subscribe((res:any)=>{
+        this.formulaire.tables[indexT].fields.push(newField)
+        this.servsEtap.forEach((serv:any)=>{
+          let newFieldServ={
+            Table_Id:this.formulaire.tables[indexT].Table_Id,
+            Name:this.newFieldName.replaceAll(' ','_').replaceAll(';','_').toLowerCase(),
+            Type:this.newFieldType,
+            choises:this.newfieldChoises,
+            Status:'consulté',
+            Serv_Id:serv.Serv_Id,
+            Serv_description:this.newFieldStatus ,
+            Field_order:ord
+      
+          }
+          this.FormulaireService.postField(newFieldServ).subscribe((res:any)=>{
+            let newField2= {
+              Table_Id:res.Table_Id,
+              Name:res.Name,
+              Type:res.Type,
+              choises:res.choises,
+              Status:res.Status,
+              Serv_Id:res.Serv_Id,
+              Serv_description:res.Serv_description ,
+              editDesc:false,
+              editSataus:false,
+              editName:false,
+              editType:false,
+              oldName:'',
+              Field_order:ord
+        
+            }
+            serv.fields.push(newField2)
+          })
+        })
+
+        if(Number(this.shownServNum)==Number(this.currentsrvOrd)){let newField2= {
+          Table_Id:this.formulaire.tables[indexT].Table_Id,
+          Name:this.newFieldName.replaceAll(' ','_').replaceAll(';','_').toLowerCase(),
+          Type:this.newFieldType,
+          choises:this.newfieldChoises,
+          Status:'consulté',
+          Serv_Id:null,
+          Serv_description:this.newFieldStatus ,
+          editDesc:false,
+          editSataus:false,
+          editName:false,
+          editType:false,
+          oldName:'',
+          Field_order:ord
+    
+        }
+        this.fields.push(newField2)}
+        this.openfieldForm()
+        this.newFieldName=''
+        this.newFieldType='character varying(255)'
+        this.newfieldChoises=null
+        this.newFieldStatus='no description'
+        console.log(this.formulaire)
+    
+
+      })
+              }
+  }
+
   addnewfield(){
    if(!this.isGenerated) { 
     let ord=0
@@ -184,86 +262,8 @@ this.fields[index].editName=!this.fields[index].editName
     if(this.newFieldLevel!=''){
       if(this.newFieldLevel!='new'){
         let indexT=this.formulaire.tables.findIndex((e:any)=>e.Table_level==Number(this.newFieldLevel))
-        let ord=0
-        if(this.formulaire.tables[indexT].fields.length!=0) ord=this.formulaire.tables[indexT].fields.length-1
-        let newField={
-          Table_Id:this.formulaire.tables[indexT].Table_Id,
-          Name:this.newFieldName.replaceAll(' ','_').replaceAll(';','_').toLowerCase(),
-          Type:this.newFieldType,
-          choises:this.newfieldChoises,
-          Status:'consulté',
-          Serv_Id:null,
-          Serv_description:this.newFieldStatus ,
-          Field_order:ord
-    
-        }
-        if((this.fields.findIndex((e:any)=> e.Name==newField.Name)==-1)&&((this.newFieldName!='')&&(this.newFieldType!=''))||((this.newFieldType=='list')&&(this.newfieldChoises==''))){ 
-          console.log() 
-       
-          
-          this.FormulaireService.addNewfields(newField).subscribe((res:any)=>{
-            this.formulaire.tables[indexT].fields.push(newField)
-            this.servsEtap.forEach((serv:any)=>{
-              let newFieldServ={
-                Table_Id:this.formulaire.tables[indexT].Table_Id,
-                Name:this.newFieldName.replaceAll(' ','_').replaceAll(';','_').toLowerCase(),
-                Type:this.newFieldType,
-                choises:this.newfieldChoises,
-                Status:'consulté',
-                Serv_Id:serv.Serv_Id,
-                Serv_description:this.newFieldStatus ,
-                Field_order:ord
-          
-              }
-              this.FormulaireService.postField(newFieldServ).subscribe((res:any)=>{
-                let newField2= {
-                  Table_Id:res.Table_Id,
-                  Name:res.Name,
-                  Type:res.Type,
-                  choises:res.choises,
-                  Status:res.Status,
-                  Serv_Id:res.Serv_Id,
-                  Serv_description:res.Serv_description ,
-                  editDesc:false,
-                  editSataus:false,
-                  editName:false,
-                  editType:false,
-                  oldName:'',
-                  Field_order:ord
-            
-                }
-                serv.fields.push(newField2)
-              })
-            })
-
-            if(Number(this.shownServNum)==Number(this.currentsrvOrd)){let newField2= {
-              Table_Id:this.formulaire.tables[indexT].Table_Id,
-              Name:this.newFieldName.replaceAll(' ','_').replaceAll(';','_').toLowerCase(),
-              Type:this.newFieldType,
-              choises:this.newfieldChoises,
-              Status:'consulté',
-              Serv_Id:null,
-              Serv_description:this.newFieldStatus ,
-              editDesc:false,
-              editSataus:false,
-              editName:false,
-              editType:false,
-              oldName:'',
-              Field_order:ord
         
-            }
-            this.fields.push(newField2)}
-            this.openfieldForm()
-            this.newFieldName=''
-            this.newFieldType='character varying(255)'
-            this.newfieldChoises=null
-            this.newFieldStatus='no description'
-            console.log(this.formulaire)
-        
-  
-          })
-                  }
-
+      this.AjoutFieldDansLeSystem(indexT)
       }
       else{
         console.log(this.lastTableIndex)
@@ -290,87 +290,10 @@ this.fields[index].editName=!this.fields[index].editName
               Table_Name_sup:this.formulaire.tables[this.lastTableIndex].Table_Name
             }
             this.FormulaireService.addForeignKey(val).subscribe((res:any)=>{})}
+            this.formulaire.tables.push(table)
 
-
-              let newField={
-                Table_Id:table.Table_Id,
-                Name:this.newFieldName.replaceAll(' ','_').replaceAll(';','_').toLowerCase(),
-                Type:this.newFieldType,
-                choises:this.newfieldChoises,
-                Status:'consulté',
-                Serv_Id:null,
-                Serv_description:this.newFieldStatus ,
-                Field_order:0
-          
-              }
-       
-                console.log() 
-             
-                
-                this.FormulaireService.addNewfields(newField).subscribe((res:any)=>{
-                     table.fields.push(newField)
-                  this.servsEtap.forEach((serv:any)=>{
-                    let newFieldServ={
-                      Table_Id:table.Table_Id,
-                      Name:this.newFieldName.replaceAll(' ','_').replaceAll(';','_').toLowerCase(),
-                      Type:this.newFieldType,
-                      choises:this.newfieldChoises,
-                      Status:'consulté',
-                      Serv_Id:serv.Serv_Id,
-                      Serv_description:this.newFieldStatus ,
-                      Field_order:0
-                
-                    }
-                    this.FormulaireService.postField(newFieldServ).subscribe((res:any)=>{
-                      let newField2= {
-                        Table_Id:res.Table_Id,
-                        Name:res.Name,
-                        Type:res.Type,
-                        choises:res.choises,
-                        Status:res.Status,
-                        Serv_Id:res.Serv_Id,
-                        Serv_description:res.Serv_description ,
-                        editDesc:false,
-                        editSataus:false,
-                        editName:false,
-                        editType:false,
-                        oldName:'',
-                        Field_order:0
-                  
-                      }
-                      serv.fields.push(newField2)
-                    })
-                  })
-      
-                  if(Number(this.shownServNum)==Number(this.currentsrvOrd)){let newField2= {
-                    Table_Id:table.Table_Id,
-                    Name:this.newFieldName.replaceAll(' ','_').replaceAll(';','_').toLowerCase(),
-                    Type:this.newFieldType,
-                    choises:this.newfieldChoises,
-                    Status:'consulté',
-                    Serv_Id:null,
-                    Serv_description:this.newFieldStatus ,
-                    editDesc:false,
-                    editSataus:false,
-                    editName:false,
-                    editType:false,
-                    oldName:'',
-                    Field_order:0
-              
-                  }
-                  this.fields.push(newField2)}
-                  this.openfieldForm()
-                  this.newFieldName=''
-                  this.newFieldType='character varying(255)'
-                  this.newfieldChoises=null
-                  this.newFieldStatus='no description'
-                  console.log(this.formulaire)
-              
-        
-                })
-
-
-              this.formulaire.tables.push(table)
+              this.AjoutFieldDansLeSystem(this.formulaire.tables.length-1)
+            
               this.lastTableIndex++
               
 
@@ -389,7 +312,7 @@ this.fields[index].editName=!this.fields[index].editName
   }
 
   }
-  generatFields(){
+  VerifierTableauxEtsupprimer():any{
     let test=false
     this.formulaire.tables.forEach((tab:any,i:any)=>{
 
@@ -420,6 +343,10 @@ this.fields[index].editName=!this.fields[index].editName
        }
 
     })
+    return test
+  }
+  generatFields(){
+   let test =this.VerifierTableauxEtsupprimer()
    
     if(!test){this.formulaire.tables.forEach((tab:any)=>{
 
@@ -462,8 +389,13 @@ this.fields[index].editName=!this.fields[index].editName
           event.currentIndex
         );
       }
+      this.organisationFieldsOrder()
       
  
+    console.log(this.formulaire.tables,this.fields)
+    }
+    organisationFieldsOrder(){
+      
       for(let i=0;i<this.formulaire.tables.length;i++){
           
       
@@ -488,7 +420,6 @@ this.fields[index].editName=!this.fields[index].editName
  
 
     }
-    console.log(this.formulaire.tables,this.fields)
     }
 
     addNewTable(){
@@ -520,7 +451,7 @@ this.fields[index].editName=!this.fields[index].editName
     this.fields.forEach((field:any)=>{
       if(field.Status!='consulté') test=true
     })
-   if(test) this.nextServ()
+   if(test&&(Number(this.shownServNum)==Number(this.currentsrvOrd))) this.nextServ()
     this.router.navigate(['/formulaire/list/'])
   }
   fieldsToShow(){
@@ -658,8 +589,8 @@ else{
     this.route.params.subscribe((param:any)=>{
       this.FormulaireService.getFormulaireById(param.id).subscribe((form:any)=>{
         this.FormulaireService.getTables(param.id).subscribe((tables:any)=>{
-  this.lastTableIndex=tables.length-1
-          this.FormulaireService.getServicesByformulaire(param.id).subscribe((servs:any)=>{
+             this.lastTableIndex=tables.length-1
+             this.FormulaireService.getServicesByformulaire(param.id).subscribe((servs:any)=>{
             if(param.generated==1){
               this.isGenerated=true
             }

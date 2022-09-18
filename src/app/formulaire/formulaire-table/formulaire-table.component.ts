@@ -118,23 +118,7 @@ export class FormulaireTableComponent implements OnInit {
       Value:val,
       id:Id
     }
-    
-    this.FormulaireService.upDateFieldVal(newChange).subscribe((res:any)=>{
-      
-    })
-  }
-  changeInFieldDate(tableId:any,Name:any,val:any,Id:any){
-    //console.log(val)
-    if (val==null) val=0
-    let date=new Date(val)
-    console.log(date.toString())
-    let newChange={
-      Table_Id:tableId,
-      Name:Name,
-      Value:val.toString(),
-      id:Id
-    }
-    
+    if(Name=='date') newChange.Value=newChange.Value.toString()
     this.FormulaireService.upDateFieldVal(newChange).subscribe((res:any)=>{
       
     })
@@ -220,12 +204,9 @@ this.getInfo()
 
 
     this.FormulaireService.addNewRow(val).subscribe((res:any)=>{
-
-this.getInfo()
+    this.getInfo()
     this.newRow={}
     this.startNew=false
-
-    console.log(val)
     })
   }
 
@@ -287,7 +268,8 @@ this.getInfo()
 
 
   spaceTable(level:number):any{
-   if(level<this.reponse.tables.length) {  if(level==0) return 0
+   if(level<this.reponse.tables.length) {  
+    if(level==0) return 0
     else {
       let tab=this.reponse.tables.find((e:any)=> e.Table_level==level-1)
       return tab.fields.length
@@ -451,7 +433,5 @@ this.FormulaireService.getReponseById(res.idR).subscribe((reponse:any)=>{
  }
 
 }
-function privrntDefault() {
-  throw new Error('Function not implemented.');
-}
+
 

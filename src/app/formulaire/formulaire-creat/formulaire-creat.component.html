@@ -15,6 +15,8 @@
     </thead>
 
     <tbody>
+
+        <!--ligne_crées-->
    <tr  *ngFor="let field of fields;let index=index"> 
     <td> <p *ngIf="!field.editName">{{field.Name}}<i class="material-icons editIcon" *ngIf="(field.Name!='ID')&&!isGenerated" (click)="openNameForm(index)" >edit</i></p>
         <input style="width: 100px ;" type="text" *ngIf="field.editName" [(ngModel)]="field.Name" placeholder="field Name...">
@@ -22,17 +24,13 @@
     <td> <p *ngIf="!field.editType">{{field.Type}}<i class="material-icons editIcon" *ngIf="(field.Name!='ID')&&!isGenerated" (click)="openTypeForm(index)" >edit</i></p>
         <select *ngIf="field.editType" [(ngModel)]="field.Type" (change)="openTypeForm(index)" >
             <option *ngIf="field.Type==''" value="">choose Type</option>
-            <option value="list">list</option>
-            <option value="character varying(255)">string</option>
-            <option value="date">date</option>
-            <option value="boolean">boolean</option>
-            <option value="integer">number</option>
-            <option value="real">float</option>
+            <option *ngFor="let type of Types" value="{{type.value}}">{{type.Name}}</option>
         </select>
         <i class="material-icons editIcon" *ngIf="(field.Name!='ID')&&!isGenerated&&field.editType" (click)="openTypeForm(index)" >edit</i>
     </td>
     <td><p *ngIf="field.choises!=null">{{field.choises}}</p></td>
-    <td *ngIf="field.Name!='ID'"><p *ngIf="!field.editDesc">{{field.Serv_description}} <i *ngIf="!isGenerated"  class="material-icons editIcon" (click)="editDesc(index)" >edit</i></p>
+    <td *ngIf="field.Name!='ID'"><p *ngIf="!field.editDesc">{{field.Serv_description}} 
+        <i *ngIf="!isGenerated"  class="material-icons editIcon" (click)="editDesc(index)" >edit</i></p>
         <input *ngIf="field.editDesc" type="text" [(ngModel)]="field.Serv_description">
         <i class="material-icons editIcon" *ngIf="field.editDesc" (click)="editDesc(index)" >edit</i></td>
     <td *ngIf="isGenerated">
@@ -48,8 +46,8 @@
      <td *ngIf="!isGenerated"></td>
      <td style="text-align:left ;"><span *ngIf="(field.Name!='ID')" class="material-symbols-outlined" (click)="deleteField(index)">
         cancel
-        </span></td>
-</tr>
+        </span></td></tr>
+<!--espace_ajout_field-->
 <tr *ngIf="fieldFormIsOpen">
     <td><input type="text" [(ngModel)]="newFieldName" placeholder="field Name..."></td>
     <td>
@@ -68,6 +66,7 @@
     </select></td>
     <td *ngIf="!isGenerated"></td>
 </tr>
+<!--validation_ajout_field-->
 <tr *ngIf="fieldFormIsOpen">
     <td></td>
     <td></td>
@@ -86,11 +85,13 @@
     <td><a class="myButton" (click)="openfieldForm()">+</a></td>
 <td></td>
   </tr>
+
     </tbody>
   </table>
 
 </div>
 
+<!--organisation_servs-->
 <div *ngIf="isGenerated">
     <div class="servNav">
         <ul class="servListing">
@@ -118,6 +119,7 @@
 </div>
 <div>
 
+<!--organisation_niveau-->
 <table cdkDropListGroup>
 <tbody *ngFor="let table of formulaire.tables;let index=index;let last=last"  >
 

@@ -88,7 +88,7 @@ export class FormulaireService {
   getServsExamples(){
     return this.http.get(this.APIUrl+'/servsExamples/')
   }
-  deleteFoemulaire(id:any){
+  deleteFormulaire(id:any){
     return this.http.delete(this.APIUrl+'/formulaire/'+id)
   }
   updateFieldPlace(id:any,val:any){

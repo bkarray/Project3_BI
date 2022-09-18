@@ -96,7 +96,7 @@ export class FormulaireReponseComponent implements OnInit {
             console.log(this.reponse)
             this.FormulaireService.updateReponse(this.reponse).subscribe((res1:any)=>{
               this.FormulaireService.sendMail(this.reponse.Reponse_Id).subscribe((res2:any)=>{
-                console.log(res2)
+                console.log("mail=",res2)
                 if(this.reponse.reponse_level!=null){
                   //let serv=this.services.find((e:any)=>e.Serv_Id==firstServ)
                   let newNotif={
@@ -105,8 +105,7 @@ export class FormulaireReponseComponent implements OnInit {
                 }
                 this.authService.addNotification(newNotif).subscribe((res3:any)=>{console.log(res3)})
                 }
-                if(testing==1)this.router.navigate(['/formulaire/table/',this.formulaire.Formulaire_Id,this.reponse.Reponse_Id])
-                else this.router.navigate(['/formulaire/list/'])
+
               })
 
               console.log(res)
@@ -114,12 +113,28 @@ export class FormulaireReponseComponent implements OnInit {
           }
           i++
         })
-
+        if(testing==1)this.router.navigate(['/formulaire/table/',this.formulaire.Formulaire_Id,this.reponse.Reponse_Id])
+        else this.router.navigate(['/formulaire/list/'])
       })
       
 
 
     }
+  }
+  organizeServs(){
+    this.services.sort((a:any, b:any) => a.Serv_order - b.Serv_order)
+    this.services.forEach((serv:any)=>{
+      this.FormulaireService.getUsersofServ(serv.Serv_Id).subscribe((users:any)=>{
+        let user =users.find((e:any)=> e.U_Id==serv.Serv_Id)
+        if(user) serv['userName']=user.U_FirstName+' '+user.U_LastName
+        else  serv['userName']='indeterminer'
+        serv['users']=users
+
+      })
+      console.log(this.service)
+
+    })
+    
   }
   getReponse(){
     this.authService.loadUser();
@@ -134,19 +149,8 @@ export class FormulaireReponseComponent implements OnInit {
 
        if(res.isCreated==0) this.FormulaireService.workingServices(res.idF).subscribe((servs:any)=>{
           this.services=servs
-          this.services.sort((a:any, b:any) => a.Serv_order - b.Serv_order)
             
-          this.services.forEach((serv:any)=>{
-            this.FormulaireService.getUsersofServ(serv.Serv_Id).subscribe((users:any)=>{
-              let user =users.find((e:any)=> e.U_Id==serv.Serv_Id)
-              if(user) serv['userName']=user.U_FirstName+' '+user.U_LastName
-              else  serv['userName']='indeterminer'
-              serv['users']=users
-
-            })
-            console.log(this.service)
-
-          })
+          this.organizeServs()
         
         })
         else if(res.isCreated==1){
@@ -157,19 +161,9 @@ export class FormulaireReponseComponent implements OnInit {
           this.FormulaireService.getServicesByReponse(res.idF,reponseToFind).subscribe((servs:any)=>{
             
             this.services=servs
-            this.services.sort((a:any, b:any) => a.Serv_order - b.Serv_order)
             
-            this.services.forEach((serv:any)=>{
-              this.FormulaireService.getUsersofServ(serv.Serv_Id).subscribe((users:any)=>{
-                let user =users.find((e:any)=> e.U_Id==serv.Serv_Id)
-                if(user) serv['userName']=user.U_FirstName+' '+user.U_LastName
-                else  serv['userName']='indeterminer'
-                serv['users']=users
-
-              })
-              console.log(this.service)
-
-            })
+            this.organizeServs()
+ 
 
             
           })

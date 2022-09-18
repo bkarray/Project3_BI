@@ -1,11 +1,13 @@
 <div>
 
+  <!--enTete_reponse-->
 <div class="infoRponse">
     <h3>Exemplaire:{{formulaire.Formulaire_Name}}==>{{formulaire.Formulaire_Status}}</h3>
     <br>
   <p>Reponse==> <input type="text" [(ngModel)]="reponse.reponse_status" placeholder="reponceStatus..."></p>  
 </div>
 
+<!--liste_des_etapes-->
  <div class="infoRponse">
     <h3>Fontions:</h3>
     <table>
@@ -32,6 +34,7 @@
 
 
 </div>
+<!--page_de_recharge-->
 <div class="bg" *ngIf="stopAll">
   <div class="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
 </div>
