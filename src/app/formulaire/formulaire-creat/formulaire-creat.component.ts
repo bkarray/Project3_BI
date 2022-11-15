@@ -3,7 +3,6 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 import { SharedService } from 'src/app/services/shared.service';
 import { switchMap } from 'rxjs/operators';
 import { AuthService } from 'src/app/services/auth/authservice';
-import { CartService } from 'src/app/services/cart/cart.service';
 import { FormulaireService } from 'src/app/services/formulaire/formulaire.service';
 //drag and drop
 import {
@@ -22,7 +21,7 @@ import {
 export class FormulaireCreatComponent implements OnInit {
 
   
-  constructor(private CartService: CartService,
+  constructor(
     private authService: AuthService,
     private service:SharedService,
     private router: Router,
@@ -456,9 +455,9 @@ this.fields[index].editName=!this.fields[index].editName
   }
   fieldsToShow(){
     console.log(Number(this.shownServNum),Number(this.currentsrvOrd))
-    if(Number(this.shownServNum)!=Number(this.currentsrvOrd)){
+    if((Number(this.shownServNum)!=Number(this.currentsrvOrd))||(this.formulaire.services.length==this.servsEtap.length)){
       let index=this.servsEtap.findIndex((e:any)=> e.Serv_order==Number(this.shownServNum))
-      let indexP=this.servsEtap.findIndex((e:any)=> e.Serv_order==this.fields[1].Serv_Id)
+      let indexP=this.servsEtap.findIndex((e:any)=> e.Serv_Id==this.fields[1].Serv_Id)
       if(indexP!=-1) this.servsEtap[indexP].fields=this.fields
       this.fields=this.servsEtap[index].fields
       this.fields.sort((a:any, b:any) => {
@@ -467,7 +466,7 @@ this.fields[index].editName=!this.fields[index].editName
 
         else return a.Name.localeCompare(b.Name)})
 
-      console.log(this.fields)
+      console.log(indexP,index,this.servsEtap)
       this.currentsrvName=this.servsEtap[index].Serv_Name
       this.formulaire.tables.forEach((table:any)=>{
       table.fields=this.fields.filter((e:any)=>e.Table_Id==table.Table_Id)
@@ -483,11 +482,16 @@ else{
       field.Serv_Id=null
     }
   })
-  this.fields.sort((a:any, b:any) => a.Name.localeCompare(b.Name))
+  this.fields.sort((a:any, b:any) => {
+    if(a.Name=='ID') return -1;
+    else if(b.Name=='ID') return 1
+
+    else return a.Name.localeCompare(b.Name)})
 }
   }
 
-  correctionField(index:any){
+  correctionField(index:any,result:any){
+    this.fields[index].Status=result
     if(this.fields[index].Serv_Id!=null){
       let indexT=this.formulaire.tables.findIndex((e:any)=> e.Table_Id==this.fields[index].Table_Id)
       let indexF=this.formulaire.tables[indexT].fields.findIndex((e:any)=>e.Name==this.fields[index].Name)
@@ -516,8 +520,8 @@ else{
         serv_reponse:null,
         Serv_Refer:null
       }
-      if(this.currentsrvOrd==this.shownServNum){
-        this.FormulaireService.creatNewService(newServ).subscribe((serv:any)=>{
+      if((this.currentsrvOrd==this.shownServNum)&&(this.servsEtap.length<=this.formulaire.services.length)){
+        if(this.servsEtap.findIndex((e:any)=>e.Serv_Name==this.currentsrvName)==-1){this.FormulaireService.creatNewService(newServ).subscribe((serv:any)=>{
     serv['fields']=[{
     Name:'ID',
     Type:'auto_number',
@@ -526,8 +530,9 @@ else{
         serv.fields.forEach((field:any)=>{
           field.Serv_Id=serv.Serv_Id
         })
+        if(this.servsEtap.length+1<this.formulaire.services.length) {
         this.currentsrvOrd++;
-        this.shownServNum++;
+        this.shownServNum++;}
         this.servsEtap.push(serv)
         this.fields.forEach((field:any)=>{
 
@@ -552,12 +557,14 @@ else{
             res['editType']=false
             res['oldName']=''
             serv.fields.push(res);
-            field.Status='consulté'
+            
+            if(this.servsEtap.length<this.formulaire.services.length) field.Status='consulté'
+            else field.Serv_Id=res.Serv_Id
           })}
         })
-      })}
+      })}}
       else{
-        if(Number(this.shownServNum)+1<=Number(this.currentsrvOrd)){
+        if(Number(this.shownServNum)<Number(this.currentsrvOrd)){
         this.shownServNum=Number(this.shownServNum)+1
         this.fieldsToShow()}
       }
@@ -569,7 +576,10 @@ else{
       this.shownServNum=Number(this.shownServNum)-1
       this.fieldsToShow()}
   }
-
+  ifUsed(servName:any){
+    let test=this.servsEtap.findIndex((e:any)=>e.Serv_Name==servName)!=-1
+    return test;
+  }
  changeServName(){
   if(this.currentsrvOrd!=this.shownServNum){
    let updateServ={
@@ -612,8 +622,8 @@ else{
               })  
               level++
             }
-            this.FormulaireService.workingServices(param.id).subscribe((servs:any)=>{
-              servs.forEach((serv:any)=>{
+            this.FormulaireService.workingServices(param.id).subscribe((servs1:any)=>{
+              servs1.forEach((serv:any)=>{
                 serv['fields']=[{
                   Name:'ID',
                   Type:'auto_number',
@@ -635,21 +645,39 @@ else{
           
                   else return a.Name.localeCompare(b.Name)})
               })
-              this.servsEtap=servs
-              this.currentsrvOrd=servs.length+1
-              this.shownServNum=this.currentsrvOrd
-            })
+              this.servsEtap=servs1
 
-              
+              if (servs1.length+1<=servs.length)this.currentsrvOrd=servs1.length+1
+              else {this.currentsrvOrd=servs.length
+                let index=servs1.findIndex((e:any)=> e.Serv_order==servs.length)
+                this.fields=servs1[index].fields
+                this.fields.sort((a:any, b:any) => {
+                  if(a.Name=='ID') return -1;
+                  else if(b.Name=='ID') return 1
+          
+                  else return a.Name.localeCompare(b.Name)})
+              }
+              this.shownServNum=this.currentsrvOrd
+
+
               form['tables']=tables
               form['services']=servs
 
               this.formulaire=form
-
+              console.log(this.formulaire);
+              
               this.currentsrvName=servs[0].Serv_Name
               this.numservs=this.formulaire.services.length
-              this.fields.sort((a:any, b:any) => a.Name.localeCompare(b.Name))
+              this.fields.sort((a:any, b:any) => {
+                if(a.Name=='ID') return -1;
+                else if(b.Name=='ID') return 1
+        
+                else return a.Name.localeCompare(b.Name)})
               console.log(this.formulaire,this.fields)
+            })
+
+              
+
               
 
 

@@ -1,25 +1,35 @@
 <div class="container">
     <!--header_Table_formulaire-->
+
 <div class="infoRponse">
      <h3>Reponse:{{reponse.reponse_Name}}</h3>
-     <table>
-        <tbody>
+     <span class="material-symbols-outlined" (click)="openlist()">
+        format_list_numbered
+        </span>
+     <table *ngIf="listIsOpen">
+      
             <tr *ngFor="let serv of servs">
-            <td>etape n°{{serv.Serv_order}}</td>
+            <td><p *ngIf="!reponse.allIn">etape n°{{serv.Serv_order}}</p> <p *ngIf="reponse.allIn">access n°{{serv.Serv_order}}</p></td>
             <td>{{serv.Serv_Name}}</td>
             <td>{{serv.userName}}</td>
             </tr>
-        </tbody>
      </table>
-    <h3 *ngIf="reponseIsOnWork">etape n°{{etapNum}}</h3>
+    <h3  *ngIf="reponseIsOnWork&&!reponse.allIn">etape n°{{etapNum}}</h3>
+    <h3  *ngIf="reponseIsOnWork&&reponse.allIn">All In Work</h3>
     <h3 *ngIf="!reponseIsOnWork">reponse est executé </h3>
+    <span (click)="openListLig()"  class="material-symbols-outlined reOrder">
+        reorder
+        </span>
 </div>
-<div class="infoRponse">
-<p-treeTable [value]="data" [columns]="fields">
-   <ng-template pTemplate="header" let-columns>
-       <tr >
+<div id="myDiv" class="infoTable">
+<p-treeTable [value]="data" [columns]="fields" class="tableData" >
+   <ng-template pTemplate="header" let-columns cdkDropListGroup>
+       <tr  cdkDropList
+     [cdkDropListData]="fields" 
+       (cdkDropListDropped)="drop($event)"
+       cdkDropListOrientation="horizontal">
          
-           <th *ngFor="let field of fields">
+           <th cdkDrag *ngFor="let field of fields" class="grab">
                {{field.Name}}
            </th>
        </tr>
@@ -32,59 +42,78 @@
    
     
        <!--lignes_parent-->
-       <tr> 
-           <td *ngFor="let field of fields; let i = index">
-            <p-treeTableToggler [rowNode]="rowNode" *ngIf="i==0"></p-treeTableToggler>
-            <p *ngIf="field.Status=='consulté'">{{fieldVal(rowNode,field.Name)}}</p>
-            <div *ngIf="(field.Status=='modifié')&&(inRow(field.Name,rowNode.level))" [ngSwitch]="field.Type" >
-            <input (change)="changeInField(field.Table_Id,field.Name,rowNode['node'][field.Name],rowNode['node']['id'])" 
+       <tr class="line"> 
+           <td *ngFor="let field of fields; let i = index;let last=last">
+            
+            <p *ngIf="field.Status=='consulté'" [ngClass]="{resize:(field.Type!='character varying(255)')||(field.choises!=null)}" (resized)="onResized($event)">{{fieldVal(rowNode,field.Name)}}</p>
+            <div *ngIf="(field.Status=='modifié')&&inRow(field.Name,rowNode.level)" [ngClass]="{resize:(field.Type!='character varying(255)')||(field.choises!=null)}" (resized)="onResized($event)" [ngSwitch]="field.Type" >
+            <input (change)="changeInField(rowNode,field.Table_Id,field.Name,rowNode['node'][field.Name],rowNode['node']['id'])" 
             type="date" 
-            *ngSwitchCase="'date'" style="width: 100px ;"  [(ngModel)]="rowNode['node'][field.Name]">
-            <input (change)="changeInField(field.Table_Id,field.Name,rowNode['node'][field.Name],rowNode['node']['id'])" 
+            *ngSwitchCase="'date'"   [(ngModel)]="rowNode['node'][field.Name]">
+            <input (change)="changeInField(rowNode,field.Table_Id,field.Name,rowNode['node'][field.Name],rowNode['node']['id'])" 
             type="number" 
-            *ngSwitchCase="'integer'" style="width: 100px ;" [(ngModel)]="rowNode['node'][field.Name]">
-            <input (change)="changeInField(field.Table_Id,field.Name,rowNode['node'][field.Name],rowNode['node']['id'])" 
+            *ngSwitchCase="'integer'"  [(ngModel)]="rowNode['node'][field.Name]">
+            <input (change)="changeInField(rowNode,field.Table_Id,field.Name,rowNode['node'][field.Name],rowNode['node']['id'])" 
             type="checkbox" 
-            *ngSwitchCase="'boolean'" style="width: 100px ;" [(ngModel)]="rowNode['node'][field.Name]">
-            <input (change)="changeInField(field.Table_Id,field.Name,rowNode['node'][field.Name],rowNode['node']['id'])" 
+            *ngSwitchCase="'boolean'"  [(ngModel)]="rowNode['node'][field.Name]">
+            <input (change)="changeInField(rowNode,field.Table_Id,field.Name,rowNode['node'][field.Name],rowNode['node']['id'])" 
             type="number" step="0.01"
-            *ngSwitchCase="'real'" style="width: 100px ;" [(ngModel)]="rowNode['node'][field.Name]">
+            *ngSwitchCase="'real'"  [(ngModel)]="rowNode['node'][field.Name]">
             <div *ngSwitchCase="'character varying(255)'" >
-                <input style="width: 100px ;" (change)="changeInField(field.Table_Id,field.Name,rowNode['node'][field.Name],rowNode['node']['id'])" 
-                type="text" *ngIf="field.choises==null" [(ngModel)]="rowNode['node'][field.Name]">
-                <select style="width: 100px ;" (change)="changeInField(field.Table_Id,field.Name,rowNode['node'][field.Name],rowNode['node']['id'])" 
+                <textarea (change)="changeInField(rowNode,field.Table_Id,field.Name,rowNode['node'][field.Name],rowNode['node']['id'])" 
+                 *ngIf="field.choises==null" [(ngModel)]="rowNode['node'][field.Name]"></textarea>
+                <select  (change)="changeInField(rowNode,field.Table_Id,field.Name,rowNode['node'][field.Name],rowNode['node']['id'])" 
                 *ngIf="field.choises!=null" [(ngModel)]="rowNode['node'][field.Name]">
                     <option value="">choose</option>
                     <option *ngFor="let choix of field.choisesList" value="{{choix}}">{{choix}}</option>
                 </select>
             </div>
             <p *ngSwitchDefault>undetermined</p>
-        </div>
-           </td>
+         </div>
+         <p-treeTableToggler class="toggler" *ngIf="spaceTable(rowNode.level)==i" [rowNode]="rowNode"></p-treeTableToggler>
+         <br>
+         <span *ngIf="((rowNode.node.children)&&isOrganizedRight()&&(rowNode.node.children.length==0)&&(spaceTable(rowNode.level+1)!=-1)&&(!rowNode.node.childrenForm)&&((etapNum==1)||(reponse.allIn))&&(((!reponse.allIn)&&isWorking)||((reponse.allIn)&&(reponseIsOnWork&&isWorking))))&&(spaceTable(rowNode.level)==i)"
+         (click)="addNewRelationForm(rowNode)"
+         class="material-symbols-outlined">
+            subdirectory_arrow_left
+            </span>
+            <span *ngIf="spaceTable(rowNode.level)==i" (click)="deleteRow(rowNode)" class="material-symbols-outlined">
+                delete
+                </span>
+         <span *ngIf="(spaceTable(rowNode.level)==i)&&(rowNode.level==0)" (click)="openMoreDisplay(rowNode.node)"  class="material-symbols-outlined">
+            dvr
+            </span>
+            
+                        </td>
+                
+
        </tr>
-       <tr *ngIf="(rowNode.node.children)&&(rowNode.node.children.length==0)&&(spaceTable(rowNode.level+1)!=-1)&&(!rowNode.node.childrenForm)&&(etapNum==1)&&isWorking">  
+       <!-- <tr *ngIf="(rowNode.node.children)&&isOrganizedRight()&&(rowNode.node.children.length==0)&&(spaceTable(rowNode.level+1)!=-1)&&(!rowNode.node.childrenForm)&&((etapNum==1)||(reponse.allIn))&&(((!reponse.allIn)&&isWorking)||((reponse.allIn)&&(reponseIsOnWork&&isWorking)))">  
         <td *ngFor="let field of fields; let index=index">
-              <a class="myButton" *ngIf="spaceTable(rowNode.level+1)==index" (click)="addNewRelationForm(rowNode)">+</a>
+            <span *ngIf="spaceTable(rowNode.level+1)==index" (click)="addNewRelationForm(rowNode)" class="material-symbols-outlined">
+                add_circle
+                </span>
+             
           </td>
-           </tr>
-        <!--new_ligne_form-->
-        <tr *ngIf="(rowNode.node.children)&&(rowNode.node.children.length==0)&&(spaceTable(rowNode.level+1)!=-1)&&(rowNode.node.childrenForm)">
+           </tr> -->
+        <!--new_relation_form-->
+        <tr class="line" *ngIf="(rowNode.node.children)&&(rowNode.node.children.length==0)&&(spaceTable(rowNode.level+1)!=-1)&&(rowNode.node.childrenForm)">
             <td *ngFor="let field of fields; let index=index">
-                <div *ngIf="(inRow(field.Name,rowNode.level+1))&&(field.Status=='modifié')" [ngSwitch]="field.Type" >
+                <div *ngIf="inRow(field.Name,rowNode.level+1)&&(field.Status=='modifié')&&!field.isChanged"  [ngClass]="{resize:(field.Type!='character varying(255)')||(field.choises!=null)}" (resized)="onResized($event)" [ngSwitch]="field.Type" >
                     <input 
                     type="date" 
-                    *ngSwitchCase="'date'" style="width: 100px ;"  [(ngModel)]="newRow[field.Name]">
+                    *ngSwitchCase="'date'"   [(ngModel)]="newRow[field.Name]">
                     <input 
                     type="number" 
-                    *ngSwitchCase="'integer'" style="width: 100px ;" [(ngModel)]="newRow[field.Name]">
+                    *ngSwitchCase="'integer'"  [(ngModel)]="newRow[field.Name]">
                     <input 
                     type="checkbox" 
-                    *ngSwitchCase="'boolean'" style="width: 100px ;" [(ngModel)]="newRow[field.Name]">
+                    *ngSwitchCase="'boolean'"  [(ngModel)]="newRow[field.Name]">
                     <input 
                     type="number" step="0.01"
-                    *ngSwitchCase="'real'" style="width: 100px ;" [(ngModel)]="newRow[field.Name]">
-                    <div *ngSwitchCase="'character varying(255)'" style="width: 100px ;">
-                        <input type="text" *ngIf="field.choises==null" [(ngModel)]="newRow[field.Name]">
+                    *ngSwitchCase="'real'"  [(ngModel)]="newRow[field.Name]">
+                    <div *ngSwitchCase="'character varying(255)'" >
+                        <textarea *ngIf="field.choises==null" [(ngModel)]="newRow[field.Name]"></textarea>
                         <select *ngIf="field.choises!=null" [(ngModel)]="newRow[field.Name]">
                             <option value="">choose</option>
                             <option *ngFor="let choix of field.choisesList" value="{{choix}}">{{choix}}</option>
@@ -97,37 +126,33 @@
 
         </tr>
         
-            <tr *ngIf="(rowNode.node.children)&&(rowNode.node.children.length==0)&&(spaceTable(rowNode.level+1)!=-1)&&(rowNode.node.childrenForm)">
+            <tr class="line" *ngIf="(rowNode.node.children)&&(rowNode.node.children.length==0)&&(spaceTable(rowNode.level+1)!=-1)&&(rowNode.node.childrenForm)">
          
                 <td *ngFor="let field of fields; let index=index">
                       <a class="myButton" *ngIf="spaceTable(rowNode.level+1)==index" (click)="addNewRelation(rowNode)">confirmer</a>
+                      <a class="myButton" *ngIf="spaceTable(rowNode.level+1)==index-1" (click)="cancelAddNewRelation(rowNode)" >cancel</a>
                   </td>
                    </tr>
         
-        <!--new_relation_form-->
-       <tr *ngIf="rowNode.node.last&&!rowNode.node.openForm&&(etapNum==1)&&isWorking">
-         
-         <td *ngFor="let field of fields; let index=index">
-               <a class="myButton" *ngIf="spaceTable(rowNode.level)==index" (click)="openAddForm(rowNode)">+</a>
-           </td>
-            </tr>
-            <tr *ngIf="rowNode.node.last&&rowNode.node.openForm">
+        <!--new_ligne_form-->
+
+            <tr class="line" *ngIf="rowNode.node.last&&rowNode.node.openForm">
                 <td *ngFor="let field of fields; let index=index">
-                    <div *ngIf="(inRow(field.Name,rowNode.level))&&(field.Status=='modifié')" [ngSwitch]="field.Type" >
+                    <div *ngIf="inRow(field.Name,rowNode.level)&&(field.Status=='modifié')&&!field.isChanged" [ngClass]="{resize:(field.Type!='character varying(255)')||(field.choises!=null)}"  (resized)="onResized($event)" [ngSwitch]="field.Type" >
                         <input 
                         type="date" 
-                        *ngSwitchCase="'date'" style="width: 100px ;"  [(ngModel)]="newRow[field.Name]">
+                        *ngSwitchCase="'date'"   [(ngModel)]="newRow[field.Name]">
                         <input 
                         type="number" 
-                        *ngSwitchCase="'integer'" style="width: 100px ;" [(ngModel)]="newRow[field.Name]">
+                        *ngSwitchCase="'integer'"  [(ngModel)]="newRow[field.Name]">
                         <input 
                         type="checkbox" 
-                        *ngSwitchCase="'boolean'" style="width: 100px ;" [(ngModel)]="newRow[field.Name]">
+                        *ngSwitchCase="'boolean'"  [(ngModel)]="newRow[field.Name]">
                         <input 
                         type="number" step="0.01"
-                        *ngSwitchCase="'real'" style="width: 100px ;" [(ngModel)]="newRow[field.Name]">
-                        <div *ngSwitchCase="'character varying(255)'" style="width: 100px ;">
-                            <input type="text" *ngIf="field.choises==null" [(ngModel)]="newRow[field.Name]">
+                        *ngSwitchCase="'real'"  [(ngModel)]="newRow[field.Name]">
+                        <div *ngSwitchCase="'character varying(255)'" >
+                            <textarea  *ngIf="field.choises==null" [(ngModel)]="newRow[field.Name]"></textarea>
                             <select *ngIf="field.choises!=null" [(ngModel)]="newRow[field.Name]">
                                 <option value="">choose</option>
                                 <option *ngFor="let choix of field.choisesList" value="{{choix}}">{{choix}}</option>
@@ -138,20 +163,32 @@
                   
                 </td>
             </tr>
-            <tr *ngIf="rowNode.node.last&&rowNode.node.openForm">
+            <tr class="line" *ngIf="rowNode.node.last&&rowNode.node.openForm">
          
                 <td *ngFor="let field of fields; let index=index">
                       <a class="myButton" *ngIf="spaceTable(rowNode.level)==index" (click)="addNewRow(rowNode)">confirmer</a>
+                      <a class="myButton" *ngIf="spaceTable(rowNode.level)==index-1" (click)="cancelAddNewRow(rowNode)">cancel</a>
                   </td>
                    </tr>
+                   <tr class="line" *ngIf="rowNode.node.last&&!rowNode.node.openForm&&isOrganizedRight()&&((etapNum==1)||(reponse.allIn))&&(((!reponse.allIn)&&isWorking)||((reponse.allIn)&&(reponseIsOnWork&&isWorking)))">
+         
+                    <td *ngFor="let field of fields; let i=index">
+                       <span *ngIf="spaceTable(rowNode.level)==i" (click)="openAddForm(rowNode)" class="material-symbols-outlined">
+                           add_circle
+                           </span>
+                          <!-- <a class="myButton" *ngIf="spaceTable(rowNode.level)==index" (click)="openAddForm(rowNode)">+</a> -->
+                          
+                      </td>
+                       </tr>
    </ng-template>
 </p-treeTable>
 <!--les_boutons_table-->
+
+
+</div>
 <div class="btns">
     <a class="myButton" (click)="returnList()" >return</a> 
     <a *ngIf="reponseIsOnWork&&isWorking" class="myButton" (click)="nextServ()">next</a>  
-</div>
-
 </div>
 
 
@@ -180,19 +217,19 @@
         <div *ngIf="inRow(field.Name,0)&&(field.Status=='modifié')" class="question-answer" [ngSwitch]="field.Type">
                 <input 
                 type="date" 
-                *ngSwitchCase="'date'" style="width: 100px ;"  [(ngModel)]="newRow[field.Name]" [ngModelOptions]="{standalone: true}">
+                *ngSwitchCase="'date'"   [(ngModel)]="newRow[field.Name]" [ngModelOptions]="{standalone: true}">
                 <input 
                 type="number" 
-                *ngSwitchCase="'integer'" style="width: 100px ;" [(ngModel)]="newRow[field.Name]" [ngModelOptions]="{standalone: true}">
+                *ngSwitchCase="'integer'"  [(ngModel)]="newRow[field.Name]" [ngModelOptions]="{standalone: true}">
                 <input 
                 type="checkbox" 
-                *ngSwitchCase="'boolean'" style="width: 100px ;" [(ngModel)]="newRow[field.Name]" [ngModelOptions]="{standalone: true}">
+                *ngSwitchCase="'boolean'"  [(ngModel)]="newRow[field.Name]" [ngModelOptions]="{standalone: true}">
                 <input 
                 type="number" step="0.01"
-                *ngSwitchCase="'real'" style="width: 100px ;" [(ngModel)]="newRow[field.Name]" [ngModelOptions]="{standalone: true}">
+                *ngSwitchCase="'real'"  [(ngModel)]="newRow[field.Name]" [ngModelOptions]="{standalone: true}">
                 <div *ngSwitchCase="'character varying(255)'" >
-                    <input style="width: 100px ;" type="text" *ngIf="field.choises==null" [(ngModel)]="newRow[field.Name]" [ngModelOptions]="{standalone: true}">
-                    <select style="width: 100px ;" *ngIf="field.choises!=null" [(ngModel)]="newRow[field.Name]" [ngModelOptions]="{standalone: true}">
+                    <textarea   *ngIf="field.choises==null" [(ngModel)]="newRow[field.Name]" [ngModelOptions]="{standalone: true}"></textarea>
+                    <select  *ngIf="field.choises!=null" [(ngModel)]="newRow[field.Name]" [ngModelOptions]="{standalone: true}">
                         <option value="">choose</option>
                         <option *ngFor="let choix of field.choisesList" value="{{choix}}">{{choix}}</option>
                     </select>
@@ -216,4 +253,29 @@
 
 
 
+</div>
+
+
+
+
+
+<div  *ngIf="listLig"  class="overlay">
+	<div class="popup">
+		<h2>Here i am</h2>
+		<a class="close"  (click)="openListLig()">&times;</a>
+		<div class="content">
+            <table cdkDropListGroup>
+                <thead>
+                    <th *ngFor="let field of reponse.tables[0].fields">{{field.Name}}</th>
+                </thead>
+                <tbody cdkDropList
+                [cdkDropListData]="data"
+                (cdkDropListDropped)="dropLig($event)">
+                    <tr  cdkDrag class="grab"  *ngFor="let lig of data">
+                        <td *ngFor="let field of reponse.tables[0].fields">{{fieldValLig(lig,field.Name)}}</td>
+                    </tr>
+                </tbody>
+            </table>
+		</div>
+	</div>
 </div>

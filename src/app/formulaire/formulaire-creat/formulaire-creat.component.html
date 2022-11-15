@@ -1,7 +1,8 @@
 <div class="container">
 <div style="margin-bottom:40px ;">
  <h3 class="titelTop">exemplaire: {{formulaire.Formulaire_Name}}</h3>
-  <table style="width:100% ;">
+ <div class="tableFields">
+  <table >
     <thead>
         <tr>
             <th>Champ</th>
@@ -14,7 +15,7 @@
         </tr>
     </thead>
 
-    <tbody>
+    <tbody class="tableFields">
 
         <!--ligne_crées-->
    <tr  *ngFor="let field of fields;let index=index"> 
@@ -34,14 +35,21 @@
         <input *ngIf="field.editDesc" type="text" [(ngModel)]="field.Serv_description">
         <i class="material-icons editIcon" *ngIf="field.editDesc" (click)="editDesc(index)" >edit</i></td>
     <td *ngIf="isGenerated">
-        <p *ngIf="!field.editSataus&&(field.Status!=null)&&(field.Name!='ID')">{{field.Status}} <i class="material-icons editIcon" (click)="editSatus(index)">edit</i></p>
-        <select *ngIf="field.editSataus||(field.Status==null)" [(ngModel)]="field.Status" (change)="correctionField(index)">
+         <!-- <p *ngIf="!field.editSataus&&(field.Status!=null)&&(field.Name!='ID')">{{field.Status}} <i class="material-icons editIcon" (click)="editSatus(index)">edit</i></p>
+       <select *ngIf="field.editSataus||(field.Status==null)" [(ngModel)]="field.Status" (change)="correctionField(index)">
             <option *ngIf="field.Status==null" value="null">choose function</option>
             <option value="consulté">consulté</option>
             <option value="modifié">modifié</option>
             <option value="invisible">invisible</option>
-        </select>
-        <i *ngIf="field.editSataus||(field.Status==null)" class="material-icons editIcon" (click)="editSatus(index)">edit</i>
+        </select> -->
+        <table *ngIf="field.Name!='ID'" class="statusChoses">
+            <tr>
+                <td class="choise" [ngStyle]=" field.Status=='modifié' ? {'background-color':'#B1D0E0'}:{}" (click)="correctionField(index,'modifié')">modifié</td>
+                <td class="choise" [ngStyle]=" field.Status=='consulté' ? {'background-color':'#B1D0E0'}:{}" (click)="correctionField(index,'consulté')">consulté</td>
+                <td class="choise" [ngStyle]=" field.Status=='invisible' ? {'background-color':'#B1D0E0'}:{}" (click)="correctionField(index,'invisible')">invisible</td>
+            </tr>
+        </table>
+        <!-- <i *ngIf="field.editSataus||(field.Status==null)" class="material-icons editIcon" (click)="editSatus(index)">edit</i> -->
      </td>
      <td *ngIf="!isGenerated"></td>
      <td style="text-align:left ;"><span *ngIf="(field.Name!='ID')" class="material-symbols-outlined" (click)="deleteField(index)">
@@ -62,7 +70,7 @@
     <td *ngIf="isGenerated"><select [(ngModel)]="newFieldLevel">
         <option value="">choose level</option>
         <option *ngFor="let table of formulaire.tables" value="{{table.Table_level}}">{{table.Table_level}} </option>
-        <option value="new">new...</option>
+        <option  value="new">new...</option>
     </select></td>
     <td *ngIf="!isGenerated"></td>
 </tr>
@@ -82,12 +90,17 @@
     <td></td>
     <td></td>
     <td></td>
-    <td><a class="myButton" (click)="openfieldForm()">+</a></td>
+    <td>
+        <span (click)="openfieldForm()" class="material-symbols-outlined">
+            add_circle
+            </span>
+        </td>
 <td></td>
   </tr>
 
     </tbody>
   </table>
+</div>
 
 </div>
 
@@ -100,7 +113,7 @@
                 </span></a></li>
             <li>    <select (change)="fieldsToShow()" [(ngModel)]="shownServNum">
                 <option *ngFor="let serv of servsEtap" value="{{serv.Serv_order}}">serv n°{{serv.Serv_order}}</option>
-                <option value="{{currentsrvOrd}}">new...</option>
+                <option *ngIf="formulaire.services&&(servsEtap.length!=formulaire.services.length)" value="{{currentsrvOrd}}">new...</option>
             </select></li>
             <li><a><span *ngIf="isGenerated" (click)="nextServ()" class="material-symbols-outlined flechBtnup">
                 arrow_forward
@@ -109,18 +122,19 @@
     </div>
 
 
-<p>etape n°{{shownServNum}}</p>
+<p>role/access n°{{shownServNum}}</p>
 
 
 <select [(ngModel)]="currentsrvName" (change)="changeServName()"  style="margin-bottom:20px ;">
     <option *ngIf="currentsrvName==''" value="">choose Service</option>
-<option *ngFor="let serv of formulaire.services" value="{{serv.Serv_Name}}">{{serv.Serv_Name}}</option>
+<option *ngFor="let serv of formulaire.services" value="{{serv.Serv_Name}}">{{serv.Serv_Name}}<span *ngIf="ifUsed(serv.Serv_Name)">(used)</span> </option>
 </select>
 </div>
 <div>
 
 <!--organisation_niveau-->
-<table cdkDropListGroup>
+<div class="tableLevel">
+<table cdkDropListGroup style="width:auto;">
 <tbody *ngFor="let table of formulaire.tables;let index=index;let last=last"  >
 
 <tr  cdkDropList  
@@ -138,10 +152,13 @@ id="{{index}}">
         </tbody>
         <tbody *ngIf="!isGenerated">
             <tr>
-                <td ><a class="myButton" (click)="addNewTable()">+</a></td> 
+                <td ><span (click)="addNewTable()" class="material-symbols-outlined">
+                    add_circle
+                    </span></td> 
              </tr>
         </tbody>
     </table>
+</div>
     <div class="currentserv">
         <a *ngIf="!isGenerated" class="myButton" (click)="generatFields()">Generat</a>
         <a *ngIf="isGenerated" class="myButton" (click)="End()">End</a>

@@ -20,17 +20,19 @@ import {HttpClientModule} from '@angular/common/http';
 
 import { ReactiveFormsModule} from '@angular/forms';
 import { MatNativeDateModule } from '@angular/material/core';
-import {BrowserModule} from '@angular/platform-browser';
-import {platformBrowserDynamic} from '@angular/platform-browser-dynamic';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
-
+import { LineComponent } from './line/line.component';
+import { OneLineComponent } from './one-line/one-line.component';
+import { AngularResizedEventModule } from 'angular-resize-event';
+import {NgxDragResizeModule} from 'ngx-drag-resize';
 @NgModule({
   declarations: [
    FormulaireListComponent,
    FormulaireCreatComponent,
    FormulaireReponseComponent,
    FormulaireTableComponent,
+   LineComponent,
+   OneLineComponent,
   ],
   imports: [
     CommonModule,
@@ -42,7 +44,9 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
     DragDropModule,
     MatIconModule,
     MatTreeModule,
-    TreeTableModule
+    TreeTableModule,
+    AngularResizedEventModule,
+    NgxDragResizeModule
   ]
 })
 export class FormulaireModule { }

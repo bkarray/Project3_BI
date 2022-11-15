@@ -6,6 +6,9 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class FormulaireService {
+  static deleteUpdate(id: any) {
+    throw new Error('Method not implemented.');
+  }
   
   readonly APIUrl = 'http://127.0.0.1:8000';
   readonly PhotoUrl = 'http://127.0.0.1:8000/media/';
@@ -67,11 +70,11 @@ export class FormulaireService {
   getTables(id:any){
     return this.http.get(this.APIUrl+'/table/'+id)
   }
-  getAllInformation(val:any){
-    return this.http.post(this.APIUrl+'/getAll/',val)
+  getAllInformation(val:any):Observable<any[]> {
+    return this.http.post<any[]>(this.APIUrl+'/getAll/',val)
   }
-  getInfoSup(val:any){
-    return this.http.post(this.APIUrl+'/getBySup/',val)
+  getInfoSup(val:any):Observable<any[]> {
+    return this.http.post<any[]>(this.APIUrl+'/getBySup/',val)
   }
   getAllFields(id:any){
     return this.http.get(this.APIUrl+'/getAllFields/'+id)
@@ -129,5 +132,21 @@ export class FormulaireService {
   }
   verifierUserWork(id:any){
     return this.http.get(this.APIUrl+'/verifierUserWork/'+id)
+  }
+
+  getLastUpdate(id:any){
+    return this.http.get(this.APIUrl+'/refresh/'+id)
+  }
+  deleteUpdate(id:any): Observable<any[]>{
+    return this.http.delete<any[]>(this.APIUrl+'/notifEdit/'+id)
+  }
+  addNewUpdate(val:any){
+    return this.http.post(this.APIUrl+'/notifEdit/',val)
+  }
+  sendOneMail(id:any,val:any){
+    return this.http.post(this.APIUrl+'/sendOneMail/'+id,val)
+  }
+  deleteRowInTable(val:any){
+    return this.http.post(this.APIUrl+'/deleteRowInTable/',val);
   }
 }

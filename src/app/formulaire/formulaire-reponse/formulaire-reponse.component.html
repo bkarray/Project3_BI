@@ -2,17 +2,18 @@
 
   <!--enTete_reponse-->
 <div class="infoRponse">
-    <h3>Exemplaire:{{formulaire.Formulaire_Name}}==>{{formulaire.Formulaire_Status}}</h3>
+    <h3>Exemplaire:{{formulaire.Formulaire_Name}}</h3>
+    <p>{{formulaire.Formulaire_Status}}</p>
     <br>
-  <p>Reponse==> <input type="text" [(ngModel)]="reponse.reponse_status" placeholder="reponceStatus..."></p>  
+  <p>Reponse: <input type="text" [(ngModel)]="reponse.reponse_status" placeholder="reponceStatus..."></p>  
 </div>
 
 <!--liste_des_etapes-->
  <div class="infoRponse">
-    <h3>Fontions:</h3>
-    <table>
+    <h3>Roles:</h3>
+    <table *ngIf="reponse.allIn">
         <tr *ngFor="let serv Of services;let index=index">
-          <td>etape n°{{serv.Serv_order}}</td>
+          <td><p>access n°{{serv.Serv_order}}</p></td>
         <td>{{serv.Serv_Name}}</td>
         <td><select *ngIf="isAdmin" (change)="updateServ(index)" [(ngModel)]="serv.Serv_User">
             <option value="null">choose user</option>
@@ -20,6 +21,43 @@
         </select>
       <p *ngIf="!isAdmin">{{serv.userName}}</p></td>
         </tr>
+    </table>
+
+    <table *ngIf="!reponse.allIn">
+      <tr *ngFor="let serv Of etapes;let index=index">
+        <td><p>role n°{{serv.Serv_order}}</p></td>
+      <td>{{serv.Serv_Name}}</td>
+      <td><select *ngIf="isAdmin" (change)="updateServ(index)" [(ngModel)]="serv.Serv_User">
+          <option value="null">choose user</option>
+          <option *ngFor="let user of serv.users" value="{{user.U_Id}}"> {{user.U_FirstName}} {{user.U_LastName}}</option>
+      </select>
+    <p *ngIf="!isAdmin">{{serv.userName}}</p></td>
+      </tr>
+      <tr *ngIf="openNewServFormIsOpen">
+        <td><p>role n°{{etapes.length+1}}</p></td>
+        <td><select [(ngModel)]="newServName">
+          <option value="">new</option>
+          <option *ngFor="let serv of servsExample" value="{{serv.Serv_Name}}">{{serv.Serv_Name}}</option>
+        </select></td>
+        <td>
+          <select *ngIf="isAdmin" [(ngModel)]="NewServUser">
+            <option value="null">choose user</option>
+            <option *ngFor="let user of getUsers()" value="{{user.U_Id}}"> {{user.U_FirstName}} {{user.U_LastName}}</option>
+        </select>
+        </td>
+      </tr>
+      <tr *ngIf="openNewServFormIsOpen">
+        <td><a class="myButton" (click)="addNewEtape()">confirmed</a></td>
+        <td><a class="myButton" (click)="closeNewServForm()">cancel</a></td>
+        <td></td>
+      </tr>
+      <tr *ngIf="!openNewServFormIsOpen">
+        <td></td>
+        <td></td>
+        <td><span *ngIf="reponse.reponse_level" (click)="openNewServForm()" class="material-symbols-outlined canClick">
+          add_circle
+          </span></td>
+      </tr>
     </table>
      
   <div class="btns">

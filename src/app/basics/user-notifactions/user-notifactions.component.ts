@@ -1,7 +1,6 @@
 import { Component, OnInit,Input,Output } from '@angular/core';
 import { FormulaireService } from 'src/app/services/formulaire/formulaire.service';
 import { AuthService } from 'src/app/services/auth/authservice';
-import { CartService } from 'src/app/services/cart/cart.service';
 import { SharedService } from 'src/app/services/shared.service';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 
@@ -12,7 +11,7 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 })
 export class UserNotifactionsComponent implements OnInit {
 
-  constructor(private CartService: CartService,
+  constructor(
     private authService: AuthService,
     private service:SharedService,
     private router: Router,
@@ -20,10 +19,11 @@ export class UserNotifactionsComponent implements OnInit {
   userId:any=null
   reponses:any=[]
   ngOnInit(): void {
-    this.userId=this.authService.authenticatedUser.U_Id
+   if(this.authService.authenticatedUser) {this.userId=this.authService.authenticatedUser.U_Id
     this.FormulaireService.verifierUserWork(this.userId).subscribe((reponses:any)=>{
       this.reponses=reponses
-    })
+    })}
+    
   }
 
   openReponse(reponse:any){

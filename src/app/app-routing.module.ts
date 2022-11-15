@@ -11,43 +11,10 @@ const routes: Routes = [
   { path: 'userMenu', component: UserMenuComponent },
 
   {
-    path: 'cart',
-    loadChildren: () => import('./cart/cart.module').then((m) => m.CartModule),
-    canActivate: [GuardGuard],
-  },
-
-  {
     path: 'auth',
     loadChildren: () => import('./auth/auth.module').then((m) => m.AuthModule),
   },
-  {
-    path: 'address',
-    loadChildren: () =>
-      import('./address/address.module').then((m) => m.AddressModule),
-    canActivate: [GuardGuard],
-  },
-  {
-    path: 'order',
-    loadChildren: () =>
-      import('./order/order.module').then((m) => m.OrderModule),
-    canActivate: [GuardGuard],
-  },
-  {
-    path: 'product',
-    loadChildren: () =>
-      import('./product/product.module').then((m) => m.ProductModule),
-  },
-  {
-    path: 'checkout',
-    loadChildren: () =>
-      import('./checkout/checkout.module').then((m) => m.CheckoutModule),
-    canActivate: [GuardGuard],
-  },
-  {
-    path: 'analyse',
-    loadChildren: () =>
-      import('./analyse/analyse.module').then((m) => m.AnalyseModule),
-  },
+ 
   {
     path: 'formulaire',
     loadChildren: () =>

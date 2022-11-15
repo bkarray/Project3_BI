@@ -5,16 +5,16 @@
   </div>
   <!--tableau_formulaire-->
     <table>
-        <tbody class="blueTable" *ngFor="let formulaire of formulaires;let index=index">
-        <tr>
-            <td (click)="openFormPage(formulaire.Formulaire_Id)">{{formulaire.Formulaire_Name}}</td>
-            <td></td>
-            <td></td>
-            <td class="cancelIcon" (click)="opendeleteForm(formulaire.Formulaire_Id,formulaire.Formulaire_Name)"><span class="material-symbols-outlined">
+      <th></th><th></th><th></th><th></th><th></th>
+        <tbody *ngFor="let formulaire of formulaires;let index=index">
+          <br>
+        <tr class="ligneMere">
+            <td style="text-align:center;" class="canClick" (click)="openFormPage(formulaire.Formulaire_Id)" colspan="3"><h3 class="canClick">{{formulaire.Formulaire_Name}}</h3></td>
+            <td style="text-align:right;" class="cancelIcon canClick" (click)="opendeleteForm(formulaire.Formulaire_Id,formulaire.Formulaire_Name)"><span class="material-symbols-outlined">
               cancel
               </span></td>
            
-            <td><a class="d-flex justify-content-end" (click)="open(index)">
+            <td><a class="d-flex justify-content-end canClick" (click)="open(index)">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="16"
@@ -29,16 +29,19 @@
                 </svg>
               </a></td>   
         </tr>
+        <br>
         <tr *ngIf="formulaire.isOpen"> 
-        <td colspan="5">
+        <td class="responses" colspan="5">
             <tr *ngFor="let reponse of formulaire.reponses;let indexR=index" class="boder"> 
                 <td ><a  class="myButton"  (click)="openTable(formulaire.Formulaire_Id,reponse.Reponse_Id)">open</a></td>
-                <td (click)="openReponseFormPage(index,indexR)">{{reponse.reponse_Name}}</td>
-                <td><p *ngIf="reponse.reponse_level!=null">etape n°{{reponse.currentServ.Serv_order}}</p> 
+                <td class="canClick" (click)="openReponseFormPage(index,indexR)">{{reponse.reponse_Name}}</td>
+                <td><p *ngIf="(reponse.reponse_level!=null)&&(!reponse.allIn)">etape n°{{reponse.currentServ.Serv_order}}</p> 
+                  <p *ngIf="(reponse.reponse_level!=null)&&(reponse.allIn)">In Progresses</p>
                 <p *ngIf="reponse.reponse_level==null">reponse est executé </p></td>
-                <td><p *ngIf="reponse.reponse_level!=null">{{reponse.currentServ.Serv_Name}}</p></td>
-                <td><p *ngIf="reponse.reponse_level!=null">{{reponse.currentServ.userName}}</p></td>
-                <td (click)="putReponseInArchive(reponse.Reponse_Id,index,indexR)"><span class="material-symbols-outlined">
+                <td><p *ngIf="(reponse.reponse_level!=null)&&(!reponse.allIn)">{{reponse.currentServ.Serv_Name}}</p></td>
+                <td><p *ngIf="(reponse.reponse_level!=null)&&(!reponse.allIn)">{{reponse.currentServ.userName}}</p>
+                <p *ngIf="(reponse.reponse_level!=null)&&(reponse.allIn)">All in Work</p></td>
+                <td (click)="putReponseInArchive(reponse.Reponse_Id,index,indexR)" class="canClick"><span class="material-symbols-outlined">
                   cancel
                   </span></td>
                 </tr>
@@ -46,13 +49,28 @@
                 <td></td>
                 <td></td>
                 <td><input *ngIf="formulaire.addReponseForm"  type="text" placeholder="Reponse Name..." [(ngModel)]="newReponseName"></td>
-                <td><a *ngIf="formulaire.addReponseForm"  class="myButton" (click)="addNewReponse(formulaire.Formulaire_Id)">confirmer</a></td>
-                <td><a *ngIf="!formulaire.addReponseForm" class="myButton" (click)="openReponseForm(index)">+</a></td>
-                <td></td>
-    
+                <td>
+                  <select *ngIf="formulaire.addReponseForm" [(ngModel)]="newReponseType">
+                    <option value="">choose reponse type</option>
+                    <option value="allInOne">All in one</option>
+                    <option value="stepByStep">Step by step</option>
+                  </select>
+                </td>
+                <td><span *ngIf="!formulaire.addReponseForm" (click)="openReponseForm(index)" class="material-symbols-outlined canClick">
+                  add_circle
+                  </span>
+                   <a *ngIf="formulaire.addReponseForm"  class="myButton" (click)="addNewReponse(formulaire.Formulaire_Id)">confirmer</a>
+                   </td>
+
+                <td><a *ngIf="formulaire.addReponseForm"  class="myButton" (click)="cancelAddNewReponse(index)">cancel</a></td>
+                
+                
             </tr>
+            
         </td>
-    </tr></tbody></table>
+        
+    </tr>
+  </tbody></table>
 
     <!--bouton_créer_formulaire-->
     <div class="btn-block" style="text-align:right ;">
@@ -69,13 +87,17 @@
 <div class="testbox" *ngIf="creatFormIsOpen">
   <form >
     <div class="banner">
-      <h1>Form Creation</h1>
+      <img class="imagePC" src="https://img.freepik.com/premium-vector/online-exam-screen-laptop-checklist-online-surveys-questionnaire-online-testing_349999-368.jpg?w=2000" alt="">
     </div>
     <div class="item">
       <label for="name">Name<span class="red">*</span></label>
       <div class="name-item">
-        <input id="name" type="text" name="name" placeholder="Name" [(ngModel)]="newFormulaireName" [ngModelOptions]="{standalone: true}"/>
-        <input type="text" name="name" placeholder="Description" [(ngModel)]="newFormulaireStatus" />
+        <input style="border-radius:20px ;" id="name" type="text" name="name" placeholder="Name" [(ngModel)]="newFormulaireName" [ngModelOptions]="{standalone: true}"/>
+
+      </div>
+      <label for="name">Description</label>
+      <div class="name-item">
+<textarea style="border-radius:20px ;" type="text" name="name" placeholder="Description" [(ngModel)]="newFormulaireStatus"></textarea>
       </div>
     </div>
     <div class="question">

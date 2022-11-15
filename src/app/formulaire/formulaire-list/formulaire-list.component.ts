@@ -1,7 +1,6 @@
 import {  Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormulaireService } from 'src/app/services/formulaire/formulaire.service';
 import { AuthService } from 'src/app/services/auth/authservice';
-import { CartService } from 'src/app/services/cart/cart.service';
 import { SharedService } from 'src/app/services/shared.service';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 
@@ -12,7 +11,7 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 })
 export class FormulaireListComponent implements OnInit {
 
-  constructor(private CartService: CartService,
+  constructor(
     private authService: AuthService,
     private service:SharedService,
     private router: Router,
@@ -25,6 +24,7 @@ export class FormulaireListComponent implements OnInit {
   serviceFormIsOpen:boolean=false
   newServName:any=''
   newReponseName:any=''
+  newReponseType:any=''
   servsExamples:any=[]
   todelete:boolean=false
   deleteFormName:any=''
@@ -278,19 +278,27 @@ if(this.services.length!=0){
   }
 
   addNewReponse(Formulaire_Id:any){
+
    let newReponse={
     Formulaire_Id:Formulaire_Id,
     reponse_Name:this.newReponseName,
     reponse_level:null,
-    reponse_status:'new'
+    reponse_status:'new',
+    allIn:false
     
    }
+   if(this.newReponseType=="allInOne") newReponse.allIn=true;
    this.FormulaireService.creatNewReponce(newReponse).subscribe((res:any)=>{
     let index=this.formulaires.findIndex((e:any)=> e.Formulaire_Id==Formulaire_Id)
     this.formulaires[index].addReponseForm=!this.formulaires[index].addReponseForm
     this.router.navigate(['/formulaire/reponse/',Formulaire_Id,res.Reponse_Id,0])
 
    })
+  }
+  cancelAddNewReponse(index:any){
+    this.newReponseName=""
+    this.newReponseType=''
+    this.formulaires[index].addReponseForm=!this.formulaires[index].addReponseForm
   }
   openReponseFormPage(indexF:any,indexR:any){
     this.router.navigate(['/formulaire/reponse/',this.formulaires[indexF].Formulaire_Id,this.formulaires[indexF].reponses[indexR].Reponse_Id,1])

@@ -40,6 +40,7 @@ body {
   margin:auto;
   padding:0px;
   text-align:center;
+  min-height: 600px;
   
 
 }
@@ -72,7 +73,7 @@ body {
   position: relative;
 }
 .track .step.active:before {
-  background: #286da8;
+  background: #153462;
 }
 .track .step::before {
   height: 7px;
@@ -83,7 +84,7 @@ body {
   top: 18px;
 }
 .track .step.active .icon {
-  background: #286da8;
+  background: #153462;
   color: #fff;
 }
 .track .icon {
@@ -135,20 +136,19 @@ ul.row-sm {
   color: #212529;
 }
 p {
-  margin-top: 0;
-  margin-bottom: 1rem;
+  margin:0;
 }
 .btn-warning {
   color: #ffffff;
-  background-color: #286da8;
-  border-color: #286da8;
+  background-color: #153462;
+  border-color: #153462;
   border-radius: 1px;
   margin: 20px;
 }
 .btn-warning:hover {
   color: #ffffff;
-  background-color: #286da8;
-  border-color: #286da8;
+  background-color: #153462;
+  border-color: #153462;
   border-radius: 1px;
 }
 
@@ -221,7 +221,7 @@ table.blueTable tfoot .links a{
 table{
   width: 100%; 
   border-collapse: collapse;
-  border-spacing: 0 ;
+  border-spacing: 0 20px ;
 
 
  
@@ -233,28 +233,40 @@ table{
   
  
  }
- th{
-  background-color: #286da8;
-  color: #fafafa;
-  font-family: 'Open Sans',Sans-serif;
-  font-weight: 200;
-  text-transform: uppercase;
-  word-wrap:break-word
- 
- }
+
  tr{
   width: 100%;
   background-color: #fafafa;
   font-family: 'Montserrat', sans-serif;
   border-radius: 100px;
+  height: auto;
+ }
+ tr:hover{
+  background-color: #b9dfff;
  }
  tr:nth-child(even){
-  background-color: #eeeeee;
   border-radius: 100px;
  }
+
  .boder{
   border: solid;
   border-radius: 500px;
+  
+
+ }
+
+ .canClick{
+  cursor: pointer;
+ }
+ .canClick:hover{
+  color: #fff;
+ }
+
+ .boder{
+  height: 20px !important;
+ }
+ .ligneMere{
+  height: 90px;
  }
 
 .grab {
@@ -289,7 +301,6 @@ table{
 tbody{
   width: 100%; 
   border-collapse: separate;
-  border: solid #002B5B;
 }
 
 /*search bar*/
@@ -347,10 +358,10 @@ width: 500px;
 }
 .myButton {
   padding: 0.5em 0.7em;
-  background: #B2C8DF;
+  background: #153462;
   border: none;
   border-radius: 1000px;
-  color: #002B5B;
+  color: #fff !important;
   font-size: 1rem;
   font-weight: 700;
   letter-spacing: .2rem;
@@ -358,7 +369,7 @@ width: 500px;
   outline: none;
   cursor: pointer;
   transition: .2s ease-in-out;
-  margin: 20px;
+  margin: 0;
   
 }
 .inputServ{
@@ -401,7 +412,7 @@ width: 500px;
 }
 
 .price {
-  color:#286DA8;
+  color:#153462;
   font-size: 14px;
 }
 
@@ -414,7 +425,7 @@ width: 500px;
     height: 50%;
 }
 .card a ,p,h3 {
-    color:#286DA8;
+    color:#153462;
 }
 
 .close{
@@ -429,13 +440,13 @@ width: 500px;
   'GRAD' 0,
   'opsz' 20;
   position: relative;
-  left: 75%;
 }
 .inputdate{
   margin-bottom: 25px;
 }
 
 .material-symbols-outlined {
+  cursor: pointer;
   font-variation-settings:
   'FILL' 0,
   'wght' 400,
@@ -605,7 +616,27 @@ button.btn-block-serv{
 
 
 
+tr{
+  box-shadow: 0 2px 5px rgba(123, 119, 119, 0.7);
+}
 
+
+tr td:first-child { 
+  border-bottom-left-radius: 50px;
+  border-top-left-radius: 50px; }
+tr td:last-child { 
+  border-bottom-right-radius: 50px; 
+  border-top-right-radius: 50px;}
+.responses{
+background-color: #eeeeee;
+  border-bottom-left-radius: 50px;
+  border-top-left-radius: 50px;
+  border-bottom-right-radius: 50px; 
+  border-top-right-radius: 50px;
+}
+
+tr:first-child td { border-top-style: solid; }
+tr td:first-child { border-left-style: solid; }
 
 
 
@@ -642,34 +673,29 @@ button.btn-block-serv{
   z-index: 100;
   align-items: center;
   overflow:hidden;
-  overflow-y:scroll;
+  overflow-y:auto;
   
   }
   form {
   width: 100%;
   padding: 20px;
   height: auto;
-  border-radius: 6px;
+  border-radius: 50px;
   background: #eee;
   }
   .banner {
   position: relative;
   height: 250px;
-  margin-top: 100px;
-  background-image: url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQnP2cEmY-E8IV1HPBOglzTolzoeaU6FN_gSA&usqp=CAU");  
+  margin-top: 1%;
+  /*background-image: url("https://img.freepik.com/premium-vector/online-exam-screen-laptop-checklist-online-surveys-questionnaire-online-testing_349999-368.jpg?w=2000"); */ 
   background-size: cover;
   display: flex;
+  border-radius: 50px;
   justify-content: center;
   align-items: center;
   text-align: center;
   }
-  .banner::after {
-  content: "";
-  background-color: rgba(0, 0, 0, 0.4); 
-  position: absolute;
-width: 100%;
-  height: 100%;
-  }
+
   input,  textarea {
   margin-bottom: 10px;
   border: 1px solid #ccc;
@@ -767,7 +793,11 @@ width: 100%;
   width: calc(50% - 20px);
   }
   }
-
+.imagePC{
+  height: 100%;
+  width: 90%;
+  border-radius: 50px;
+}
 
 .redBackGround{
   background: #C21010;
@@ -923,6 +953,9 @@ width: 100%;
 	transform: translate(-50%, -50%);
 	z-index: 1;
 }
+
+
+
 
 
 

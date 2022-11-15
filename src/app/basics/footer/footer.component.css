@@ -11,6 +11,7 @@ section {
   font-size: 22px;
   font-weight: 700;
   text-decoration: underline;
+  height: 100px;
 }
 
 .footer-distributed{
@@ -20,7 +21,7 @@ section {
 	width: 100%;
 	text-align: left;
 	font: bold 16px sans-serif;
-	padding: 55px 50px;
+	padding: 35px 30px;
 }
 
 .footer-distributed .footer-left,

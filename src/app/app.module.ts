@@ -12,13 +12,8 @@ import { SharedService } from './services/shared.service';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule,ReactiveFormsModule } from '@angular/forms';
 import { UserMenuComponent } from './basics/user-menu/user-menu.component';
-import { CartModule } from './cart/cart.module';
-import { CartService } from './services/cart/cart.service';
 import { AuthService } from './services/auth/authservice';
-import { ProductModule } from './product/product.module';
-import { OrderModule } from './order/order.module';
 import { AuthModule } from './auth/auth.module';
-import { AddressModule } from './address/address.module';
 import { NgChartsModule } from 'ng2-charts';
 import { UserNotifactionsComponent } from './basics/user-notifactions/user-notifactions.component';
 
@@ -39,20 +34,15 @@ import { UserNotifactionsComponent } from './basics/user-notifactions/user-notif
   ],
   imports: [
     BrowserModule,
-    CartModule,
     AppRoutingModule,
     HttpClientModule,
-    OrderModule,
-    ProductModule,
     FormsModule,
     AuthModule,
-    AddressModule,
     ReactiveFormsModule,
     NgChartsModule
   ],
   providers: [
     SharedService,
-    CartService,
     AuthService
   ],
   bootstrap: [AppComponent]

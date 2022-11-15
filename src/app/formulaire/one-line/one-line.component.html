@@ -1,0 +1,43 @@
+<div class="container">
+
+   <div class="fieldTag" *ngFor="let field of fields" ngxDrag><label style="cursor:grab ;" ngxDragHandle>{{field.Name}}:</label>  
+     <h3  *ngIf="(field.Status=='consulté')" (resized)="onResized($event)" class="values resize">{{fieldValLig(field.Name)}}</h3>
+    <div *ngIf="(field.Status=='modifié')" (resized)="onResized($event)" [ngSwitch]="field.Type" class="values resize" >
+    <input 
+     class="full"
+    type="date" 
+    *ngSwitchCase="'date'"   [(ngModel)]=" toShow[field.Name]">
+    <input 
+    class="full"
+      (change)="changeInField(field.Name)"
+    type="number" 
+    *ngSwitchCase="'integer'"  [(ngModel)]=" toShow[field.Name]">
+    <input 
+    class="full"
+    (change)="changeInField(field.Name)"
+    type="checkbox" 
+    *ngSwitchCase="'boolean'"  [(ngModel)]=" toShow[field.Name]">
+    <input  
+    class="full"
+    (change)="changeInField(field.Name)"
+    type="number" step="0.01"
+    *ngSwitchCase="'real'"  [(ngModel)]=" toShow[field.Name]">
+    <div *ngSwitchCase="'character varying(255)'" class="full" >
+        <input
+        class="full"
+        (change)="changeInField(field.Name)" 
+          
+        type="text" *ngIf="field.choises==null" [(ngModel)]=" toShow[field.Name]">
+        <select
+        class="full"
+        (change)="changeInField(field.Name)"
+          
+        *ngIf="field.choises!=null" [(ngModel)]=" toShow[field.Name]">
+            <option value="">choose</option>
+            <option *ngFor="let choix of field.choisesList" value="{{choix}}">{{choix}}</option>
+        </select>
+    </div>
+    <p *ngSwitchDefault>undetermined</p>
+</div>
+</div>
+</div>

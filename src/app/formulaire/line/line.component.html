@@ -1,0 +1,161 @@
+<div *ngFor="let tab of reponse.tables;let index=index;let last=last" class="container"> 
+<table *ngIf="(index==0)&&(toShow[0])">
+
+        <thead>
+            <tr>
+                <th *ngFor="let field of reponse.tables[0].fields">{{field.Name}}</th>
+            </tr>
+            
+        </thead>
+        <tbody>
+            <tr> 
+                <td *ngFor="let field of reponse.tables[0].fields; let i = index">
+
+                 <p *ngIf="(field.Status=='consulté')&&(inRow(index,field.Name))">{{fieldValLig(toShow[0],field.Name)}}</p>
+                 <div *ngIf="(field.Status=='modifié')&&(inRow(index,field.Name))" [ngSwitch]="field.Type" >
+                 <input  
+                 type="date" 
+                 (change)="changeInField(toShow[0],field.Table_Id,field.Name,toShow[0][field.Name],toShow[0]['id'])"
+                 *ngSwitchCase="'date'" style="width: 100px ;"  [(ngModel)]=" toShow[0][field.Name]">
+                 <input 
+                 (change)="changeInField(toShow[0],field.Table_Id,field.Name,toShow[0][field.Name],toShow[0]['id'])"
+                 type="number" 
+                 *ngSwitchCase="'integer'" style="width: 100px ;" [(ngModel)]=" toShow[0][field.Name]">
+                 <input  
+                 (change)="changeInField(toShow[0],field.Table_Id,field.Name,toShow[0][field.Name],toShow[0]['id'])"
+                 type="checkbox" 
+                 *ngSwitchCase="'boolean'" style="width: 100px ;" [(ngModel)]=" toShow[0][field.Name]">
+                 <input 
+                 (change)="changeInField(toShow[0],field.Table_Id,field.Name,toShow[0][field.Name],toShow[0]['id'])" 
+                 type="number" step="0.01"
+                 *ngSwitchCase="'real'" style="width: 100px ;" [(ngModel)]=" toShow[0][field.Name]">
+                 <div *ngSwitchCase="'character varying(255)'" >
+                     <input
+                     (change)="changeInField(toShow[0],field.Table_Id,field.Name,toShow[0][field.Name],toShow[0]['id'])"
+                     style="width: 100px ;"  
+                     type="text" *ngIf="field.choises==null" [(ngModel)]=" toShow[0][field.Name]">
+                     <select
+                     (change)="changeInField(toShow[0],field.Table_Id,field.Name,toShow[0][field.Name],toShow[0]['id'])"
+                     style="width: 100px ;"  
+                     *ngIf="field.choises!=null" [(ngModel)]=" toShow[0][field.Name]">
+                         <option value="">choose</option>
+                         <option *ngFor="let choix of field.choisesList" value="{{choix}}">{{choix}}</option>
+                     </select>
+                 </div>
+                 <p *ngSwitchDefault>undetermined</p>
+             </div>
+                </td>
+            </tr>
+            <tr>
+                <td *ngFor="let field of reponse.tables[0].fields;let first=first">
+                    <span *ngIf="first" class="material-symbols-outlined" (click)="nextLig(0)">
+                        arrow_back
+                        </span>
+                        <span *ngIf="first" class="material-symbols-outlined"(click)="nextLig(1)" >
+                            arrow_forward
+                            </span>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <table *ngIf="index!=0">
+        <thead>
+            <tr>
+                <th *ngFor="let field of reponse.tables[index].fields">{{field.Name}}</th>
+            <th *ngIf="last"></th>
+            </tr>
+            
+        </thead>
+        <tbody>
+            <tr *ngFor="let lig of toShow[index]" (click)="addNextLevel(index,lig,toShow[index])" [ngStyle]=" lig.isClicked ? {'background-color':'#B1D0E0'}:{}"> 
+                <td *ngFor="let field of reponse.tables[index].fields; let i = index">
+
+                 <p *ngIf="(field.Status=='consulté')&&(inRow(index,field.Name))">{{fieldValLig(lig,field.Name)}}</p>
+                 <div *ngIf="(field.Status=='modifié')&&(inRow(index,field.Name))" [ngSwitch]="field.Type" >
+                 <input 
+                 (change)="changeInField(lig,field.Table_Id,field.Name,lig[field.Name],lig['id'])" 
+                 type="date" 
+                 *ngSwitchCase="'date'" style="width: 100px ;"  [(ngModel)]=" lig[field.Name]">
+                 <input 
+                 (change)="changeInField(lig,field.Table_Id,field.Name,lig[field.Name],lig['id'])"  
+                 type="number" 
+                 *ngSwitchCase="'integer'" style="width: 100px ;" [(ngModel)]=" lig[field.Name]">
+                 <input 
+                 (change)="changeInField(lig,field.Table_Id,field.Name,lig[field.Name],lig['id'])"  
+                 type="checkbox" 
+                 *ngSwitchCase="'boolean'" style="width: 100px ;" [(ngModel)]=" lig[field.Name]">
+                 <input  
+                 (change)="changeInField(lig,field.Table_Id,field.Name,lig[field.Name],lig['id'])" 
+                 type="number" step="0.01"
+                 *ngSwitchCase="'real'" style="width: 100px ;" [(ngModel)]=" lig[field.Name]">
+                 <div *ngSwitchCase="'character varying(255)'" >
+                     <input
+                     (change)="changeInField(lig,field.Table_Id,field.Name,lig[field.Name],lig['id'])" 
+                     style="width: 100px ;"  
+                     type="text" *ngIf="field.choises==null" [(ngModel)]=" lig[field.Name]">
+                     <select
+                     (change)="changeInField(lig,field.Table_Id,field.Name,lig[field.Name],lig['id'])" 
+                     style="width: 100px ;"  
+                     *ngIf="field.choises!=null" [(ngModel)]=" lig[field.Name]">
+                         <option value="">choose</option>
+                         <option *ngFor="let choix of field.choisesList" value="{{choix}}">{{choix}}</option>
+                     </select>
+                 </div>
+                 <p *ngSwitchDefault>undetermined</p>
+             </div>
+                </td>
+                <td *ngIf="last" (click)="moreDisplay(lig)"><span  class="material-symbols-outlined">
+                    dvr
+                    </span></td>
+            </tr>
+            <tr *ngIf="toAdd(index)&&(levelsAddLine[index])&&(!levelsAddLine[index].formIsOpen)&&((etapNum==1)||(reponse.allIn))&&(((!reponse.allIn)&&isWorking)||((reponse.allIn)&&(reponseIsOnWork&&isWorking)))">
+                <td *ngFor="let field of reponse.tables[index].fields;let first=first" >
+                    <span *ngIf="first" (click)="addNewRowForm(index)" class="material-symbols-outlined">
+                        add_circle
+                        </span>
+                </td>
+                <td *ngIf="last"></td>
+            </tr>
+
+                   <tr *ngIf="levelsAddLine[index]&&levelsAddLine[index].formIsOpen">
+                       <td *ngFor="let field of reponse.tables[index].fields;">
+                           <div *ngIf="inRow(index,field.Name)&&(field.Status=='modifié')" [ngSwitch]="field.Type" >
+                               <input 
+                               type="date" 
+                               *ngSwitchCase="'date'" style="width: 100px ;"  [(ngModel)]="newRow[field.Name]">
+                               <input 
+                               type="number" 
+                               *ngSwitchCase="'integer'" style="width: 100px ;" [(ngModel)]="newRow[field.Name]">
+                               <input 
+                               type="checkbox" 
+                               *ngSwitchCase="'boolean'" style="width: 100px ;" [(ngModel)]="newRow[field.Name]">
+                               <input 
+                               type="number" step="0.01"
+                               *ngSwitchCase="'real'" style="width: 100px ;" [(ngModel)]="newRow[field.Name]">
+                               <div *ngSwitchCase="'character varying(255)'" style="width: 100px ;">
+                                   <input type="text" *ngIf="field.choises==null" [(ngModel)]="newRow[field.Name]">
+                                   <select *ngIf="field.choises!=null" [(ngModel)]="newRow[field.Name]">
+                                       <option value="">choose</option>
+                                       <option *ngFor="let choix of field.choisesList" value="{{choix}}">{{choix}}</option>
+                                   </select>
+                               </div>
+                               <p *ngSwitchDefault>undetermined</p>
+                           </div>
+                         
+                       </td>
+                       <td *ngIf="last"></td>
+                   </tr>
+                   <tr *ngIf="levelsAddLine[index]&&levelsAddLine[index].formIsOpen">
+                
+                       <td *ngFor="let field of reponse.tables[index].fields; let first=first">
+                             <a class="myButton" *ngIf="first" (click)="addNewRow(index)">confirm</a>
+                             <a class="myButton" *ngIf="first" (click)="cancelAdd(index)" >cancel</a>
+                         </td>
+                         <td *ngIf="last"></td>
+                          </tr>
+            
+        </tbody>  
+    </table>
+
+</div>
