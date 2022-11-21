@@ -1,4 +1,6 @@
 @import url("https://fonts.googleapis.com/css?family=Open+Sans&display=swap");
+@import 'https://fonts.googleapis.com/css?family=Open+Sans:600';
+@import url('https://fonts.googleapis.com/css?family=Open+Sans');
 body {
   background: #eee;
 }
@@ -37,10 +39,11 @@ body {
   margin-top: 50px;
   margin-bottom: 50px;
   position:relative;
-  margin:auto;
+  margin:0;
   padding:0px;
   text-align:center;
   min-height: 600px;
+  display: contents;
 
 }
 .card-header:first-child {
@@ -228,12 +231,18 @@ table{
   margin: 20px;
  
  }
- td , th{
+  th{
   padding: 15px 30px;
   text-align: center;
   width:150px;
   
  
+ }
+ td{
+  padding: 0 2%;
+  text-align: center;
+  width:150px;
+  
  }
  th{
   background-color: #153462;
@@ -291,6 +300,7 @@ table{
     z-index: 100;
 
 }
+textarea
 
   .p-treetable table {
     border-collapse: separate !important;
@@ -336,7 +346,7 @@ table{
 /*search bar*/
 
 
-@import url(https://fonts.googleapis.com/css?family=Open+Sans);
+
 .search {
   width: 50%;
   float: right;
@@ -482,7 +492,7 @@ width: 500px;
    
 }
 .infoTable{
-  margin: 30px;
+  margin: 0 0 0 2%;
   text-align: left;
   overflow: hidden;
   overflow-x: auto;
@@ -502,6 +512,9 @@ width: 500px;
   width: 100%;
 }
 
+.addLine td{
+  height: 50px;
+}
 
 
 
@@ -516,7 +529,8 @@ width: 500px;
 
 
 
-body, div, form, input, textarea, label { 
+
+body, div, form, textarea, label { 
   padding: 0;
   margin: 0;
   outline: none;
@@ -571,18 +585,16 @@ body, div, form, input, textarea, label {
 width: 100%;
   height: 100%;
   }
-  input,  textarea {
+    textarea {
   margin-bottom: 10px;
   border: 1px solid #ccc;
   border-radius: 3px;
   }
-  input {
-  width: calc(100% - 10px);
-  padding: 5px;
-  }
+
   textarea {
   width: calc(100% - 12px);
   padding: 5px;
+  resize: both;
   }
   .item:hover, .question label:hover, input:hover::placeholder {
   color:  #000;
@@ -628,6 +640,9 @@ width: 100%;
   input[type=radio]:checked + label:before, label.radio:hover:before {
   border: 2px solid #aa1409;
 }
+input[type="text"]{ display:inline-block;
+  padding: 20px 10px;
+   line-height: 100%; }
   label.radio:after {
   content: "";
   position: absolute;
@@ -668,7 +683,7 @@ width: 100%;
   flex-wrap: wrap;
   justify-content: space-between;
   }
-  .name-item input, .name-item div {
+  .name-item , .name-item div {
   width: calc(50% - 20px);
   }
   }
@@ -772,3 +787,74 @@ width: 100%;
   border-radius: 100px;
 }
 .p-treetable-toggler{border-radius: 100px;}
+
+
+
+
+
+.btn-1 {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+
+.squishy {
+  position: relative;
+  display: inline-block;
+  vertical-align: middle;
+  margin: 10px;
+  color: #fff;
+  text-align: center;
+  background: #333;
+  box-shadow: inset 5px 5px 15px rgba(150, 150, 150, .5), inset -5px -5px 15px rgba(0, 0, 0, .5), 3px 3px 5px rgba(0, 0, 0, .7);
+  -webkit-transition: box-shadow .15s;
+  -moz-transition: box-shadow .15s;
+  -ms-transition: box-shadow .15s;
+  transition: box-shadow .15s;
+}
+
+.activate {
+  box-shadow: inset 1px 1px 1px rgba(150, 150, 150, .5), inset -1px -1px 1px rgba(0, 0, 0, .5), 1px 1px 1px rgba(0, 0, 0, .7);
+}
+
+.squishy span {
+  position: absolute;
+  pointer-events: none; /* This helps IE */
+  display: inline-block;
+  white-space: nowrap;
+  top: 0;
+  left: 0;
+  vertical-align: middle;
+  line-height: 75px; /*change to btn height*/
+  width: 100%;
+  height: 100%;
+  -webkit-transition: transfrom .15s;
+  -moz-transition: transfrom .15s;
+  -ms-transition: transfrom .15s;
+  transition: transfrom .15s;
+}
+
+.squishy:active span {
+  -webkit-transform: scale(.95);
+  transform: scale(.95);
+}
+
+/* So they don't accidentially highlight btn text */
+a.squishy {
+  cursor: pointer;
+  -webkit-touch-callout: none; 
+  -webkit-user-select: none;
+  -khtml-user-select: none; 
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+
+.togglerBtn{
+  display: flex;
+}
+.deleteAndDisplay{
+  margin-top: 15%;
+}

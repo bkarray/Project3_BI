@@ -149,4 +149,7 @@ export class FormulaireService {
   deleteRowInTable(val:any){
     return this.http.post(this.APIUrl+'/deleteRowInTable/',val);
   }
+  getServExampleByName(val:any){
+  return this.http.post(this.APIUrl+'/getServExampleByName/',val);
+  }
 }

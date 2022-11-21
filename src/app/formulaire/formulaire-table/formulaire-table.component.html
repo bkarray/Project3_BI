@@ -23,14 +23,16 @@
 </div>
 <div id="myDiv" class="infoTable">
 <p-treeTable [value]="data" [columns]="fields" class="tableData" >
+    <!-- (onNodeExpand)="activate($event)" (onNodeCollapse)="activate($event)" -->
    <ng-template pTemplate="header" let-columns cdkDropListGroup>
        <tr  cdkDropList
      [cdkDropListData]="fields" 
        (cdkDropListDropped)="drop($event)"
        cdkDropListOrientation="horizontal">
          
-           <th cdkDrag *ngFor="let field of fields" class="grab">
-               {{field.Name}}
+           <th cdkDrag *ngFor="let field of fields"  [ngClass]="{resize:field.Name.substring(0, 3)!='ID_'}" (resized)="onResized($event)">
+               
+               <p cdkDragHandle style="color:#fff ;" class="grab">{{field.Name}}</p>
            </th>
        </tr>
    </ng-template>
@@ -43,10 +45,10 @@
     
        <!--lignes_parent-->
        <tr class="line"> 
-           <td *ngFor="let field of fields; let i = index;let last=last">
+           <td *ngFor="let field of fields; let i = index;let last=last" [ngStyle]="spaceTable(rowNode.level)==i?{display:'flex'}:{}">
             
-            <p *ngIf="field.Status=='consulté'" [ngClass]="{resize:(field.Type!='character varying(255)')||(field.choises!=null)}" (resized)="onResized($event)">{{fieldVal(rowNode,field.Name)}}</p>
-            <div *ngIf="(field.Status=='modifié')&&inRow(field.Name,rowNode.level)" [ngClass]="{resize:(field.Type!='character varying(255)')||(field.choises!=null)}" (resized)="onResized($event)" [ngSwitch]="field.Type" >
+            
+            <div  *ngIf="(field.Status=='modifié')&&inRow(field.Name,rowNode.level)" [ngClass]="{resize:(field.Type!='character varying(255)')||(field.choises!=null)}" (resized)="onResized($event)" [ngSwitch]="field.Type" >
             <input (change)="changeInField(rowNode,field.Table_Id,field.Name,rowNode['node'][field.Name],rowNode['node']['id'])" 
             type="date" 
             *ngSwitchCase="'date'"   [(ngModel)]="rowNode['node'][field.Name]">
@@ -70,19 +72,24 @@
             </div>
             <p *ngSwitchDefault>undetermined</p>
          </div>
-         <p-treeTableToggler class="toggler" *ngIf="spaceTable(rowNode.level)==i" [rowNode]="rowNode"></p-treeTableToggler>
-         <br>
-         <span *ngIf="((rowNode.node.children)&&isOrganizedRight()&&(rowNode.node.children.length==0)&&(spaceTable(rowNode.level+1)!=-1)&&(!rowNode.node.childrenForm)&&((etapNum==1)||(reponse.allIn))&&(((!reponse.allIn)&&isWorking)||((reponse.allIn)&&(reponseIsOnWork&&isWorking))))&&(spaceTable(rowNode.level)==i)"
-         (click)="addNewRelationForm(rowNode)"
-         class="material-symbols-outlined">
-            subdirectory_arrow_left
-            </span>
-            <span *ngIf="spaceTable(rowNode.level)==i" (click)="deleteRow(rowNode)" class="material-symbols-outlined">
+         <p *ngIf="field.Status=='consulté'"  [ngClass]="{resize:((field.Type!='character varying(255)')||(field.choises!=null))&&(field.Name!='ID_'+rowNode['level'])}" (resized)="onResized($event)" style="margin:0 ;">{{rowNode['node'][field.Name]}}</p>
+         
+         
+  
+
+            <span  *ngIf="spaceTable(rowNode.level)==i" (click)="deleteRow(rowNode)" class="material-symbols-outlined deleteAndDisplay">
                 delete
                 </span>
-         <span *ngIf="(spaceTable(rowNode.level)==i)&&(rowNode.level==0)" (click)="openMoreDisplay(rowNode.node)"  class="material-symbols-outlined">
+                <a class="squishy btn-1"    [ngClass]="{activate: rowNode['node']['expanded']}" *ngIf="spaceTable(rowNode.level)==i" type="button"><span style="top:-15px;color: #fff;">{{rowNode['node']['id']}}</span>
+                    <p-treeTableToggler *ngIf="spaceTable(rowNode.level)==i" [rowNode]="rowNode"></p-treeTableToggler></a>
+         <span *ngIf="(spaceTable(rowNode.level)==i)&&(rowNode.level==0)" (click)="openMoreDisplay(rowNode.node)"  class="material-symbols-outlined deleteAndDisplay">
             dvr
             </span>
+            <span  *ngIf="((rowNode.node.children)&&isOrganizedRight()&&(rowNode.node.children.length==0)&&(spaceTable(rowNode.level+1)!=-1)&&(!rowNode.node.childrenForm)&&((etapNum==1)||(reponse.allIn))&&(((!reponse.allIn)&&isWorking)||((reponse.allIn)&&(reponseIsOnWork&&isWorking))))&&(spaceTable(rowNode.level)==i)"
+            (click)="addNewRelationForm(rowNode)"
+            class="material-symbols-outlined deleteAndDisplay">
+               subdirectory_arrow_left
+               </span>
             
                         </td>
                 
@@ -99,7 +106,7 @@
         <!--new_relation_form-->
         <tr class="line" *ngIf="(rowNode.node.children)&&(rowNode.node.children.length==0)&&(spaceTable(rowNode.level+1)!=-1)&&(rowNode.node.childrenForm)">
             <td *ngFor="let field of fields; let index=index">
-                <div *ngIf="inRow(field.Name,rowNode.level+1)&&(field.Status=='modifié')&&!field.isChanged"  [ngClass]="{resize:(field.Type!='character varying(255)')||(field.choises!=null)}" (resized)="onResized($event)" [ngSwitch]="field.Type" >
+                <div  *ngIf="inRow(field.Name,rowNode.level+1)&&(field.Status=='modifié')&&!field.isChanged" [ngSwitch]="field.Type" >
                     <input 
                     type="date" 
                     *ngSwitchCase="'date'"   [(ngModel)]="newRow[field.Name]">
@@ -138,7 +145,7 @@
 
             <tr class="line" *ngIf="rowNode.node.last&&rowNode.node.openForm">
                 <td *ngFor="let field of fields; let index=index">
-                    <div *ngIf="inRow(field.Name,rowNode.level)&&(field.Status=='modifié')&&!field.isChanged" [ngClass]="{resize:(field.Type!='character varying(255)')||(field.choises!=null)}"  (resized)="onResized($event)" [ngSwitch]="field.Type" >
+                    <div  *ngIf="inRow(field.Name,rowNode.level)&&(field.Status=='modifié')&&!field.isChanged" [ngSwitch]="field.Type" >
                         <input 
                         type="date" 
                         *ngSwitchCase="'date'"   [(ngModel)]="newRow[field.Name]">

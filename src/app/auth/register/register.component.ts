@@ -21,10 +21,6 @@ export class RegisterComponent implements OnInit {
   U_phone: string = '';
   U_email: string = '';
   U_pwd: string = '';
-  U_adresse: string = '';
-  U_ville: string = '';
-  U_province: string = '';
-  U_pays: string = '';
   U_statut: string = '';
 
   ngOnInit(): void {
@@ -62,8 +58,8 @@ export class RegisterComponent implements OnInit {
       U_Statut: this.U_statut,
       U_Email: this.U_email,
       U_Pwd: this.U_pwd,
-      U_Admin: false,
-      U_Client: true,
+      U_Admin: true,
+      U_Client: false,
       U_Transporter:false,
       U_Supplier: false,
     };

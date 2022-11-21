@@ -29,14 +29,30 @@ export class LoginComponent implements OnInit {
     }
   Signin(user:any){
     this.authService.login(user.username,user.password);
-    if(this.authService.isAuthenticated()){
-      alert("vous êtes connecté");
+let users
+      this.authService.getUser().subscribe((data: any) => {
+        
+      
+      let us;
+      data.forEach((u:any)=>{
+        if(u.U_Email===user.username && u.U_Pwd===user.password){
+          us=u;
+        }
+      })
+      if(us){
+        this.authService.authenticated=true;
+        this.authService.authenticatedUser=us;
+        localStorage.setItem("authenticatedUser",JSON.stringify(this.authService.authenticatedUser));
+        alert("vous êtes connecté");
       this.router.navigateByUrl('');
       window.location.reload();
-    }
-    else{
-      alert("mot de passe ou email incorrect")
-    }
+      }
+      else{
+        alert("mot de passe ou email incorrect")
+        this.authService.authenticated=false;
+      }
+    })
+    
 
   }
   getuser(){

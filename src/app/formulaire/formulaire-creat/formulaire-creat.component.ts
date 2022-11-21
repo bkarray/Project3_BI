@@ -47,9 +47,38 @@ export class FormulaireCreatComponent implements OnInit {
   lastTableIndex:number=0;
   shownServNum:any=1
   Types:any=[{Name:'String',value:'character varying(255)'},{Name:'date',value:'date'},{Name:'list',value:'list'},{Name:"integer",value:"integer"},{Name:"boolean",value:"boolean"},{Name:"float",value:"real"}]
-
+  alterModifie:Boolean=false
   ngOnInit(): void { 
 this.getNewFormulaire()
+  }
+
+  alert(){
+    this.alterModifie=true
+    setTimeout(() => {
+      this.alterModifie=false
+    }, 5000);
+  }
+
+  modifyList(index:any){
+    if(this.isGenerated&&this.fields[index].listFormOpen){
+      let indexT=this.formulaire.tables.findIndex((e:any)=> e.Table_Id==this.fields[index].Table_Id)
+      let indexF=this.formulaire.tables[indexT].fields.findIndex((e:any)=>e.Name==this.fields[index].Name)
+      let updatedField={
+        Field_Id:this.fields[index].Field_Id,
+        Table_Id:this.fields[index].Table_Id,
+        Name:this.fields[index].Name,
+        Type:this.fields[index].Type,
+        choises:this.fields[index].choises,
+        Status:this.fields[index].Status,
+        Serv_Id:this.fields[index].Serv_Id,
+        Serv_description:this.fields[index].Serv_description,
+        Field_order:this.formulaire.tables[indexT].fields[indexF].Field_order
+  
+      }
+      this.FormulaireService.updateField(updatedField).subscribe((res:any)=>{})
+    }
+    this.fields[index].listFormOpen=!this.fields[index].listFormOpen
+    
   }
 
   deleteField(index:any){
@@ -131,6 +160,7 @@ this.fields[index].editName=!this.fields[index].editName
   AjoutFieldDansLeSystem(indexT:any){
     let ord=0
     if(this.formulaire.tables[indexT].fields.length!=0) ord=this.formulaire.tables[indexT].fields.length-1
+    if (this.newFieldType=='list') this.newFieldType='character varying(255)'
     let newField={
       Table_Id:this.formulaire.tables[indexT].Table_Id,
       Name:this.newFieldName.replaceAll(' ','_').replaceAll(';','_').toLowerCase(),
@@ -173,6 +203,7 @@ this.fields[index].editName=!this.fields[index].editName
               editSataus:false,
               editName:false,
               editType:false,
+              listFormOpen:false,
               oldName:'',
               Field_order:ord
         
@@ -193,6 +224,7 @@ this.fields[index].editName=!this.fields[index].editName
           editSataus:false,
           editName:false,
           editType:false,
+          listFormOpen:false,
           oldName:'',
           Field_order:ord
     
@@ -244,6 +276,7 @@ this.fields[index].editName=!this.fields[index].editName
       editSataus:false,
       editName:false,
       editType:false,
+      listFormOpen:false,
       oldName:'',
       Field_order:ord
 
@@ -366,7 +399,9 @@ this.fields[index].editName=!this.fields[index].editName
     })
     this.shownServNum=this.currentsrvOrd
 
-   this.isGenerated=true}
+   this.isGenerated=true
+   this.router.navigate(['/formulaire/new/', this.formulaire.Formulaire_Id,1])
+  }
    else{
     alert("verifier l'organization des colones")
    }
@@ -556,6 +591,7 @@ else{
             res['editName']=false
             res['editType']=false
             res['oldName']=''
+            res['listFormOpen']=false
             serv.fields.push(res);
             
             if(this.servsEtap.length<this.formulaire.services.length) field.Status='consulté'
@@ -581,7 +617,7 @@ else{
     return test;
   }
  changeServName(){
-  if(this.currentsrvOrd!=this.shownServNum){
+  if((this.currentsrvOrd!=this.shownServNum)||((this.currentsrvOrd==this.shownServNum)&&(this.formulaire.services.length==this.servsEtap.length))){
    let updateServ={
     Serv_order:Number(this.shownServNum),
     Formulaire_Id:this.formulaire.Formulaire_Id,
@@ -590,6 +626,7 @@ else{
    this.FormulaireService.updateServName(updateServ).subscribe((res:any)=>{
    let index=this.servsEtap.findIndex((e:any)=>e.Serv_order==this.shownServNum)
    this.servsEtap[index].Serv_Name=this.currentsrvName
+   this.alert()
    })
   }
  }
@@ -636,6 +673,7 @@ else{
                     field['editName']=false
                     field['editType']=false
                     field['oldName']=''
+                    field['listFormOpen']=false
                     serv.fields.push(field)
                   })
                 })

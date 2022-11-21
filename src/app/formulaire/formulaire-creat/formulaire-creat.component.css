@@ -310,7 +310,12 @@ table{
 }
 /*search bar*/
 
-
+.alterModifie{
+  color: red;
+  position: relative;
+  left: 45%;
+  width: 10%;
+}
 
 .search {
   width: 50%;
@@ -539,8 +544,7 @@ width: 500px;
   border-radius: 3px;
   box-shadow: -3px -3px 7px #ffffff73, 3px 3px 5px rgba(94, 104, 121, 0.288);
   width: 30%;
-  position: relative;
-  left: 35%;
+  position:absolute;
   padding: 5px 13px 0 0
 }
 .servListing li a select {
@@ -598,4 +602,14 @@ border-radius: 20px;
 box-shadow: 0 2px 15px rgba(64,64,64,.7);
 width: 70px;
 cursor: pointer;
+}
+.role_access{
+  width: 10%;
+  position: relative;
+  left: 70%;
+}
+.sevList{
+ margin-bottom: 20px;
+ position: relative;
+ left: 30%; 
 }

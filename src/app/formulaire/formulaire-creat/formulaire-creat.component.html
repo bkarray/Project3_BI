@@ -1,6 +1,32 @@
 <div class="container">
 <div style="margin-bottom:40px ;">
  <h3 class="titelTop">exemplaire: {{formulaire.Formulaire_Name}}</h3>
+ <div *ngIf="isGenerated">
+    <div class="servNav">
+        <ul class="servListing">
+            <li> <a><span (click)="prevServ()" *ngIf="isGenerated" class="material-symbols-outlined flechBtn">
+                arrow_back
+                </span></a></li>
+            <li>    <select (change)="fieldsToShow()" [(ngModel)]="shownServNum">
+                <option *ngFor="let serv of servsEtap" value="{{serv.Serv_order}}">serv n°{{serv.Serv_order}}</option>
+                <option *ngIf="formulaire.services&&(servsEtap.length!=formulaire.services.length)" value="{{currentsrvOrd}}">new...</option>
+            </select></li>
+            <li><a><span *ngIf="isGenerated" (click)="nextServ()" class="material-symbols-outlined flechBtnup">
+                arrow_forward
+                </span></a> </li>
+        </ul>
+    </div>
+
+
+<p class="role_access">role/access n°{{shownServNum}}</p>
+
+
+<select class="sevList" [(ngModel)]="currentsrvName" (change)="changeServName()">
+    <option *ngIf="currentsrvName==''" value="">choose Service</option>
+<option *ngFor="let serv of formulaire.services" value="{{serv.Serv_Name}}">{{serv.Serv_Name}}<span *ngIf="ifUsed(serv.Serv_Name)">(used)</span> </option>
+</select>
+<p class="alterModifie" *ngIf="alterModifie">Access modifié</p>
+</div>
  <div class="tableFields">
   <table >
     <thead>
@@ -29,7 +55,9 @@
         </select>
         <i class="material-icons editIcon" *ngIf="(field.Name!='ID')&&!isGenerated&&field.editType" (click)="openTypeForm(index)" >edit</i>
     </td>
-    <td><p *ngIf="field.choises!=null">{{field.choises}}</p></td>
+    <td style="display:flex ;"><p  *ngIf="(field.choises!=null)&&!field.listFormOpen">{{field.choises}}</p>
+        <input type="text" style="width: 100px ;" *ngIf="(field.choises!=null)&&field.listFormOpen" [(ngModel)]="field.choises">
+        <i class="material-icons editIcon" *ngIf="(field.choises!=null)" (click)="modifyList(index)">edit</i></td>
     <td *ngIf="field.Name!='ID'"><p *ngIf="!field.editDesc">{{field.Serv_description}} 
         <i *ngIf="!isGenerated"  class="material-icons editIcon" (click)="editDesc(index)" >edit</i></p>
         <input *ngIf="field.editDesc" type="text" [(ngModel)]="field.Serv_description">
@@ -64,8 +92,9 @@
          <option *ngFor="let type of Types" value="{{type.value}}">{{type.Name}}</option>
         </select>
     </td>
-    <td><input *ngIf="newFieldType=='list'" type="text" [(ngModel)]="newfieldChoises" placeholder="separer les choix par ';'...">
-    <td> <input type="text" [(ngModel)]="newFieldStatus"></td>
+    <td><input *ngIf="newFieldType=='list'" type="text" [(ngModel)]="newfieldChoises" placeholder="separer les choix par ';'..."></td>
+
+    <td><input type="text" [(ngModel)]="newFieldStatus"></td>
     <td></td>
     <td *ngIf="isGenerated"><select [(ngModel)]="newFieldLevel">
         <option value="">choose level</option>
@@ -105,31 +134,7 @@
 </div>
 
 <!--organisation_servs-->
-<div *ngIf="isGenerated">
-    <div class="servNav">
-        <ul class="servListing">
-            <li> <a><span (click)="prevServ()" *ngIf="isGenerated" class="material-symbols-outlined flechBtn">
-                arrow_back
-                </span></a></li>
-            <li>    <select (change)="fieldsToShow()" [(ngModel)]="shownServNum">
-                <option *ngFor="let serv of servsEtap" value="{{serv.Serv_order}}">serv n°{{serv.Serv_order}}</option>
-                <option *ngIf="formulaire.services&&(servsEtap.length!=formulaire.services.length)" value="{{currentsrvOrd}}">new...</option>
-            </select></li>
-            <li><a><span *ngIf="isGenerated" (click)="nextServ()" class="material-symbols-outlined flechBtnup">
-                arrow_forward
-                </span></a> </li>
-        </ul>
-    </div>
 
-
-<p>role/access n°{{shownServNum}}</p>
-
-
-<select [(ngModel)]="currentsrvName" (change)="changeServName()"  style="margin-bottom:20px ;">
-    <option *ngIf="currentsrvName==''" value="">choose Service</option>
-<option *ngFor="let serv of formulaire.services" value="{{serv.Serv_Name}}">{{serv.Serv_Name}}<span *ngIf="ifUsed(serv.Serv_Name)">(used)</span> </option>
-</select>
-</div>
 <div>
 
 <!--organisation_niveau-->

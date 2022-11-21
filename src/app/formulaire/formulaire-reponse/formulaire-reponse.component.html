@@ -14,7 +14,7 @@
     <table *ngIf="reponse.allIn">
         <tr *ngFor="let serv Of services;let index=index">
           <td><p>access n°{{serv.Serv_order}}</p></td>
-        <td>{{serv.Serv_Name}}</td>
+        <td class="servOpen" (click)="openListServ(serv.Serv_Name)">{{serv.Serv_Name}}</td>
         <td><select *ngIf="isAdmin" (change)="updateServ(index)" [(ngModel)]="serv.Serv_User">
             <option value="null">choose user</option>
             <option *ngFor="let user of serv.users" value="{{user.U_Id}}"> {{user.U_FirstName}} {{user.U_LastName}}</option>
@@ -26,7 +26,7 @@
     <table *ngIf="!reponse.allIn">
       <tr *ngFor="let serv Of etapes;let index=index">
         <td><p>role n°{{serv.Serv_order}}</p></td>
-      <td>{{serv.Serv_Name}}</td>
+      <td class="servOpen" (click)="openListServ(serv.Serv_Name)">{{serv.Serv_Name}}</td>
       <td><select *ngIf="isAdmin" (change)="updateServ(index)" [(ngModel)]="serv.Serv_User">
           <option value="null">choose user</option>
           <option *ngFor="let user of serv.users" value="{{user.U_Id}}"> {{user.U_FirstName}} {{user.U_LastName}}</option>
@@ -54,7 +54,7 @@
       <tr *ngIf="!openNewServFormIsOpen">
         <td></td>
         <td></td>
-        <td><span *ngIf="reponse.reponse_level" (click)="openNewServForm()" class="material-symbols-outlined canClick">
+        <td><span (click)="openNewServForm()" class="material-symbols-outlined canClick">
           add_circle
           </span></td>
       </tr>
@@ -76,3 +76,51 @@
 <div class="bg" *ngIf="stopAll">
   <div class="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
 </div>
+
+
+
+<div class="bg" *ngIf="servListIsOpen">
+  <div class="listServ" *ngIf="servListIsOpen">
+  <div class="leaderboard">
+    <div class="head" style="display:table;">
+      <i (click)="closeListServ()"  class="material-icons close">
+        close
+      </i>
+      <span class="material-symbols-outlined settingIcon">
+        settings
+        </span>
+        <h1 class="head leftMvt" >{{servToShow.Serv_Name}}</h1>
+
+    </div>
+    <div class="body">
+      <ol *ngIf="!newUserFormIsOpen">
+         <li *ngFor="let user of servToShow.users;let index=index"  
+       class="ling"><mark>{{user.U_FirstName}}  {{user.U_LastName}}</mark><small><span (click)="deleteUserShow(index)"
+          class="material-symbols-outlined deleteServ">
+        cancel
+        </span></small> </li>
+        <li class="ling" (click)="openAndCloseUserForm()" > <mark>add new User...</mark></li>
+      </ol>
+      <div class="select-dropdown"  *ngIf="newUserFormIsOpen" >
+        <select [(ngModel)]="newUserToAdd">
+          <option value="0">choose user</option>
+          <option *ngFor="let user of servToShow.usersNotIn" value="{{user.U_Id}}">{{user.U_FirstName}}  {{user.U_LastName}}</option>
+        </select>
+      </div>
+  
+      <div class="btn-block-serv" *ngIf="newUserFormIsOpen" >
+        
+        <span (click)="openAndCloseUserForm()"  class=" returnBtn material-symbols-outlined">
+          keyboard_return
+          </span>
+        <span (click)="addUserShow()"   class="addBtn material-symbols-outlined">
+          add_circle
+          </span>
+        
+      </div>
+  
+    </div>
+  
+  </div>
+  </div>
+  </div>

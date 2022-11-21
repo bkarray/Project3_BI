@@ -70,10 +70,10 @@ export class AuthService {
 
   login(username:string,password:string){
     this.getUser().subscribe((data: any) => {
-      this.users = data;
-    });
+      
+   
     let user;
-    this.users.forEach((u:any)=>{
+    data.forEach((u:any)=>{
       if(u.U_Email===username && u.U_Pwd===password){
         user=u;
       }
@@ -86,6 +86,8 @@ export class AuthService {
     else{
       this.authenticated=false;
     }
+    this.users = data;
+  });
   }
   loadUser(){
     let user=localStorage.getItem('authenticatedUser');

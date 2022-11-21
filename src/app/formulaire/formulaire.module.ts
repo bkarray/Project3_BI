@@ -25,6 +25,7 @@ import { LineComponent } from './line/line.component';
 import { OneLineComponent } from './one-line/one-line.component';
 import { AngularResizedEventModule } from 'angular-resize-event';
 import {NgxDragResizeModule} from 'ngx-drag-resize';
+
 @NgModule({
   declarations: [
    FormulaireListComponent,

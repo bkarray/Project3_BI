@@ -415,8 +415,8 @@ width: 500px;
 }
 
 .close{
-  position:fixed;
-  right: 40%;
+  position:relative;
+  left:0;
 }
 .material-symbols-outlined {
   font-variation-settings:
@@ -424,6 +424,7 @@ width: 500px;
   'wght' 400,
   'GRAD' 0,
   'opsz' 20;
+  
 }
 
 .canClick{
@@ -543,4 +544,188 @@ width: 500px;
   100% {
     transform: rotate(360deg);
   }
+}
+
+
+.listServ {
+	width: 300px;
+	height: auto;
+  max-height: 400px;
+	border-radius: 10px;
+	background-color: white;
+	box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	z-index: 1;
+	overflow: hidden;
+  overflow-y:auto;
+  
+}
+
+
+
+.bg{
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1040;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(15px);
+}
+/* leaderboard */
+.leaderboard {
+	background: linear-gradient(to bottom, #3a404d, #181c26);
+}
+
+/* head */
+.leaderboard .head {
+	padding: 20px 16px;
+  width: 100%;
+  display: table;
+	color: snow;
+	font-size: 20px;
+	text-align: center;
+}
+.leaderboard .head {
+	display: inline-block;
+	margin-left: 4px;
+}
+.head{
+  display: table;
+}
+h1.head{
+  top:-10px;
+  right: 20px;
+}
+.leftMvt{
+  left:20px
+}
+
+/* body */
+.leaderboard .body {
+	color: snow;
+	font-size: 16px;
+}
+ol{
+
+  margin-bottom: 0;
+  padding: 0;
+}
+.deleteServ:hover{
+  color: rgb(255, 0, 0);
+}
+.servOpen:hover{
+color: rgb(0, 120, 232);
+}
+
+.leaderboard ol {
+	counter-reset: number; /* 定義和初始化計數器 */
+}
+.leaderboard .ling {
+	padding: 16px;
+	display: flex;
+  background: #034188;
+}
+.leaderboard .ling mark {
+	flex-grow: 1;
+	color: snow;
+	background-color: transparent;
+}
+.leaderboard .ling:before {
+	counter-increment: number; /* 遞增計數器 */
+	content: counter(number) "."; /* 顯示計數器 */
+	margin-right: 4px;
+}
+
+.leaderboard .ling:nth-child(even) {
+	background: #0758b4;
+}
+.ling{
+  list-style-type:none ;
+  cursor: pointer;
+}
+.ling:hover {
+  z-index: 2;
+  overflow: visible;
+  background-color: #01152c !important;
+  transition: all 0.35s ease-in-out !important;
+  transform: scaleX(1.06) scaleY(1.03) !important;
+  
+}
+button.btn-block-serv{
+  margin-top: 10px;
+  text-align: center;
+  display: flex;
+  color: white;
+}
+.returnBtn{
+  margin: 20px;
+  left:-30px;
+  cursor: pointer;
+  position: relative;
+  left: 15%;
+}
+.returnBtn:hover{
+  color: #C21010;
+}
+.addBtn{
+  margin: 20px;
+  cursor: pointer;
+  position: relative;
+  left: 40%;
+}
+.addBtn:hover{
+  color: rgb(6, 255, 230);
+}
+
+
+
+.select-dropdown,
+.select-dropdown * {
+  margin:0;
+  padding: 0;
+  position: relative;
+  box-sizing: border-box;
+}
+.select-dropdown {
+  position: relative;
+  background-color: #E6E6E6;
+  border-radius: 4px;
+  margin: 30px 30px 0 30px;
+}
+.select-dropdown select {
+  font-size: 1rem;
+  font-weight: normal;
+  max-width: 70%;
+  padding: 8px 24px 8px 10px;
+  border: none;
+  background-color: transparent;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+  appearance: none;
+}
+.select-dropdown select:active, .select-dropdown select:focus {
+  outline: none;
+  box-shadow: none;
+}
+.select-dropdown:after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 8px;
+  width: 0;
+  height: 0;
+  margin-top: -2px;
+  border-top: 5px solid #aaa;
+  border-right: 5px solid transparent;
+  border-left: 5px solid transparent;
+}
+
+.settingIcon{
+  position: relative;
+  right: 30%;
 }

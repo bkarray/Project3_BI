@@ -10,17 +10,18 @@ import {
   transferArrayItem
 } from '@angular/cdk/drag-drop';
 import { ResizedEvent } from 'angular-resize-event';
-import * as $ from 'jquery';
-
+import {ChangeDetectorRef } from '@angular/core';
 @Component({
   selector: 'app-formulaire-table',
   templateUrl: './formulaire-table.component.html',
   styleUrls: ['./formulaire-table.component.css'],
 })
 export class FormulaireTableComponent implements OnInit {
+  
  
 
   constructor(
+    private cdref: ChangeDetectorRef,
     private authService: AuthService,
     private service:SharedService,
     private router: Router,
@@ -47,6 +48,7 @@ export class FormulaireTableComponent implements OnInit {
    listLig:boolean=false
    orderLigs:any=[]
    listIsOpen:any=true
+   thereIsWork: boolean=false;
 
    ngOnInit(): void {
     if(!this.pageOpened){
@@ -55,10 +57,26 @@ export class FormulaireTableComponent implements OnInit {
     else{
       this.data=this.info
     }
+   
   console.log(this.data)
   }
 
   onResized(event: ResizedEvent): void {
+    //console.log(event);
+    
+  }
+  ngAfterContentChecked() {
+    this.cdref.detectChanges();
+  }
+
+  activate(node:any){
+    
+    console.log(node);
+  if(node.children.length!=0){  
+    if(node.children){
+    node.expanded=!node.expanded;
+    }}
+
   }
 
   openlist(){
@@ -448,8 +466,9 @@ upDateOrderLigs(){
       this.newRow={}
       this.formIsOpen=false
       this.startNew=false
-      this.ngOnInit()
       window.location.reload;
+      this.ngOnInit()
+      
     })
 
    })
@@ -490,9 +509,10 @@ upDateOrderLigs(){
 
 
   fieldVal(node:any,name:string){
+    node['visible']=!node['visible']
     
     if(node['node'][name]) return node['node'][name]
-    else if(name.substring(0, 4)=='ID_'+node.level) return node['node']['id']
+    //else if(name.substring(0, 4)=='ID_'+node.level) return node['node']['id']
     else return ''
   }
   fieldValLig(lig:any,name:any){
@@ -956,6 +976,7 @@ async configurationStepByStep(reponse:any,res:any){
            this.reponse.tables.forEach((tab:any)=>{
             tab.fields.forEach((field:any)=>{
               if(field.choises!=null) field['choisesList']=field.choises.split(";")
+              if(field.Status=='modifié') this.thereIsWork=true
               this.fields.push(field)
             })
            })

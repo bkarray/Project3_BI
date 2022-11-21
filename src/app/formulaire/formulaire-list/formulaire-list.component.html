@@ -9,25 +9,13 @@
         <tbody *ngFor="let formulaire of formulaires;let index=index">
           <br>
         <tr class="ligneMere">
-            <td style="text-align:center;" class="canClick" (click)="openFormPage(formulaire.Formulaire_Id)" colspan="3"><h3 class="canClick">{{formulaire.Formulaire_Name}}</h3></td>
-            <td style="text-align:right;" class="cancelIcon canClick" (click)="opendeleteForm(formulaire.Formulaire_Id,formulaire.Formulaire_Name)"><span class="material-symbols-outlined">
-              cancel
-              </span></td>
-           
-            <td><a class="d-flex justify-content-end canClick" (click)="open(index)">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
-                  fill="currentColor"
-                  class="bi bi-caret-down"
-                  viewBox="0 0 16 16"
-                >
-                  <path
-                    d="M3.204 5h9.592L8 10.481 3.204 5zm-.753.659 4.796 5.48a1 1 0 0 0 1.506 0l4.796-5.48c.566-.647.106-1.659-.753-1.659H3.204a1 1 0 0 0-.753 1.659z"
-                  />
-                </svg>
-              </a></td>   
+          <td  class="cancelIcon canClick" (click)="opendeleteForm(formulaire.Formulaire_Id,formulaire.Formulaire_Name)"><span class="material-symbols-outlined">
+            cancel
+            </span></td>
+            <td style="text-align:left;" class="canClick" (click)="openFormPage(formulaire.Formulaire_Id)" colspan="3"><h3 class="canClick">{{formulaire.Formulaire_Name}}</h3></td>
+            <td><span (click)="open(index)" class="material-symbols-outlined canClick">
+                arrow_drop_down_circle
+                </span></td>   
         </tr>
         <br>
         <tr *ngIf="formulaire.isOpen"> 
