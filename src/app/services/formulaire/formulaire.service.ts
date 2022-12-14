@@ -70,6 +70,9 @@ export class FormulaireService {
   getTables(id:any){
     return this.http.get(this.APIUrl+'/table/'+id)
   }
+  getAllTables(){
+    return this.http.get(this.APIUrl+'/table/')
+  }
   getAllInformation(val:any):Observable<any[]> {
     return this.http.post<any[]>(this.APIUrl+'/getAll/',val)
   }
@@ -78,6 +81,9 @@ export class FormulaireService {
   }
   getAllFields(id:any){
     return this.http.get(this.APIUrl+'/getAllFields/'+id)
+  }
+  getFieldsInArchive(id:any){
+    return this.http.get(this.APIUrl+'/getFieldsInArchive/'+id)
   }
   updateField(val:any){
     return this.http.put(this.APIUrl+'/fields/',val)
@@ -151,5 +157,11 @@ export class FormulaireService {
   }
   getServExampleByName(val:any){
   return this.http.post(this.APIUrl+'/getServExampleByName/',val);
+  }
+  getFieldOutOfArchive(val:any){
+    return this.http.post(this.APIUrl+'/getFieldOutOfArchive/',val);
+  }
+  getDataList(val:any){
+    return this.http.post(this.APIUrl+'/getDataList/',val);
   }
 }

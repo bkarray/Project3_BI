@@ -29,9 +29,10 @@
                 <td><p *ngIf="(reponse.reponse_level!=null)&&(!reponse.allIn)">{{reponse.currentServ.Serv_Name}}</p></td>
                 <td><p *ngIf="(reponse.reponse_level!=null)&&(!reponse.allIn)">{{reponse.currentServ.userName}}</p>
                 <p *ngIf="(reponse.reponse_level!=null)&&(reponse.allIn)">All in Work</p></td>
-                <td (click)="putReponseInArchive(reponse.Reponse_Id,index,indexR)" class="canClick"><span class="material-symbols-outlined">
+                <td *ngIf="isAdmin" (click)="openDeleteRep(reponse.Reponse_Id,reponse.reponse_Name,index,indexR)" class="canClick"><span class="material-symbols-outlined">
                   cancel
                   </span></td>
+                  <td *ngIf="!isAdmin"></td>
                 </tr>
             <tr *ngIf="isAdmin">
                 <td></td>
@@ -70,7 +71,7 @@
 
 
 
-<div class="bg" *ngIf="creatFormIsOpen||todelete||servFormIsOpen||servShowIsOpen||servList">
+<div class="bg" *ngIf="creatFormIsOpen||todelete||servFormIsOpen||servShowIsOpen||servList||todeleteRep">
 <!--_créer_formulaire-->
 <div class="testbox" *ngIf="creatFormIsOpen">
   <form >
@@ -155,6 +156,28 @@
 </div>
 </div>
 
+
+
+<div class="deletePopUp" *ngIf="todeleteRep">
+  <div class="modal-dialog modal-confirm">
+    <div class="modal-content">
+      <div class="modal-header flex-column">
+        <div class="icon-box">
+          <i class="material-icons">&#xE5CD;</i>
+        </div>						
+        <h4 class="modal-title w-100">Are you sure?</h4>	
+      </div>
+      <div class="modal-body">
+        <p>Do you really want to put {{deleteReponseName}} in archive?</p>
+      </div>
+      <div class="modal-footer justify-content-center">
+        <button type="button" class="btn btn-secondary" (click)="openDeleteRep(null,'',1,-1)">Cancel</button>
+        <button type="button" class="btn btn-danger" (click)="putReponseInArchive(deleteReponceID,deleteFormID,deleteReponceIndex)">Delete</button>
+      </div>
+    </div>
+  
+  </div>
+  </div>
 
 
 

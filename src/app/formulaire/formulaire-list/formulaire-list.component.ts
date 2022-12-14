@@ -42,7 +42,12 @@ export class FormulaireListComponent implements OnInit {
   userFormShow:boolean=false
   servShowIsOpen:boolean=false
   usersToAddShow:any=[]
+  deleteReponceID:any=null
+  deleteReponseName:any=''
+  todeleteRep:any=false
   isAdmin:boolean=false
+  deleteReponceIndex:any=-1
+
 
 
   ngOnInit(): void {
@@ -56,6 +61,14 @@ export class FormulaireListComponent implements OnInit {
     this.todelete=!this.todelete
 
   }
+  openDeleteRep(id:any,name:any,formIndex:any,deleteReponceIndex:any){
+    this.deleteFormID=formIndex;
+    this.deleteReponceID=Number(id);
+    this.deleteReponceIndex=Number(deleteReponceIndex)
+    this.deleteReponseName=name;
+    this.todeleteRep=!this.todeleteRep;
+  }
+
   deleteServ(index:any){
 
 this.FormulaireService.putServInArchive(this.servsExamples[index].Serv_Id).subscribe((res:any)=>{
@@ -220,6 +233,7 @@ this.FormulaireService.deleteFormulaire(this.deleteFormID).subscribe((res:any)=>
   putReponseInArchive(id:any,indexF:any,indexR:any){
 this.FormulaireService.putReponseInArchive(id).subscribe((res:any)=>{
   this.formulaires[indexF].reponses.splice(indexR,1)
+  this.openDeleteRep(null,'',1,-1)
 })
   }
   closeForm(){
@@ -274,7 +288,9 @@ if(this.services.length!=0){
 
 
   openFormPage(formulaire:any){
-    this.router.navigate(['/formulaire/new/', formulaire,1])
+    if(this.isAdmin){
+      this.router.navigate(['/formulaire/new/', formulaire,1])
+    }
   }
 
   addNewReponse(Formulaire_Id:any){

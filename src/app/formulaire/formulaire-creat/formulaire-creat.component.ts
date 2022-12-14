@@ -37,17 +37,27 @@ export class FormulaireCreatComponent implements OnInit {
   currentsrvOrd:any=1
   currentsrvName:any=''
   newFieldLevel:any=''
+  ImportListIsopen:boolean=false
+  allTables:any=[]
+  orderFields:any=[]
   fields:any=[{
     Name:'ID',
     Type:'auto_number',
     Status:'consulté'
   }]
+  fieldsInArchive:any=[]
   servsEtap:any=[]
   isGenerated:boolean=false
   lastTableIndex:number=0;
   shownServNum:any=1
   Types:any=[{Name:'String',value:'character varying(255)'},{Name:'date',value:'date'},{Name:'list',value:'list'},{Name:"integer",value:"integer"},{Name:"boolean",value:"boolean"},{Name:"float",value:"real"}]
   alterModifie:Boolean=false
+  archiveListIsOpen:boolean=false
+  todeleteField:boolean=false
+  deleteFieldName:any=''
+  toDeleteFieldIndex:any=null
+  fieldExistInArchiveTab:boolean=false;
+  indexToExtract:any=-1
   ngOnInit(): void { 
 this.getNewFormulaire()
   }
@@ -80,6 +90,11 @@ this.getNewFormulaire()
     this.fields[index].listFormOpen=!this.fields[index].listFormOpen
     
   }
+  openDeleteField(index:any,name:any){
+    this.toDeleteFieldIndex=Number(index)
+    this.deleteFieldName=name
+    this.todeleteField=!this.todeleteField
+  }
 
   deleteField(index:any){
 if(!this.isGenerated){    
@@ -87,8 +102,11 @@ if(!this.isGenerated){
       let indexF=tab.fields.findIndex((e:any)=> e.Name==this.fields[index].Name)
       if(indexF!=-1) tab.fields.splice(indexF,1)
     })
-    this.fields.splice(index,1)}
+    this.fields.splice(index,1)
+  this.openDeleteField(null,'')
+}
     else{
+      this.fieldsInArchive.push(this.fields[index])
       let deletedField={
         Name:this.fields[index].Name,
         Table_Id:this.fields[index].Table_Id
@@ -104,11 +122,38 @@ if(!this.isGenerated){
           console.log(serv,this.fields[index],indexF)
           serv.fields.splice(indexF,1)
         })
+        console.log(this.fieldsInArchive);
+        
+        
         this.fields.splice(index,1)
+        this.openDeleteField(null,'')
       })
     }
   }
+getOutOfArchive(index:any){
+  let fieldToSave={
+    Name:this.fieldsInArchive[index].Name,
+    Table_Id:this.fieldsInArchive[index].Table_Id
+  }
+  console.log(fieldToSave);
+  
+  this.FormulaireService.getFieldOutOfArchive(fieldToSave).subscribe((res:any)=>{
 
+    window.location.reload();
+  })
+
+}
+
+openCloseImportLisTab(){
+  if(!this.ImportListIsopen){
+    // this.FormulaireService.
+  }
+}
+
+
+openArchiveList(){
+  this.archiveListIsOpen=!this.archiveListIsOpen;
+}
   editSatus(index:any){
     this.fields[index].editSataus=!this.fields[index].editSataus
     console.log(this.fields[index])
@@ -226,10 +271,16 @@ this.fields[index].editName=!this.fields[index].editName
           editType:false,
           listFormOpen:false,
           oldName:'',
-          Field_order:ord
-    
+          Field_order:ord,
+          orderFront:this.fields.length-1
         }
-        this.fields.push(newField2)}
+        this.fields.push(newField2)
+        let newOrder={
+          Name:newField2.Name,
+          orderFront:this.fields.length-1
+        }
+        this.orderFields.push(newOrder)}
+        
         this.openfieldForm()
         this.newFieldName=''
         this.newFieldType='character varying(255)'
@@ -241,6 +292,21 @@ this.fields[index].editName=!this.fields[index].editName
       })
               }
   }
+confirmAdd(){
+  let newName=this.newFieldName.replaceAll(' ','_').replaceAll(';','_').toLowerCase();
+  let test=this.fieldsInArchive.findIndex((e:any)=>e.Name==newName)
+  if(test==-1){
+    this.addnewfield()
+  }
+  else{
+    console.log(this.fieldsInArchive[test]);
+    this.fieldExistInArchiveTabOpen(test)
+  }
+}
+fieldExistInArchiveTabOpen(index:any){
+this.fieldExistInArchiveTab=!this.fieldExistInArchiveTab
+this.indexToExtract=index
+}
 
   addnewfield(){
    if(!this.isGenerated) { 
@@ -278,10 +344,15 @@ this.fields[index].editName=!this.fields[index].editName
       editType:false,
       listFormOpen:false,
       oldName:'',
-      Field_order:ord
-
+      Field_order:ord,
+      orderFront:this.fields.length-1
     }
     this.fields.push(newField2)
+                  let newOrder={
+                    Name:newField2.Name,
+                    orderFront:this.fields.length-1
+                  }
+                  this.orderFields.push(newOrder)
     this.openfieldForm()
     this.newFieldName=''
     this.newFieldType='character varying(255)'
@@ -289,7 +360,8 @@ this.fields[index].editName=!this.fields[index].editName
     this.newFieldStatus='no description'
     console.log(this.formulaire)
 
-  }}
+  }
+}
   else{
     if(this.newFieldLevel!=''){
       if(this.newFieldLevel!='new'){
@@ -428,6 +500,27 @@ this.fields[index].editName=!this.fields[index].editName
  
     console.log(this.formulaire.tables,this.fields)
     }
+
+    dropFields(event: CdkDragDrop<any>) {
+
+  
+      if (event.previousContainer === event.container) {
+           moveItemInArray(
+             event.container.data,
+             event.previousIndex,
+             event.currentIndex
+           );
+         }
+      this.fields.forEach((field:any,i:any)=>{
+        console.log('8585',this.orderFields,field);
+        
+        if(field.Name!='ID'){let index=this.orderFields.findIndex((e:any)=>e.Name==field.Name)
+        this.orderFields[index].orderFront=i
+        this.fields[i]['orderFront']=i}
+      })
+    
+       console.log(this.formulaire.tables,this.fields)
+       }
     organisationFieldsOrder(){
       
       for(let i=0;i<this.formulaire.tables.length;i++){
@@ -495,11 +588,7 @@ this.fields[index].editName=!this.fields[index].editName
       let indexP=this.servsEtap.findIndex((e:any)=> e.Serv_Id==this.fields[1].Serv_Id)
       if(indexP!=-1) this.servsEtap[indexP].fields=this.fields
       this.fields=this.servsEtap[index].fields
-      this.fields.sort((a:any, b:any) => {
-        if(a.Name=='ID') return -1;
-        else if(b.Name=='ID') return 1
-
-        else return a.Name.localeCompare(b.Name)})
+      this.fields=this.setOrder(this.fields)
 
       console.log(indexP,index,this.servsEtap)
       this.currentsrvName=this.servsEtap[index].Serv_Name
@@ -517,11 +606,7 @@ else{
       field.Serv_Id=null
     }
   })
-  this.fields.sort((a:any, b:any) => {
-    if(a.Name=='ID') return -1;
-    else if(b.Name=='ID') return 1
-
-    else return a.Name.localeCompare(b.Name)})
+  this.fields=this.setOrder(this.fields)
 }
   }
 
@@ -631,6 +716,23 @@ else{
   }
  }
 
+ setOrder(fields:any):any{
+  console.log('testtet',this.orderFields);
+  
+  fields.forEach((field:any,i:any)=>{
+    let refrenceOrder=this.orderFields.find((e:any)=>e.Name==field.Name)
+    if(refrenceOrder){
+      field['orderFront']=refrenceOrder.orderFront
+    }
+    else{
+      field['orderFront']=i
+    }
+    
+  })
+  fields.sort((a:any,b:any)=>a.orderFront-b.orderFront)
+  return fields
+ }
+
   getNewFormulaire(){
     this.authService.loadUser();
     this.route.params.subscribe((param:any)=>{
@@ -647,13 +749,27 @@ else{
               
               tables[index]['fields']=[]
               this.FormulaireService.getAllFields(tables[index].Table_Id).subscribe((fields:any)=>{
+              this.FormulaireService.getFieldsInArchive(tables[index].Table_Id).subscribe((fieldsInArchive:any)=>{
+                tables[index]['fields']=fields
+                fields.forEach((field:any,a:any)=>{
+                  field.Status='consulté'
+                  this.fields.push(field)
+                  field['orderFront']=a
+                  let newOrder={
+                    Name:field.Name,
+                    orderFront:a
+                  }
+                  this.orderFields.push(newOrder)
+                })
+                console.log('444',this.orderFields);
+                
+                fieldsInArchive.forEach((field:any)=>{
+                  this.fieldsInArchive.push(field);
+                })
+              })
                
                   
-              tables[index]['fields']=fields
-              fields.forEach((field:any)=>{
-                field.Status='consulté'
-                this.fields.push(field)
-              })
+
                 
               
               })  
@@ -677,11 +793,7 @@ else{
                     serv.fields.push(field)
                   })
                 })
-                serv.fields.sort((a:any, b:any) => {
-                  if(a.Name=='ID') return -1;
-                  else if(b.Name=='ID') return 1
-          
-                  else return a.Name.localeCompare(b.Name)})
+                serv.fields=this.setOrder(serv.fields)
               })
               this.servsEtap=servs1
 
@@ -689,11 +801,7 @@ else{
               else {this.currentsrvOrd=servs.length
                 let index=servs1.findIndex((e:any)=> e.Serv_order==servs.length)
                 this.fields=servs1[index].fields
-                this.fields.sort((a:any, b:any) => {
-                  if(a.Name=='ID') return -1;
-                  else if(b.Name=='ID') return 1
-          
-                  else return a.Name.localeCompare(b.Name)})
+                this.fields=this.setOrder(this.fields)
               }
               this.shownServNum=this.currentsrvOrd
 
@@ -712,6 +820,8 @@ else{
         
                 else return a.Name.localeCompare(b.Name)})
               console.log(this.formulaire,this.fields)
+              console.log("archive",this.fieldsInArchive);
+              
             })
 
               

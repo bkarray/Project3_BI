@@ -41,10 +41,15 @@
         </tr>
     </thead>
 
-    <tbody class="tableFields">
+    <tbody class="tableFields"
+    cdkDropList  
+class="example-list"
+[cdkDropListData]="fields" 
+(cdkDropListDropped)="dropFields($event)"
+cdkDropListOrientation="vertical">
 
         <!--ligne_crées-->
-   <tr  *ngFor="let field of fields;let index=index"> 
+   <tr cdkDrag class="grab"  *ngFor="let field of fields;let index=index"> 
     <td> <p *ngIf="!field.editName">{{field.Name}}<i class="material-icons editIcon" *ngIf="(field.Name!='ID')&&!isGenerated" (click)="openNameForm(index)" >edit</i></p>
         <input style="width: 100px ;" type="text" *ngIf="field.editName" [(ngModel)]="field.Name" placeholder="field Name...">
         <i class="material-icons editIcon" *ngIf="field.editName&&(field.Name!='ID')" (click)="closeNameForm(index)">edit</i></td>
@@ -80,7 +85,7 @@
         <!-- <i *ngIf="field.editSataus||(field.Status==null)" class="material-icons editIcon" (click)="editSatus(index)">edit</i> -->
      </td>
      <td *ngIf="!isGenerated"></td>
-     <td style="text-align:left ;"><span *ngIf="(field.Name!='ID')" class="material-symbols-outlined" (click)="deleteField(index)">
+     <td style="text-align:left ;"><span *ngIf="(field.Name!='ID')" class="material-symbols-outlined" (click)="openDeleteField(index,field.Name)">
         cancel
         </span></td></tr>
 <!--espace_ajout_field-->
@@ -109,7 +114,7 @@
     <td></td>
     <td></td>
     <td><a class="myButton" (click)="openfieldForm()">cancel</a></td>
-    <td><a class="myButton" (click)="addnewfield()">confirmer</a></td>
+    <td><a class="myButton" (click)="confirmAdd()">confirmer</a></td>
     <td *ngIf="isGenerated"></td>
     <td *ngIf="!isGenerated"></td>
 
@@ -132,8 +137,10 @@
 </div>
 
 </div>
+<div class="currentserv">
+    <a *ngIf="fieldsInArchive.length!=0" class="myButton" (click)="openArchiveList()">Archive</a>
+    </div>
 
-<!--organisation_servs-->
 
 <div>
 
@@ -170,4 +177,93 @@ id="{{index}}">
         </div>
 
 </div>
+</div>
+
+
+<div class="bg" *ngIf="archiveListIsOpen||todeleteField ||fieldExistInArchiveTab">
+    <div  class="testbox" *ngIf="archiveListIsOpen">
+<table>
+    <thead>
+        <tr>
+        <th>name</th>
+        <th class="removeArchive"><span class="material-symbols-outlined" (click)="openArchiveList()">
+            cancel
+            </span></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let field of fieldsInArchive;let index=index">
+            <td>{{field.Name}}</td>
+            <td class="removeArchive"><span class="material-symbols-outlined" (click)="getOutOfArchive(index)">
+                add_circle
+                </span></td>
+        </tr>
+    </tbody>
+    
+</table>
+    </div>
+    
+
+    <div class="deletePopUp" *ngIf="todeleteField">
+        <div class="modal-dialog modal-confirm">
+          <div class="modal-content">
+            <div class="modal-header flex-column">
+              <div class="icon-box">
+                <i class="material-icons">&#xE5CD;</i>
+              </div>						
+              <h4 class="modal-title w-100">Are you sure?</h4>	
+            </div>
+            <div class="modal-body">
+              <p>Do you really want to put {{deleteFieldName}} in archive?</p>
+            </div>
+            <div class="modal-footer justify-content-center">
+              <button type="button" class="btn btn-secondary" (click)="openDeleteField(null,'')">Cancel</button>
+              <button type="button" class="btn btn-danger" (click)="deleteField(toDeleteFieldIndex)">Delete</button>
+            </div>
+          </div>
+        
+        </div>
+        </div>
+        <div class="deletePopUp" *ngIf="fieldExistInArchiveTab">
+            <div class="modal-dialog modal-confirm">
+              <div class="modal-content">
+                <div class="modal-header flex-column">						
+                  <h4 class="modal-title w-100">You Already created this field and deleted it!</h4>	
+                </div>
+                <div class="modal-body">
+                  <p>Do you want to get {{fieldsInArchive[indexToExtract].Name}} of type {{fieldsInArchive[indexToExtract].Type}} out of archive?</p>
+                </div>
+                <div class="modal-footer justify-content-center">
+                  <button type="button" class="btn btn-secondary" (click)="fieldExistInArchiveTabOpen(-1)">Cancel</button>
+                  <button type="button" class="btn btn-confirm" (click)="getOutOfArchive(indexToExtract)">Confirm</button>
+                </div>
+              </div>
+            
+            </div>
+            </div>
+            <!-- <div class="deletePopUp">
+                <div class="modal-dialog modal-confirm">
+                  <div class="modal-content">
+                    <div class="modal-header flex-column">						
+                      <ul>
+                        <li>aa</li>
+                        <li>bb
+                            <ul>
+                                <ol>cc</ol>
+                                <ol>dd</ol>
+                            </ul>
+                        </li>
+                      </ul>
+                    </div>
+                    <div class="modal-body">
+                      <p>Do you want to get {{fieldsInArchive[indexToExtract].Name}} of type {{fieldsInArchive[indexToExtract].Type}} out of archive?</p>
+                    </div>
+                    <div class="modal-footer justify-content-center">
+                      <button type="button" class="btn btn-secondary" (click)="fieldExistInArchiveTabOpen(-1)">Cancel</button>
+                      <button type="button" class="btn btn-confirm" (click)="getOutOfArchive(indexToExtract)">Confirm</button>
+                    </div>
+                  </div>
+                
+                </div>
+                </div> -->
 </div>
