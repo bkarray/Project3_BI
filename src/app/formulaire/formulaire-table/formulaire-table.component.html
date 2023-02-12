@@ -14,6 +14,40 @@
             <td>{{serv.userName}}</td>
             </tr>
      </table>
+     
+     <div class="param">
+        <div>
+        <div class="uploadBar">
+        <a class="myButton" (click)="openFileManager(null)">file manager</a>
+        </div>
+        <div class="uploadBar">
+            <a class="myButton" (click)="deleteAllRows()">delete all</a>
+            <a class="myButton" *ngIf="!deleteUploadBarIsOpen" (click)="openDeleteBar()">delete upload</a>
+            <select  *ngIf="deleteUploadBarIsOpen" [(ngModel)]="deleteUpload">
+                <option value="">choose a file</option>
+                <option *ngFor="let file of filesDel" value="{{file.ExcelFile_Id}}">{{file.File_Name}}</option>
+            </select>
+            <a class="myButton" *ngIf="deleteUploadBarIsOpen" (click)="deleteUploadRows()">confirm</a>
+            <a class="myButton" *ngIf="deleteUploadBarIsOpen" (click)="openDeleteBar()">cancel</a>
+        </div>
+        </div>
+        <div class="uploadBarData">
+            <div class="uploadBar">
+        <a class="myButton" *ngIf="!fileNameBarIsOpen" (click)="openExportBar()">export data</a>
+        <input type="text" *ngIf="fileNameBarIsOpen" [(ngModel)]="fileNameExported">
+        <br>
+        <a class="myButton" *ngIf="fileNameBarIsOpen" (click)="exportData()">confirm</a>
+        <a class="myButton" *ngIf="fileNameBarIsOpen" (click)="openExportBar()">cancel</a>
+        </div>
+        <div class="uploadBar">
+            <a class="myButton" (click)="openPythonCompiler()">python</a>
+        </div>
+        </div>
+        
+        
+        </div>
+
+
     <h3  *ngIf="reponseIsOnWork&&!reponse.allIn">etape n°{{etapNum}}</h3>
     <h3  *ngIf="reponseIsOnWork&&reponse.allIn">All In Work</h3>
     <h3 *ngIf="!reponseIsOnWork">reponse est executé </h3>
@@ -21,42 +55,7 @@
         reorder
         </span>
 
-<div class="param">
-<div>
-    <input class="search1" type="text" placeholder="what to find..." [(ngModel)]="searchTag" >
-    <select [(ngModel)]="searchField">
-        <option value="">choose</option>
-        <option *ngFor="let field of fieldsToFilter" value="{{field.Field_Id}}">{{field.Name}}</option>
-    </select>
-    <a class="myButton" (click)="searchBtn()">search</a>
-    <a class="myButton" (click)="cancelSearch()">clear</a>            
-</div>
-<div class="uploadBar">
-<a class="myButton" (click)="openFileManager(null)">file manager</a>
-</div>
-<div class="uploadBar">
-    <a class="myButton" (click)="deleteAllRows()">delete all</a>
-    <a class="myButton" *ngIf="!deleteUploadBarIsOpen" (click)="openDeleteBar()">delete upload</a>
-    <select  *ngIf="deleteUploadBarIsOpen" [(ngModel)]="deleteUpload">
-        <option value="">choose a file</option>
-        <option *ngFor="let file of filesDel" value="{{file.ExcelFile_Id}}">{{file.File_Name}}</option>
-    </select>
-    <a class="myButton" *ngIf="deleteUploadBarIsOpen" (click)="deleteUploadRows()">confirm</a>
-    <a class="myButton" *ngIf="deleteUploadBarIsOpen" (click)="openDeleteBar()">cancel</a>
-</div>
 
-<div class="uploadBar">
-<a class="myButton" *ngIf="!fileNameBarIsOpen" (click)="openExportBar()">export data</a>
-<input type="text" *ngIf="fileNameBarIsOpen" [(ngModel)]="fileNameExported">
-<br>
-<a class="myButton" *ngIf="fileNameBarIsOpen" (click)="exportData()">confirm</a>
-<a class="myButton" *ngIf="fileNameBarIsOpen" (click)="openExportBar()">cancel</a>
-</div>
-<div class="uploadBar">
-    <a class="myButton" (click)="openPythonCompiler()">python</a>
-</div>
-
-</div>
 </div>
 <div id="myDiv" class="infoTable">
 <p-treeTable [value]="data" [columns]="fields" class="tableData" >

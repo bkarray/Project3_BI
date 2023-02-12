@@ -65,9 +65,6 @@ export class FormulaireTableComponent implements OnInit {
    filterType:any=0
    typesOfFilter:any=['A à Z','Z à A']
 
-   searchTag:any=''
-   searchField:any=''
-   fieldsToFilter:any=[]
    filters:any=[]
 
 
@@ -161,21 +158,7 @@ else{
   }
 
 
-  searchBtn(){
-      if((this.searchField!='')&&(this.searchTag!=''))
-        {    let field=this.fields.find((e:any)=>e.Field_Id==Number(this.searchField))
-    let tab=this.reponse.tables.find((e:any)=>e.Table_Id==field.Table_Id)
-    let data=this.data
-    this.data=[]
-    let dataFind=data.filter((e:any)=>this.searchVAl(e,field.Name,this.searchTag,tab.Table_level,0))
-    setTimeout(()=>{
-      this.data=dataFind
-    },1)}
-    
-  }
-  cancelSearch(){
-location.reload()
-  }
+
 
 
 
@@ -1248,7 +1231,6 @@ async configurationStepByStep(reponse:any,res:any){
             })
            })
            console.log(this.fields,this.servs)
-           this.fieldsToFilter=this.fields.filter((e:any)=>e.Name.substring(0, 3)!='ID_')
            await this.getInfo(0,5)
            
             
@@ -1332,7 +1314,6 @@ this.FormulaireService.getFields(servToShow.Serv_Refer).subscribe((fields:any)=>
     })
    })
    console.log(this.fields,this.servs)
-   this.fieldsToFilter=this.fields.filter((e:any)=>e.Name.substring(0, 3)!='ID_')
    await this.getInfo(0,5)
    
     

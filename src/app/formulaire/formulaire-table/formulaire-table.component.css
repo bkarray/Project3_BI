@@ -872,16 +872,20 @@ a.squishy {
 
 .param{
   display: flex;
-  justify-content: flex-start;
-  flex-wrap: nowrap;
-  align-content: space-between;
-  flex-direction: column;
-  align-items: flex-start;
+  align-content: flex-end;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-end;
 }
 
 
 .uploadBar{
   padding: 25px;
+  display: flex;
+}
+.uploadBarData{
+  padding: 0;
   display: flex;
 }
 
