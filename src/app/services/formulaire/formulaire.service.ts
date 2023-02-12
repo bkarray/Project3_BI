@@ -164,4 +164,67 @@ export class FormulaireService {
   getDataList(val:any){
     return this.http.post(this.APIUrl+'/getDataList/',val);
   }
+  creatChoice(val:any){
+    return this.http.post(this.APIUrl+'/crud_choices/',val);
+  }
+  correctChoice(val:any){
+    return this.http.put(this.APIUrl+'/crud_choices/',val);
+  }
+  getChoicesFromField(id:any){
+    return this.http.get(this.APIUrl+'/crud_choices/'+id);
+  }
+  deleteChoice(id:any){
+    return this.http.delete(this.APIUrl+'/crud_choices/'+id);
+  }
+  getChoices(id:any){
+    return this.http.get(this.APIUrl+'/getChoices/'+id)
+  }
+  giveInformationOnChoice(val:any){
+    return this.http.post(this.APIUrl+'/giveInformationOnChoice/',val)
+  }
+
+
+  createFileExcelRef(val:any){
+    return this.http.post(this.APIUrl+'/crud_excelFile/',val)
+  }
+
+
+  getFilesFrom(id:any){
+    return this.http.get(this.APIUrl+'/crud_excelFile/'+id)
+  }
+
+
+  deleteAllRows(id:any){
+    return this.http.get(this.APIUrl+'/deleteAllRows/'+id)
+  }
+  deleteUploadRows(val:any){
+    return this.http.post(this.APIUrl+'/deleteUploadRows/',val)
+  }
+
+  filesUploaded(id:any){
+    return this.http.get(this.APIUrl+'/filesUploaded/'+id)
+  }
+
+
+  uploadFile(val:any){
+    return this.http.post(this.APIUrl+'/uploadFile/',val)
+  }
+  ColumnNames(id:any){
+    return this.http.get(this.APIUrl+'/ColumnNames/'+id)
+  }
+  uploadData(id:any,val:any){
+    return this.http.post(this.APIUrl+'/uploadData/'+id,val)
+  }
+  getCount(idR:any,val:any){
+    return this.http.post(this.APIUrl+'/getCount/'+idR,val)
+  }
+  deleteFile(){
+    return this.http.delete(this.APIUrl+'/crud_excelFile/')
+  }
+  exportData(id:any){
+    return this.http.get(this.APIUrl+'/export_excelFile/'+id,{ responseType: 'blob' })
+  }
+  compileCode(val:any){
+    return this.http.post(this.APIUrl+'/compile_code/',val)
+  }
 }

@@ -1,0 +1,64 @@
+<div class="testbox">
+    <form>
+
+
+      <div class="item">
+        <label for="name">Excel file<span class="red">*</span></label>
+        <div class="name-item">
+          <input *ngIf="!uploaded"  style="border-radius:20px ;" id="name" type="file" name="name" accept=".xlsx" (change)="ReadExcel($event)" />
+          <button *ngIf="!uploaded" (click)="upload()">upload</button>
+          <h2 *ngIf="uploaded" (click)="upload()">{{file.name}}</h2>
+        </div>
+        <div class="uploadBar">
+          <a class="myButton" *ngIf="!uploadBarIsOpen" (click)="openUploadBar()">upload Existing File</a>
+          <select [(ngModel)]="fileToUpload" *ngIf="uploadBarIsOpen" (change)="fileChange()" [ngModelOptions]="{standalone: true}" >
+              <option *ngIf="fileToUpload==''" value="">choose a file</option>
+              <option *ngFor="let file of files" value="{{file.ExcelFile_Id}}">{{file.File_Name}}</option>
+          </select>
+          <a class="myButton" *ngIf="uploadBarIsOpen" (click)="openUploadBar()">cancel</a>
+      </div>
+        <label for="name" *ngIf="sheetNames.length!=0">Sheet Name<span class="red">*</span></label>
+        <div class="name-item">
+          <select *ngIf="sheetNames.length!=0" style="border-radius:20px ;" id="name"  name="name" [(ngModel)]="chosenSheet" (change)="getExcelData()" >
+        <option *ngIf="chosenSheet==''" value="">choose a sheet</option>
+        <option *ngFor="let sheet of sheetNames" value="{{sheet}}">{{sheet}}</option>
+        </select>
+  
+        </div>
+        <label for="name" *ngIf="chosenSheet!=''">Sheet Name<span class="red">*</span></label>
+        <div class="name-item" *ngIf="chosenSheet!=''">
+            <table>
+                <thead>
+                    <th>Table Field</th>
+                    <th>Excel Colone</th>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let field of fields">
+                        <td>{{field.Name}}</td>
+                        <td>
+                            <select [(ngModel)]="field.correspondent" [ngModelOptions]="{standalone: true}">
+                                <option value="">choose correspondent</option>
+                                <option *ngFor="let col of fileChoices" value="{{col}}">{{col}}</option>
+                            </select>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+  
+        </div>
+
+
+      </div>
+
+      <div class="btn-block">
+        <button class="redBackGround" (click)="close()" >Cancel</button>
+        <button (click)="uploadData()">UpLoad Data</button>
+        
+      </div>
+    </form>
+  </div>
+
+
+  <div class="bg" *ngIf="stopAll">
+    <div class="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+  </div>

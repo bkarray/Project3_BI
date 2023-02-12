@@ -58,8 +58,23 @@ export class FormulaireCreatComponent implements OnInit {
   toDeleteFieldIndex:any=null
   fieldExistInArchiveTab:boolean=false;
   indexToExtract:any=-1
+  ChoicesPopUp:boolean=false;
+  FieldIdChoices:any=0
   ngOnInit(): void { 
 this.getNewFormulaire()
+  }
+
+
+
+  openChoicesPopUp(FieldId:any){
+    this.ChoicesPopUp=true;
+
+    this.FieldIdChoices=FieldId
+  }
+
+  closeChoicesPopUp(event:any){
+    this.ChoicesPopUp=false
+    this.FieldIdChoices=0
   }
 
   alert(){
@@ -69,27 +84,7 @@ this.getNewFormulaire()
     }, 5000);
   }
 
-  modifyList(index:any){
-    if(this.isGenerated&&this.fields[index].listFormOpen){
-      let indexT=this.formulaire.tables.findIndex((e:any)=> e.Table_Id==this.fields[index].Table_Id)
-      let indexF=this.formulaire.tables[indexT].fields.findIndex((e:any)=>e.Name==this.fields[index].Name)
-      let updatedField={
-        Field_Id:this.fields[index].Field_Id,
-        Table_Id:this.fields[index].Table_Id,
-        Name:this.fields[index].Name,
-        Type:this.fields[index].Type,
-        choises:this.fields[index].choises,
-        Status:this.fields[index].Status,
-        Serv_Id:this.fields[index].Serv_Id,
-        Serv_description:this.fields[index].Serv_description,
-        Field_order:this.formulaire.tables[indexT].fields[indexF].Field_order
   
-      }
-      this.FormulaireService.updateField(updatedField).subscribe((res:any)=>{})
-    }
-    this.fields[index].listFormOpen=!this.fields[index].listFormOpen
-    
-  }
   openDeleteField(index:any,name:any){
     this.toDeleteFieldIndex=Number(index)
     this.deleteFieldName=name
@@ -197,7 +192,6 @@ this.fields[index].editName=!this.fields[index].editName
     this.newFieldName=''
     this.newFieldLevel=''
     this.newFieldType='character varying(255)'
-    this.newfieldChoises=null
     this.newFieldStatus='no description'
     this.fieldFormIsOpen=!this.fieldFormIsOpen
   }
@@ -205,12 +199,11 @@ this.fields[index].editName=!this.fields[index].editName
   AjoutFieldDansLeSystem(indexT:any){
     let ord=0
     if(this.formulaire.tables[indexT].fields.length!=0) ord=this.formulaire.tables[indexT].fields.length-1
-    if (this.newFieldType=='list') this.newFieldType='character varying(255)'
+    
     let newField={
       Table_Id:this.formulaire.tables[indexT].Table_Id,
-      Name:this.newFieldName.replaceAll(' ','_').replaceAll(';','_').toLowerCase(),
+      Name:this.newFieldName.replaceAll(' ','_').replaceAll(';','_').replaceAll(')','_').replaceAll('(','_').replaceAll('-','_').toLowerCase(),
       Type:this.newFieldType,
-      choises:this.newfieldChoises,
       Status:'consulté',
       Serv_Id:null,
       Serv_description:this.newFieldStatus ,
@@ -228,7 +221,6 @@ this.fields[index].editName=!this.fields[index].editName
             Table_Id:this.formulaire.tables[indexT].Table_Id,
             Name:this.newFieldName.replaceAll(' ','_').replaceAll(';','_').toLowerCase(),
             Type:this.newFieldType,
-            choises:this.newfieldChoises,
             Status:'consulté',
             Serv_Id:serv.Serv_Id,
             Serv_description:this.newFieldStatus ,
@@ -240,7 +232,6 @@ this.fields[index].editName=!this.fields[index].editName
               Table_Id:res.Table_Id,
               Name:res.Name,
               Type:res.Type,
-              choises:res.choises,
               Status:res.Status,
               Serv_Id:res.Serv_Id,
               Serv_description:res.Serv_description ,
@@ -248,7 +239,6 @@ this.fields[index].editName=!this.fields[index].editName
               editSataus:false,
               editName:false,
               editType:false,
-              listFormOpen:false,
               oldName:'',
               Field_order:ord
         
@@ -261,7 +251,6 @@ this.fields[index].editName=!this.fields[index].editName
           Table_Id:this.formulaire.tables[indexT].Table_Id,
           Name:this.newFieldName.replaceAll(' ','_').replaceAll(';','_').toLowerCase(),
           Type:this.newFieldType,
-          choises:this.newfieldChoises,
           Status:'consulté',
           Serv_Id:null,
           Serv_description:this.newFieldStatus ,
@@ -269,7 +258,6 @@ this.fields[index].editName=!this.fields[index].editName
           editSataus:false,
           editName:false,
           editType:false,
-          listFormOpen:false,
           oldName:'',
           Field_order:ord,
           orderFront:this.fields.length-1
@@ -312,12 +300,10 @@ this.indexToExtract=index
    if(!this.isGenerated) { 
     let ord=0
     if(this.formulaire.tables[0].fields.length!=0) ord=this.formulaire.tables[0].fields.length-1
-    if (this.newFieldType=='list') this.newFieldType='character varying(255)'
     let newField={
       Table_Id:this.formulaire.tables[0].Table_Id,
       Name:this.newFieldName.replaceAll(' ','_').replaceAll(';','_').toLowerCase(),
       Type:this.newFieldType,
-      choises:this.newfieldChoises,
       Status:'consulté',
       Serv_Id:null,
       Serv_description:this.newFieldStatus ,
@@ -334,7 +320,6 @@ this.indexToExtract=index
       Table_Id:this.formulaire.tables[0].Table_Id,
       Name:this.newFieldName.replaceAll(' ','_').replaceAll(';','_').toLowerCase(),
       Type:this.newFieldType,
-      choises:this.newfieldChoises,
       Status:'consulté',
       Serv_Id:null,
       Serv_description:this.newFieldStatus ,
@@ -342,7 +327,6 @@ this.indexToExtract=index
       editSataus:false,
       editName:false,
       editType:false,
-      listFormOpen:false,
       oldName:'',
       Field_order:ord,
       orderFront:this.fields.length-1
@@ -459,7 +443,6 @@ this.indexToExtract=index
             Table_Id:field.Table_Id,
             Name:field.Name,
             Type:field.Type,
-            choises:field.choises,
             Status:field.Status,
             Serv_Id:null,
             Serv_description:field.Serv_description,
@@ -620,7 +603,6 @@ else{
         Table_Id:this.fields[index].Table_Id,
         Name:this.fields[index].Name,
         Type:this.fields[index].Type,
-        choises:this.fields[index].choises,
         Status:this.fields[index].Status,
         Serv_Id:this.fields[index].Serv_Id,
         Serv_description:this.fields[index].Serv_description,
@@ -662,7 +644,6 @@ else{
             Table_Id:field.Table_Id,
             Name:field.Name,
             Type:field.Type,
-            choises:field.choises,
             Status:field.Status,
             Serv_Id:serv.Serv_Id,
             Serv_description:field.Serv_description,
@@ -676,7 +657,6 @@ else{
             res['editName']=false
             res['editType']=false
             res['oldName']=''
-            res['listFormOpen']=false
             serv.fields.push(res);
             
             if(this.servsEtap.length<this.formulaire.services.length) field.Status='consulté'
@@ -789,7 +769,6 @@ else{
                     field['editName']=false
                     field['editType']=false
                     field['oldName']=''
-                    field['listFormOpen']=false
                     serv.fields.push(field)
                   })
                 })

@@ -11,6 +11,7 @@ import {
 } from '@angular/cdk/drag-drop';
 import { ResizedEvent } from 'angular-resize-event';
 import {ChangeDetectorRef } from '@angular/core';
+import { saveAs } from 'file-saver';
 @Component({
   selector: 'app-formulaire-table',
   templateUrl: './formulaire-table.component.html',
@@ -49,7 +50,45 @@ export class FormulaireTableComponent implements OnInit {
    orderLigs:any=[]
    listIsOpen:any=true
    thereIsWork: boolean=false;
+   archiverData:any=[]
+    
 
+   deleteUploadBarIsOpen:boolean=false
+   deleteUpload:any=''
+   filesDel:any=[]
+
+
+   uploadBarIsOpen:boolean=false;
+   fileToUpload:any=''
+   files:any=[]
+
+   filterType:any=0
+   typesOfFilter:any=['A à Z','Z à A']
+
+   searchTag:any=''
+   searchField:any=''
+   fieldsToFilter:any=[]
+   filters:any=[]
+
+
+   pageSize:any=5
+   count:any=0;
+   pages:any={
+    sup:5,
+    inf:0
+  }
+
+  pythonCompilerPopUpIsOpen:boolean=false
+
+   pageSizeOptions:any=[5, 10, 25]
+
+
+   fileManagerIsOpen:any=false
+
+
+
+   fileNameExported:any=''
+   fileNameBarIsOpen:boolean=false
    ngOnInit(): void {
     if(!this.pageOpened){
       this.getData()
@@ -58,7 +97,174 @@ export class FormulaireTableComponent implements OnInit {
       this.data=this.info
     }
    
-  console.log(this.data)
+  console.log(this.data,this.formulair)
+  }
+
+  openPythonCompiler(){
+    this.pythonCompilerPopUpIsOpen=!this.pythonCompilerPopUpIsOpen
+  }
+
+  openExportBar(){
+    this.fileNameExported=''
+    this.fileNameBarIsOpen=!this.fileNameBarIsOpen
+  }
+
+  exportData(){
+    this.route.params.subscribe((parms:any)=>{
+      this.FormulaireService.exportData(parms.idR).subscribe((res:any)=>{
+        console.log(res);
+        if(this.fileNameExported=='')
+                this.fileNameExported='exported_file'
+        saveAs(res,this.fileNameExported+'.xlsx');
+        this.openExportBar()
+      })
+    })
+  }
+
+
+  onPaginateChange(event:any){
+    console.log(1+event.pageIndex*event.pageSize,(event.pageIndex+1)*event.pageSize);
+    this.data=[]
+    this.pages.inf=event.pageIndex*event.pageSize
+    this.pages.sup=(event.pageIndex+1)*event.pageSize
+    setTimeout(() => {
+      this.getInfo(event.pageIndex*event.pageSize,(event.pageIndex+1)*event.pageSize)
+    }, 1);
+  }
+
+
+  verifieIfFirstLevel(id:any){
+    let tab=this.reponse.tables.find((e:any)=>e.Table_Id==id)
+    return tab.Table_level==0
+  }
+
+
+
+  searchVAl(lig:any,fieldName:any,val:any,levelToFind:any,level:any){
+if(level>levelToFind) return false
+
+else if(level==levelToFind){
+if(lig[fieldName]&&(lig[fieldName]==val)){
+  return true
+}
+else{
+  return false
+}
+}
+else{
+  let res=false
+  lig.children.forEach((el:any)=>{
+    res=res||this.searchVAl(el,fieldName,val,levelToFind,level+1)
+  })
+  return res;
+}
+  }
+
+
+  searchBtn(){
+      if((this.searchField!='')&&(this.searchTag!=''))
+        {    let field=this.fields.find((e:any)=>e.Field_Id==Number(this.searchField))
+    let tab=this.reponse.tables.find((e:any)=>e.Table_Id==field.Table_Id)
+    let data=this.data
+    this.data=[]
+    let dataFind=data.filter((e:any)=>this.searchVAl(e,field.Name,this.searchTag,tab.Table_level,0))
+    setTimeout(()=>{
+      this.data=dataFind
+    },1)}
+    
+  }
+  cancelSearch(){
+location.reload()
+  }
+
+
+
+
+  deleteAllRows(){
+    this.route.params.subscribe((res:any)=>{
+      this.FormulaireService.deleteAllRows(res.idR).subscribe((res:any)=>{
+        console.log(res);
+        location.reload();
+        
+      })
+    })
+  }
+
+
+
+
+  deleteUploadRows(){
+    this.route.params.subscribe((res:any)=>{
+      let val={
+        reponse_id:res.idR,
+        excelfile_id:Number(this.deleteUpload)
+      }
+      this.FormulaireService.deleteUploadRows(val).subscribe((res1:any)=>{
+        console.log(res1);
+        location.reload()
+        
+      })
+    })
+  }
+  openDeleteBar(){
+    this.deleteUploadBarIsOpen=!this.deleteUploadBarIsOpen
+    this.deleteUpload=''
+    this.filesDel=[]
+    if(this.deleteUploadBarIsOpen){
+      this.route.params.subscribe((res:any)=>{
+        this.FormulaireService.filesUploaded(res.idR).subscribe((files:any)=>{
+          this.filesDel=files
+            })
+      })
+
+    }
+  }
+
+  openFileManager(event:any){
+
+    this.route.params.subscribe((res:any)=>{
+      this.formulair['Formulaire_Id']=Number(res.idF)
+    })
+    console.log(this.formulair);
+    
+    this.fileManagerIsOpen=!this.fileManagerIsOpen
+  }
+
+  openSelector(index:any){
+    this.filterType=''
+    this.fields[index].filterTypeSelector=!this.fields[index].filterTypeSelector
+  }
+
+
+  filterData(name:any,index:any){
+    let data=this.data
+    console.log(data[0][name],name,this.fields[index]);
+    
+    this.data=[]
+    switch (this.filterType) {
+      case 'A à Z':
+        data=data.sort((a:any,b:any)=>{
+          if(!a[name]&&!b[name]) return 0;
+          if(a[name]&&!b[name]) return -1;
+          if(!a[name]&&b[name]) return 1;
+          return a[name].localeCompare(b[name], 'en', { numeric: true })})
+        break;
+        case 'Z à A':
+          data=data.sort((a:any,b:any)=>{
+            if(!a[name]&&!b[name]) return 0;
+            if(a[name]&&!b[name]) return -1;
+            if(!a[name]&&b[name]) return 1;
+            return b[name].localeCompare(a[name], 'en', { numeric: true })})
+          break;
+      default:
+        break;
+    }
+    console.log(data);
+    
+    this.openSelector(index)
+    setTimeout(()=>{
+      this.data=data
+    },1)
   }
 
   onResized(event: ResizedEvent): void {
@@ -148,7 +354,7 @@ export class FormulaireTableComponent implements OnInit {
       rowId:node.node.id
     }
     this.FormulaireService.deleteRowInTable(dataToDelete).subscribe((res:any)=>{
-      this.getInfo()
+      this.getInfo(0,5)
     })
     
    }
@@ -211,7 +417,7 @@ export class FormulaireTableComponent implements OnInit {
           lig['__order__']=ligOrd.order
         })
         data.sort((a:any,b:any)=>a.__order__-b.__order__)
-      setInterval(()=>{
+      setTimeout(()=>{
         this.data=data
       },1)
     }
@@ -686,7 +892,7 @@ if(!this.formIsOpen){
     this.formIsOpen=false
     console.log(node);
     this.orderLigs=[]
-    this.getInfo()
+    this.getInfo(0,5)
     })
   
   }
@@ -730,7 +936,7 @@ if(!this.formIsOpen){
       }
       console.log("newup",newUpdate)
      this.FormulaireService.addNewUpdate(newUpdate).subscribe((res:any)=>{console.log(res)})
-    this.getInfo()
+    this.getInfo(0,5)
     this.newRow={}
     this.startNew=false
     })
@@ -793,7 +999,7 @@ if(!this.formIsOpen){
      this.FormulaireService.addNewUpdate(newUpdate).subscribe((res:any)=>{console.log(res)})
      node.node.childrenForm=!node.node.childrenForm
     this.orderLigs=[]
-    this.getInfo()
+    this.getInfo(0,5)
     this.newRow={}
     this.formIsOpen=false
     console.log(val)
@@ -879,12 +1085,66 @@ async getInferData(table:any,data:any,level:any):Promise<any>{
 
 }
 
+addFilter(event:any,Name:any,Table_Id:any){
+let tab=this.reponse['tables'].find((e:any)=>e.Table_Id==Table_Id)
+console.log(event.target.value,tab.Table_level,Name);
+if(event.target.value!='')
+{
 
-async getInfo(){
+  const index=this.filters.findIndex((e:any)=>e.Name==Name&&e.levelToFind==tab.Table_level)
+  if(index==-1){
+
+    const filter={
+      Name:Name,
+      Val:event.target.value,
+      levelToFind:tab.Table_level
+    
+    }
+    this.filters.push(filter)
+  }
+  else{
+
+    this.filters[index]["Val"]=event.target.value
+  }
+
+
+
+}
+else{
+  const index=this.filters.findIndex((e:any)=>e.Name==Name&&e.levelToFind==tab.Table_level)
+  console.log(index);
+  
+  if(index!=-1){
+    console.log(this.filters[index]);
+    
+    this.filters.splice(index,1)
+  }
+}
+this.route.params.subscribe((parms:any)=>{  
+ this.FormulaireService.getCount(parms.idR,this.filters).subscribe((count:any)=>{
+  this.count=count
+})})
+console.log(this.filters);
+
+
+
+this.data=[]
+setTimeout(() => {
+  this.getInfo(this.pages.inf,this.pages.sup)
+}, 1);
+
+
+}
+
+
+async getInfo(inf:any,sup:any){
   this.data=[]
   let table0={
     table:this.reponse.tables[0].Table_Name.replaceAll(' ','_').replaceAll(';','_').toLowerCase(),
-    Reponse_Id:this.reponse.Reponse_Id
+    Reponse_Id:this.reponse.Reponse_Id,
+    filters:this.filters,
+    inf:inf,
+    sup:sup
   }
   this.FormulaireService.getAllInformation(table0).subscribe((data:any)=>{
      
@@ -903,9 +1163,8 @@ async getInfo(){
     })
    }
 
-  console.log('order',data,this.orderLigs);
+  console.log('order',data.length);
   
-    
     this.data=data
     if(data.length==0){
       this.startNew=true
@@ -919,10 +1178,7 @@ async getInfo(){
 
 
 
-
-    console.log(this.data)
-
-     console.log(this.data,this.fields)  
+     
      this.webSocket(this.data,this.reponse.Reponse_Id,this.FormulaireService,this.getInfo,this.authService.authenticatedUser.U_Id)
   })
   
@@ -958,6 +1214,12 @@ async configurationStepByStep(reponse:any,res:any){
               field['isChanged']=false
             })
             reponse['tables'].forEach((tab:any)=>{
+              if(tab.Table_level==0){
+                
+                this.FormulaireService.getCount(reponse.Reponse_Id,this.filters).subscribe((count:any)=>{
+                  this.count=count
+                })
+              }
               if(!this.isWorking){
                 fields.forEach((field:any)=>{
                   field.Status='consulté'
@@ -975,13 +1237,19 @@ async configurationStepByStep(reponse:any,res:any){
            this.reponse=reponse
            this.reponse.tables.forEach((tab:any)=>{
             tab.fields.forEach((field:any)=>{
-              if(field.choises!=null) field['choisesList']=field.choises.split(";")
+              if(field.Type=='list') {
+                this.FormulaireService.getChoices(field.Field_Id).subscribe((choices:any)=>{
+                  field['choisesList']=choices
+                })
+                }
               if(field.Status=='modifié') this.thereIsWork=true
+              field['filterTypeSelector']=false
               this.fields.push(field)
             })
            })
            console.log(this.fields,this.servs)
-           await this.getInfo()
+           this.fieldsToFilter=this.fields.filter((e:any)=>e.Name.substring(0, 3)!='ID_')
+           await this.getInfo(0,5)
            
             
           
@@ -1033,6 +1301,11 @@ this.FormulaireService.getFields(servToShow.Serv_Refer).subscribe((fields:any)=>
   this.FormulaireService.getTables(res.idF).subscribe(async (tables:any)=>{
     reponse['tables']=tables
     reponse['tables'].forEach((tab:any)=>{
+      if(tab.Table_level==0){
+        this.FormulaireService.getCount(reponse.Reponse_Id,this.filters).subscribe((count:any)=>{
+          this.count=count
+        })
+      }
       if(!this.reponseIsOnWork||!this.isWorking){
         fields.forEach((field:any)=>{
           field.Status='consulté'
@@ -1050,12 +1323,17 @@ this.FormulaireService.getFields(servToShow.Serv_Refer).subscribe((fields:any)=>
    this.reponse=reponse
    this.reponse.tables.forEach((tab:any)=>{
     tab.fields.forEach((field:any)=>{
-    if(field.choises!=null) field['choisesList']=field.choises.split(";")
+      if(field.Type=='list') {
+        this.FormulaireService.getChoices(field.Field_Id).subscribe((choices:any)=>{
+          field['choisesList']=choices
+        })
+        }
       this.fields.push(field)
     })
    })
    console.log(this.fields,this.servs)
-   await this.getInfo()
+   this.fieldsToFilter=this.fields.filter((e:any)=>e.Name.substring(0, 3)!='ID_')
+   await this.getInfo(0,5)
    
     
   

@@ -48,12 +48,16 @@ export class FormulaireListComponent implements OnInit {
   isAdmin:boolean=false
   deleteReponceIndex:any=-1
 
-
+  ExcelFormIsOpen:boolean=false;
 
   ngOnInit(): void {
     this.getForms()
   }
   @Output() emitter: EventEmitter<string> = new EventEmitter<string>();
+  openExcelForm(event:any){
+    this.ExcelFormIsOpen=!this.ExcelFormIsOpen;
+  }
+  
 
   opendeleteForm(id:any,name:any){
     this.deleteFormID=id;
@@ -146,7 +150,8 @@ this.FormulaireService.putServInArchive(this.servsExamples[index].Serv_Id).subsc
 
    this.openServForm()
    
-   if(this.creationFormulaire) this.creatFormIsOpen=!this.creatFormIsOpen
+   if(this.creationFormulaire&&!this.ExcelFormIsOpen) this.creatFormIsOpen=!this.creatFormIsOpen
+   else if(!this.creationFormulaire&&this.ExcelFormIsOpen)  this.ExcelFormIsOpen=!this.ExcelFormIsOpen
    else this.servList=!this.servList
   }
   addOrRemoveServ(index:any){
@@ -202,9 +207,13 @@ if((this.servToCreate!='')&&(this.servsExamples.findIndex((e:any)=> e.Serv_Name=
 
 
   this.usersNewServ=[]
-  if(!this.creationFormulaire) this.addServForm()
-  else {this.servFormIsOpen=!this.servFormIsOpen
+  if(!this.creationFormulaire&&!this.ExcelFormIsOpen) this.addServForm()
+  else if (this.creationFormulaire&&!this.ExcelFormIsOpen) {this.servFormIsOpen=!this.servFormIsOpen
   this.creatFormIsOpen=!this.creatFormIsOpen}
+  else if (!this.creationFormulaire&&this.ExcelFormIsOpen){
+    this.servFormIsOpen=!this.servFormIsOpen
+  this.ExcelFormIsOpen=!this.ExcelFormIsOpen
+  }
 })}
   }
   addUserForm(){
@@ -334,7 +343,10 @@ this.serviceFormIsOpen=!this.serviceFormIsOpen
     this.creatFormIsOpen=!this.creatFormIsOpen
     this.servFormIsOpen=!this.servFormIsOpen
   }
-
+  goToCreatServExcelForm(event:any){
+    this.ExcelFormIsOpen=!this.ExcelFormIsOpen
+    this.servFormIsOpen=!this.servFormIsOpen
+  }
   getForms(){
     this.authService.loadUser();
     this.isAdmin=this.authService.isAdmin()

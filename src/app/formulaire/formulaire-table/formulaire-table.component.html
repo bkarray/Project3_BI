@@ -20,6 +20,43 @@
     <span (click)="openListLig()"  class="material-symbols-outlined reOrder">
         reorder
         </span>
+
+<div class="param">
+<div>
+    <input class="search1" type="text" placeholder="what to find..." [(ngModel)]="searchTag" >
+    <select [(ngModel)]="searchField">
+        <option value="">choose</option>
+        <option *ngFor="let field of fieldsToFilter" value="{{field.Field_Id}}">{{field.Name}}</option>
+    </select>
+    <a class="myButton" (click)="searchBtn()">search</a>
+    <a class="myButton" (click)="cancelSearch()">clear</a>            
+</div>
+<div class="uploadBar">
+<a class="myButton" (click)="openFileManager(null)">file manager</a>
+</div>
+<div class="uploadBar">
+    <a class="myButton" (click)="deleteAllRows()">delete all</a>
+    <a class="myButton" *ngIf="!deleteUploadBarIsOpen" (click)="openDeleteBar()">delete upload</a>
+    <select  *ngIf="deleteUploadBarIsOpen" [(ngModel)]="deleteUpload">
+        <option value="">choose a file</option>
+        <option *ngFor="let file of filesDel" value="{{file.ExcelFile_Id}}">{{file.File_Name}}</option>
+    </select>
+    <a class="myButton" *ngIf="deleteUploadBarIsOpen" (click)="deleteUploadRows()">confirm</a>
+    <a class="myButton" *ngIf="deleteUploadBarIsOpen" (click)="openDeleteBar()">cancel</a>
+</div>
+
+<div class="uploadBar">
+<a class="myButton" *ngIf="!fileNameBarIsOpen" (click)="openExportBar()">export data</a>
+<input type="text" *ngIf="fileNameBarIsOpen" [(ngModel)]="fileNameExported">
+<br>
+<a class="myButton" *ngIf="fileNameBarIsOpen" (click)="exportData()">confirm</a>
+<a class="myButton" *ngIf="fileNameBarIsOpen" (click)="openExportBar()">cancel</a>
+</div>
+<div class="uploadBar">
+    <a class="myButton" (click)="openPythonCompiler()">python</a>
+</div>
+
+</div>
 </div>
 <div id="myDiv" class="infoTable">
 <p-treeTable [value]="data" [columns]="fields" class="tableData" >
@@ -30,9 +67,19 @@
        (cdkDropListDropped)="drop($event)"
        cdkDropListOrientation="horizontal">
          
-           <th cdkDrag *ngFor="let field of fields"  [ngClass]="{resize:field.Name.substring(0, 3)!='ID_'}" (resized)="onResized($event)">
+           <th cdkDrag *ngFor="let field of fields;let index=index"  [ngClass]="{resize:field.Name.substring(0, 3)!='ID_'}" (resized)="onResized($event)">
                
-               <p cdkDragHandle style="color:#fff ;" class="grab">{{field.Name}}</p>
+               <p cdkDragHandle style="color:#fff ;" class="grab">{{field.Name}}<span *ngIf="(field.Name.substring(0, 3)!='ID_')&&!field.filterTypeSelector&&verifieIfFirstLevel(field.Table_Id)" 
+                class="material-symbols-outlined"
+                (click)="openSelector(index)">
+                arrow_drop_down
+                </span>
+                <br>
+                <input type="text" class="filedSearch" *ngIf="(field.Name.substring(0, 3)!='ID_')" (change)="addFilter($event,field.Name,field.Table_Id)">
+            <select [(ngModel)]="filterType" *ngIf="(field.Name.substring(0, 3)!='ID_')&&field.filterTypeSelector" (change)="filterData(field.Name,index)">
+                <option value="">choose filter Type</option>
+                <option *ngFor="let type of typesOfFilter" value="{{type}}">{{type}}</option>
+            </select></p>
            </th>
        </tr>
    </ng-template>
@@ -48,7 +95,7 @@
            <td *ngFor="let field of fields; let i = index;let last=last" [ngStyle]="spaceTable(rowNode.level)==i?{display:'flex'}:{}">
             
             
-            <div  *ngIf="(field.Status=='modifié')&&inRow(field.Name,rowNode.level)" [ngClass]="{resize:(field.Type!='character varying(255)')||(field.choises!=null)}" (resized)="onResized($event)" [ngSwitch]="field.Type" >
+            <div  *ngIf="(field.Status=='modifié')&&inRow(field.Name,rowNode.level)" [ngClass]="{resize:(field.Type!='character varying(255)')}" (resized)="onResized($event)" [ngSwitch]="field.Type" >
             <input (change)="changeInField(rowNode,field.Table_Id,field.Name,rowNode['node'][field.Name],rowNode['node']['id'])" 
             type="date" 
             *ngSwitchCase="'date'"   [(ngModel)]="rowNode['node'][field.Name]">
@@ -61,18 +108,18 @@
             <input (change)="changeInField(rowNode,field.Table_Id,field.Name,rowNode['node'][field.Name],rowNode['node']['id'])" 
             type="number" step="0.01"
             *ngSwitchCase="'real'"  [(ngModel)]="rowNode['node'][field.Name]">
-            <div *ngSwitchCase="'character varying(255)'" >
+            
                 <textarea (change)="changeInField(rowNode,field.Table_Id,field.Name,rowNode['node'][field.Name],rowNode['node']['id'])" 
-                 *ngIf="field.choises==null" [(ngModel)]="rowNode['node'][field.Name]"></textarea>
+                *ngSwitchCase="'character varying(255)'" [(ngModel)]="rowNode['node'][field.Name]"></textarea>
                 <select  (change)="changeInField(rowNode,field.Table_Id,field.Name,rowNode['node'][field.Name],rowNode['node']['id'])" 
-                *ngIf="field.choises!=null" [(ngModel)]="rowNode['node'][field.Name]">
+                *ngSwitchCase="'list'" [(ngModel)]="rowNode['node'][field.Name]">
                     <option value="">choose</option>
                     <option *ngFor="let choix of field.choisesList" value="{{choix}}">{{choix}}</option>
                 </select>
-            </div>
+            
             <p *ngSwitchDefault>undetermined</p>
          </div>
-         <p *ngIf="field.Status=='consulté'"  [ngClass]="{resize:((field.Type!='character varying(255)')||(field.choises!=null))&&(field.Name!='ID_'+rowNode['level'])}" (resized)="onResized($event)" style="margin:0 ;">{{rowNode['node'][field.Name]}}</p>
+         <p *ngIf="field.Status=='consulté'"  [ngClass]="{resize:((field.Type!='character varying(255)'))&&(field.Name!='ID_'+rowNode['level'])}" (resized)="onResized($event)" style="margin:0 ;">{{rowNode['node'][field.Name]}}</p>
          
          
   
@@ -119,13 +166,13 @@
                     <input 
                     type="number" step="0.01"
                     *ngSwitchCase="'real'"  [(ngModel)]="newRow[field.Name]">
-                    <div *ngSwitchCase="'character varying(255)'" >
-                        <textarea *ngIf="field.choises==null" [(ngModel)]="newRow[field.Name]"></textarea>
-                        <select *ngIf="field.choises!=null" [(ngModel)]="newRow[field.Name]">
+                    
+                        <textarea *ngSwitchCase="'character varying(255)'" [(ngModel)]="newRow[field.Name]"></textarea>
+                        <select *ngSwitchCase="'list'" [(ngModel)]="newRow[field.Name]">
                             <option value="">choose</option>
                             <option *ngFor="let choix of field.choisesList" value="{{choix}}">{{choix}}</option>
                         </select>
-                    </div>
+                   
                     <p *ngSwitchDefault>undetermined</p>
                 </div>
               
@@ -158,13 +205,12 @@
                         <input 
                         type="number" step="0.01"
                         *ngSwitchCase="'real'"  [(ngModel)]="newRow[field.Name]">
-                        <div *ngSwitchCase="'character varying(255)'" >
-                            <textarea  *ngIf="field.choises==null" [(ngModel)]="newRow[field.Name]"></textarea>
-                            <select *ngIf="field.choises!=null" [(ngModel)]="newRow[field.Name]">
+                        
+                            <textarea  *ngSwitchCase="'character varying(255)'" [(ngModel)]="newRow[field.Name]"></textarea>
+                            <select *ngSwitchCase="'list'" [(ngModel)]="newRow[field.Name]">
                                 <option value="">choose</option>
                                 <option *ngFor="let choix of field.choisesList" value="{{choix}}">{{choix}}</option>
                             </select>
-                        </div>
                         <p *ngSwitchDefault>undetermined</p>
                     </div>
                   
@@ -193,7 +239,16 @@
 
 
 </div>
+
+
 <div class="btns">
+<mat-paginator 
+              [length]="count"
+              [pageSize]="pageSize"
+              [pageSizeOptions]="pageSizeOptions"
+              aria-label="Select page"
+              (page)="onPaginateChange($event)">
+</mat-paginator>
     <a class="myButton" (click)="returnList()" >return</a> 
     <a *ngIf="reponseIsOnWork&&isWorking" class="myButton" (click)="nextServ()">next</a>  
 </div>
@@ -214,7 +269,12 @@
 
 
 <!--first_line-->
-<div class="bg" *ngIf="startNew&&isWorking"><div class="testbox" *ngIf="startNew&&isWorking">
+<div class="bg" *ngIf="(startNew&&isWorking&&!pageOpened)||fileManagerIsOpen||pythonCompilerPopUpIsOpen">
+
+<app-file-manager *ngIf="fileManagerIsOpen" [Formulaire_Id]="formulair.Formulaire_Id" (closePopUp)="openFileManager($event)"></app-file-manager>
+
+<app-python-compiler *ngIf="pythonCompilerPopUpIsOpen" (closePopUp)="openPythonCompiler()"></app-python-compiler>
+    <div class="testbox" *ngIf="startNew&&isWorking&&!pageOpened">
     <form >
       <div class="banner">
         <h1>welcome to this new reponse {{reponse.reponse_Name}}</h1>
@@ -234,13 +294,13 @@
                 <input 
                 type="number" step="0.01"
                 *ngSwitchCase="'real'"  [(ngModel)]="newRow[field.Name]" [ngModelOptions]="{standalone: true}">
-                <div *ngSwitchCase="'character varying(255)'" >
-                    <textarea   *ngIf="field.choises==null" [(ngModel)]="newRow[field.Name]" [ngModelOptions]="{standalone: true}"></textarea>
-                    <select  *ngIf="field.choises!=null" [(ngModel)]="newRow[field.Name]" [ngModelOptions]="{standalone: true}">
+               
+                    <textarea   *ngSwitchCase="'character varying(255)'"  [(ngModel)]="newRow[field.Name]" [ngModelOptions]="{standalone: true}"></textarea>
+                    <select *ngSwitchCase="'list'"  [(ngModel)]="newRow[field.Name]" [ngModelOptions]="{standalone: true}">
                         <option value="">choose</option>
                         <option *ngFor="let choix of field.choisesList" value="{{choix}}">{{choix}}</option>
                     </select>
-                </div>
+                
                 <p *ngSwitchDefault>undetermined</p>
           
         </div>

@@ -17,6 +17,7 @@ import { AuthModule } from './auth/auth.module';
 import { NgChartsModule } from 'ng2-charts';
 import { UserNotifactionsComponent } from './basics/user-notifactions/user-notifactions.component';
 
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 @NgModule({
   declarations: [
     AppComponent,
@@ -39,7 +40,8 @@ import { UserNotifactionsComponent } from './basics/user-notifactions/user-notif
     FormsModule,
     AuthModule,
     ReactiveFormsModule,
-    NgChartsModule
+    NgChartsModule,
+    BrowserAnimationsModule
   ],
   providers: [
     SharedService,

@@ -1,0 +1,76 @@
+<div class="testbox" *ngIf="ExcelFormIsOpen">
+    <form>
+      <div class="banner">
+        <img class="imagePC" src="https://img.freepik.com/premium-vector/online-exam-screen-laptop-checklist-online-surveys-questionnaire-online-testing_349999-368.jpg?w=2000" alt="">
+      </div>
+      <div class="item">
+        <label for="name">Name<span class="red">*</span></label>
+        <div class="name-item">
+          <input style="border-radius:20px ;" id="name" type="text" name="name" placeholder="Name" [(ngModel)]="newFormName" [ngModelOptions]="{standalone: true}" />
+  
+        </div>
+        <label for="name">Excel file<span class="red">*</span></label>
+        <div class="name-item">
+          <input *ngIf="!uploaded"  style="border-radius:20px ;" id="name" type="file" name="name" accept=".xlsx" (change)="ReadExcel($event)" />
+          <button *ngIf="!uploaded" (click)="upload()">upload</button>
+          <h2 *ngIf="uploaded" (click)="upload()">{{file.name}}</h2>
+        </div>
+        <label *ngIf="(sheetNames.length!=0)&&uploaded" for="name">Sheet Name<span class="red">*</span></label>
+        <div class="name-item">
+          <select *ngIf="(sheetNames.length!=0)&&uploaded" style="border-radius:20px ;" id="name"  name="name" [(ngModel)]="chosenSheet" (change)="getExcelData()" >
+        <option *ngIf="chosenSheet==''" value="">choose a sheet</option>
+        <option *ngFor="let sheet of sheetNames" value="{{sheet}}">{{sheet}}</option>
+        </select>
+  
+        </div>
+
+        <label *ngIf="fieldsToCreate.length!=0" for="name">fields<span class="red">*</span></label>
+        <div *ngIf="fieldsToCreate.length!=0" class="name-item">
+          <table>
+            <thead>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+            </thead>
+            <tbody>
+                <tr *ngFor="let field of fieldsToCreate">
+                    <td>{{field.Name}}</td>
+                    <td><select [(ngModel)]="field.Type" [ngModelOptions]="{standalone: true}">
+                        <option *ngFor="let type of Types" value="{{type.value}}">{{type.Name}}</option>
+                    </select></td>
+                    <td><input type="text" [(ngModel)]="field.Serv_description" [ngModelOptions]="{standalone: true}"></td>
+                </tr>
+            </tbody>
+          </table>
+  
+        </div>
+        <label for="name">Description</label>
+        <div class="name-item">
+  <textarea style="border-radius:20px ;" type="text" name="name" placeholder="Description" [(ngModel)]="newFormDescription" ></textarea>
+        </div>
+      </div>
+      <div class="question">
+        <label>Services:</label>
+        <div class="question-answer">
+          <div>
+            <ul class="ks-cboxtags">
+              <li *ngFor="let serv of servsExamples;let index=index"><input type="checkbox" id="{{serv.Serv_Name}}" 
+                [(ngModel)]="serv.isAdded" (change)="addOrRemoveServ(index)" [ngModelOptions]="{standalone: true}">
+                <label for="{{serv.Serv_Name}}">{{serv.Serv_Name}}</label></li>
+              <li><input type="checkbox" id="+"  (click)="goToCreatServExcelForm()" value="false"><label for="+"></label></li> 
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="btn-block">
+        <button class="redBackGround" (click)="close()" >Cancel</button>
+        <button (click)="createForm()">Create Formulaire</button>
+        
+      </div>
+    </form>
+  </div>
+
+
+  <div class="bg" *ngIf="stopAll">
+    <div class="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+  </div>

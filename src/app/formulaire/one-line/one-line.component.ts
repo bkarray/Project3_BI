@@ -270,7 +270,11 @@ export class OneLineComponent implements OnInit {
              
              this.reponse.tables.forEach((tab:any)=>{
               tab.fields.forEach((field:any)=>{
-                if(field.choises!=null) field['choisesList']=field.choises.split(";")
+                if(field.Type=='list') {
+                  this.FormulaireService.getChoices(field.Field_Id).subscribe((choices:any)=>{
+                    field['choisesList']=choices
+                  })
+                  }
                 this.fields.push(field)
               })
               console.log("rep",this.reponse);
@@ -345,7 +349,11 @@ export class OneLineComponent implements OnInit {
      this.reponse=reponse
      this.reponse.tables.forEach((tab:any)=>{
       tab.fields.forEach((field:any)=>{
-      if(field.choises!=null) field['choisesList']=field.choises.split(";")
+        if(field.Type=='list') {
+          this.FormulaireService.getChoices(field.Field_Id).subscribe((choices:any)=>{
+            field['choisesList']=choices
+          })
+          }
   
         this.fields.push(field)
       })

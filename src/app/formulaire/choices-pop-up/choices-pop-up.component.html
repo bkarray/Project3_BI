@@ -1,0 +1,63 @@
+<div class="deletePopUp" *ngIf="ChoicesPopUp">
+
+        <div class="modal-body">
+          <ol>
+            <li><span class="material-symbols-outlined" (click)="openChoicesItemsList()">
+                arrow_drop_down
+                </span>
+                Choices:
+            <ul *ngIf="choicesItemsIsOpen">
+                <li *ngFor="let choice of ChoicesItems"><input type="text" [(ngModel)]="choice.choiceItem" value="{{choice.choiceItem}}" (change)="correctChoice(choice['Choice_Id'],choice.choiceItem)"><span class="material-symbols-outlined"(click)="deleteChoice(choice.Choice_Id,false)">
+                    delete
+                    </span></li>
+                <li *ngIf="!addChoiceItemForm"><button class="btn btn-secondary" (click)="openFormChoiceItem()">+</button></li>
+                <li *ngIf="addChoiceItemForm">New Choice:</li>
+                <li *ngIf="addChoiceItemForm"><input type="text" [(ngModel)]="newChoiceItem" placeholder="choice to add..."></li>
+                <li *ngIf="addChoiceItemForm"><button class="btn btn-secondary" (click)="addChoiceItem()">confirm</button></li>
+                <li *ngIf="addChoiceItemForm"><button class="btn btn-secondary" (click)="openFormChoiceItem()">cancel</button></li>
+                <li *ngIf="addChoiceItemForm"><input type="file" accept=".xlsx" (change)="ReadExcel($event)"></li>
+                <li *ngIf="addChoiceItemForm&&chooseParmFile"><select [(ngModel)]="fileColChosen">
+                    <option value="">choose a col</option>
+                    <option *ngFor="let col of fileColNames" value="{{col}}">{{col}}</option>
+                </select></li>
+                <li *ngIf="addChoiceItemForm&&chooseParmFile"><button class="btn btn-secondary" (click)="loadDataExcel()">confirm</button></li>
+
+            </ul>
+            </li>
+            <li><span class="material-symbols-outlined" (click)="openFieldReferencesList()">
+                arrow_drop_down
+                </span>
+                Fields references: 
+            <ul *ngIf="fieldReferencesIsOpen">
+                <li *ngFor="let choice of FieldsReferences">the field {{choice['NameField']}} of the table {{choice['NameTab']}} in the form {{choice['NameForm']}}<span class="material-symbols-outlined" (click)="deleteChoice(choice.Choice_Id,true)">
+                    delete
+                    </span></li>
+                <li *ngIf="!addReferenceForm"><button class="btn btn-secondary" (click)="openReferenceForm()">+</button></li>
+                <li *ngIf="addReferenceForm">
+                <select [(ngModel)]="formId" (change)="getTables()">
+                    <option value="" *ngIf="formId==''">choose one form</option>
+                    <option *ngFor="let form of formToChoose" value="{{form.Formulaire_Id}}">{{form.Formulaire_Name}}</option>
+                </select>
+            </li>
+                <li *ngIf="addReferenceForm">
+                    <select [(ngModel)]="tabId" (change)="getFields()">
+                        <option value="" *ngIf="tabId==''">choose one table</option>
+                        <option *ngFor="let tab of tabToChoose" value="{{tab.Table_Id}}">{{tab.Table_Name}}</option>
+                    </select>
+                </li>
+                <li *ngIf="addReferenceForm">
+                    <select [(ngModel)]="newRef">
+                        <option value="" *ngIf="newRef==''">choose one field</option>
+                        <option *ngFor="let field of fieldToChoose" value="{{field.Field_Id}}">{{field.Name}}</option>
+                    </select>
+                </li>
+
+                <li *ngIf="addReferenceForm"><button class="btn btn-secondary" (click)="createRef()" >confirm</button></li>
+                <li *ngIf="addReferenceForm"><button class="btn btn-secondary" (click)="openReferenceForm()">cancel</button></li>
+            </ul>
+            </li>
+          </ol>
+        </div>
+        <div class="modal-footer justify-content-center">
+          <button type="button" class="btn btn-secondary" (click)="close()" >Cancel</button>
+      </div>

@@ -60,9 +60,7 @@ cdkDropListOrientation="vertical">
         </select>
         <i class="material-icons editIcon" *ngIf="(field.Name!='ID')&&!isGenerated&&field.editType" (click)="openTypeForm(index)" >edit</i>
     </td>
-    <td style="display:flex ;"><p  *ngIf="(field.choises!=null)&&!field.listFormOpen">{{field.choises}}</p>
-        <input type="text" style="width: 100px ;" *ngIf="(field.choises!=null)&&field.listFormOpen" [(ngModel)]="field.choises">
-        <i class="material-icons editIcon" *ngIf="(field.choises!=null)" (click)="modifyList(index)">edit</i></td>
+    <td style="display:flex ;"><a *ngIf="field.Type=='list'" (click)="openChoicesPopUp(field.Field_Id)" class="myButton">Manage Choices</a></td>
     <td *ngIf="field.Name!='ID'"><p *ngIf="!field.editDesc">{{field.Serv_description}} 
         <i *ngIf="!isGenerated"  class="material-icons editIcon" (click)="editDesc(index)" >edit</i></p>
         <input *ngIf="field.editDesc" type="text" [(ngModel)]="field.Serv_description">
@@ -97,7 +95,7 @@ cdkDropListOrientation="vertical">
          <option *ngFor="let type of Types" value="{{type.value}}">{{type.Name}}</option>
         </select>
     </td>
-    <td><input *ngIf="newFieldType=='list'" type="text" [(ngModel)]="newfieldChoises" placeholder="separer les choix par ';'..."></td>
+    <td></td>
 
     <td><input type="text" [(ngModel)]="newFieldStatus"></td>
     <td></td>
@@ -180,7 +178,7 @@ id="{{index}}">
 </div>
 
 
-<div class="bg" *ngIf="archiveListIsOpen||todeleteField ||fieldExistInArchiveTab">
+<div class="bg" *ngIf="archiveListIsOpen||todeleteField ||fieldExistInArchiveTab||ChoicesPopUp">
     <div  class="testbox" *ngIf="archiveListIsOpen">
 <table>
     <thead>
@@ -241,29 +239,5 @@ id="{{index}}">
             
             </div>
             </div>
-            <!-- <div class="deletePopUp">
-                <div class="modal-dialog modal-confirm">
-                  <div class="modal-content">
-                    <div class="modal-header flex-column">						
-                      <ul>
-                        <li>aa</li>
-                        <li>bb
-                            <ul>
-                                <ol>cc</ol>
-                                <ol>dd</ol>
-                            </ul>
-                        </li>
-                      </ul>
-                    </div>
-                    <div class="modal-body">
-                      <p>Do you want to get {{fieldsInArchive[indexToExtract].Name}} of type {{fieldsInArchive[indexToExtract].Type}} out of archive?</p>
-                    </div>
-                    <div class="modal-footer justify-content-center">
-                      <button type="button" class="btn btn-secondary" (click)="fieldExistInArchiveTabOpen(-1)">Cancel</button>
-                      <button type="button" class="btn btn-confirm" (click)="getOutOfArchive(indexToExtract)">Confirm</button>
-                    </div>
-                  </div>
-                
-                </div>
-                </div> -->
+            <app-choices-pop-up (closePopUp)="closeChoicesPopUp($event)" [ChoicesPopUp]="ChoicesPopUp" [FieldId]="FieldIdChoices"></app-choices-pop-up>
 </div>

@@ -297,7 +297,6 @@ table{
   .resize{
     resize: both;
     overflow: auto;
-    z-index: 100;
 
 }
 textarea
@@ -858,3 +857,42 @@ a.squishy {
 .deleteAndDisplay{
   margin-top: 15%;
 }
+
+
+
+
+.search1{
+  height: 10px;
+  width: 300px;
+  margin: 20px;
+}
+
+
+
+
+.param{
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: nowrap;
+  align-content: space-between;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+
+.uploadBar{
+  padding: 25px;
+  display: flex;
+}
+
+
+.filedSearch{
+  padding: 0 !important;
+  width: 100%;
+  max-width: 150px;
+}
+
+
+
+
+

@@ -22,17 +22,17 @@
     (change)="changeInField(field.Name)"
     type="number" step="0.01"
     *ngSwitchCase="'real'"  [(ngModel)]=" toShow[field.Name]">
-    <div *ngSwitchCase="'character varying(255)'" class="full" >
+    <div  class="full" >
         <input
         class="full"
         (change)="changeInField(field.Name)" 
           
-        type="text" *ngIf="field.choises==null" [(ngModel)]=" toShow[field.Name]">
+        type="text" *ngSwitchCase="'character varying(255)'" [(ngModel)]=" toShow[field.Name]">
         <select
         class="full"
         (change)="changeInField(field.Name)"
           
-        *ngIf="field.choises!=null" [(ngModel)]=" toShow[field.Name]">
+        *ngSwitchCase="'list'" [(ngModel)]=" toShow[field.Name]">
             <option value="">choose</option>
             <option *ngFor="let choix of field.choisesList" value="{{choix}}">{{choix}}</option>
         </select>

@@ -25,6 +25,13 @@ import { LineComponent } from './line/line.component';
 import { OneLineComponent } from './one-line/one-line.component';
 import { AngularResizedEventModule } from 'angular-resize-event';
 import {NgxDragResizeModule} from 'ngx-drag-resize';
+import { ChoicesPopUpComponent } from './choices-pop-up/choices-pop-up.component';
+import { ExcelFormComponent } from './excel-form/excel-form.component';
+import { FileManagerComponent } from './file-manager/file-manager.component';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { PythonCompilerComponent } from './python-compiler/python-compiler.component';
+import { CodeEditorModule } from '@ngstack/code-editor';
+
 
 @NgModule({
   declarations: [
@@ -34,6 +41,10 @@ import {NgxDragResizeModule} from 'ngx-drag-resize';
    FormulaireTableComponent,
    LineComponent,
    OneLineComponent,
+   ChoicesPopUpComponent,
+   ExcelFormComponent,
+   FileManagerComponent,
+   PythonCompilerComponent
   ],
   imports: [
     CommonModule,
@@ -47,7 +58,12 @@ import {NgxDragResizeModule} from 'ngx-drag-resize';
     MatTreeModule,
     TreeTableModule,
     AngularResizedEventModule,
-    NgxDragResizeModule
+    NgxDragResizeModule,
+    MatPaginatorModule,
+    
+    CodeEditorModule.forRoot()
+    
+    
   ]
 })
 export class FormulaireModule { }

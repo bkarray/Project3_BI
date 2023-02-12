@@ -65,13 +65,16 @@
     <div class="btn-block" style="text-align:right ;">
         <button (click)="openForm()"  *ngIf="isAdmin">
         create formulaire
-        </button>    
+        </button>   
+        <button (click)="openExcelForm(null)"  *ngIf="isAdmin">
+          create From Excel
+          </button>  
       </div>
 
 
 
 
-<div class="bg" *ngIf="creatFormIsOpen||todelete||servFormIsOpen||servShowIsOpen||servList||todeleteRep">
+<div class="bg" *ngIf="creatFormIsOpen||todelete||servFormIsOpen||servShowIsOpen||servList||todeleteRep||ExcelFormIsOpen">
 <!--_créer_formulaire-->
 <div class="testbox" *ngIf="creatFormIsOpen">
   <form >
@@ -342,5 +345,11 @@
 
   <a class="myButton" (click)="closeServShow()">return</a>
 -->
+
+
+
+<app-excel-form [ExcelFormIsOpen]="ExcelFormIsOpen" (closePopUp)="openExcelForm($event)"
+(goToCreatServForm)="goToCreatServExcelForm($event)"></app-excel-form>
+
 </div>
 </div> 

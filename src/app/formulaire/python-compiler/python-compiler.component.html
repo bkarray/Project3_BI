@@ -1,0 +1,33 @@
+<div class="testbox">
+    <form>
+
+      <div class="item">
+        <label for="name">Code<span class="red">*</span></label>
+        <div class="name-item">
+          
+            <textarea [(ngModel)]="code" spellcheck="false" (keydown)="handleKeydown($event)" [ngModelOptions]="{standalone: true}"></textarea>
+
+        </div>
+
+
+
+
+        <label for="name" *ngIf="Output!=''">OutPut</label>
+        <div *ngIf="Output!=''" class="name-item">
+            {{Output}}
+        </div>
+        <label for="name" *ngIf="Error!=''">Error</label>
+        <div *ngIf="Error!=''" class="name-item">
+           {{Error}}
+        </div>
+      </div>
+
+      <div class="btn-block">
+        <button class="redBackGround" (click)="close()" >Cancel</button>
+        <button (click)="Compile()" >Compile</button>
+        
+      </div>
+    </form>
+  </div>
+
+
