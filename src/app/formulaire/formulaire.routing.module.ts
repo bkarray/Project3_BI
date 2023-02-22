@@ -7,6 +7,7 @@ import { FormulaireReponseComponent } from './formulaire-reponse/formulaire-repo
 import { FormulaireTableComponent } from './formulaire-table/formulaire-table.component';
 import { LineComponent } from './line/line.component';
 import { OneLineComponent } from './one-line/one-line.component';
+import { DataAnalysisComponent } from './data-analysis/data-analysis.component';
 export const routes: Routes = [
  {
  path: '',
@@ -16,7 +17,8 @@ export const routes: Routes = [
   {path:'reponse/:idF/:idR/:isCreated',component:FormulaireReponseComponent},
   {path:'table/:idF/:idR',component:FormulaireTableComponent},
   {path:'line/:idF/:idR/:lineId',component:LineComponent},
-  {path:'oneLine/:idF/:idR/:address',component:OneLineComponent}
+  {path:'oneLine/:idF/:idR/:address',component:OneLineComponent},
+  {path:'analysis',component:DataAnalysisComponent}
  ] ,
  }
 ];

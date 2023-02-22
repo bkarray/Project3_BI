@@ -31,6 +31,8 @@ import { FileManagerComponent } from './file-manager/file-manager.component';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { PythonCompilerComponent } from './python-compiler/python-compiler.component';
 import { CodeEditorModule } from '@ngstack/code-editor';
+import { GraphsListComponent } from './graphs-list/graphs-list.component';
+import { DataAnalysisComponent } from './data-analysis/data-analysis.component';
 
 
 @NgModule({
@@ -44,7 +46,9 @@ import { CodeEditorModule } from '@ngstack/code-editor';
    ChoicesPopUpComponent,
    ExcelFormComponent,
    FileManagerComponent,
-   PythonCompilerComponent
+   PythonCompilerComponent,
+   GraphsListComponent,
+   DataAnalysisComponent
   ],
   imports: [
     CommonModule,

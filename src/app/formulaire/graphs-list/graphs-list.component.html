@@ -1,0 +1,31 @@
+<div class="testbox">
+    <form>
+
+        <label for="name">Codes<span class="red"></span></label>
+        <div class="name-item">
+          
+            <table>
+
+               <tr *ngFor="let code of codes;let index=index" (click)="openCode(code)">
+                <td>{{code.File_Name}}</td>
+                <td><span (click)="deleteCode(index)" class="material-symbols-outlined delete">
+                  delete
+                  </span></td>
+               </tr> 
+            </table>
+
+
+        </div>
+      
+
+      <div class="btn-block">
+        <button class="redBackGround" (click)="close()" >Cancel</button>
+        
+      </div>
+    </form>
+  </div>
+
+  <app-python-compiler *ngIf="showCodeIsOpen" [editable]="true" [codeGraph]="codeGraph" (closePopUp)="openCode({})" [reponse_id]="reponse_id"></app-python-compiler>
+
+
+

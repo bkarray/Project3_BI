@@ -11,7 +11,7 @@
         </div>
         <label for="name">Excel file<span class="red">*</span></label>
         <div class="name-item">
-          <input *ngIf="!uploaded"  style="border-radius:20px ;" id="name" type="file" name="name" accept=".xlsx" (change)="ReadExcel($event)" />
+          <input *ngIf="!uploaded"  style="border-radius:20px ;" id="name" type="file" name="name" accept=".xlsx,.csv,.xls,.xlsm" (change)="ReadExcel($event)" />
           <button *ngIf="!uploaded" (click)="upload()">upload</button>
           <h2 *ngIf="uploaded" (click)="upload()">{{file.name}}</h2>
         </div>

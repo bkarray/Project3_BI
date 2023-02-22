@@ -67,7 +67,7 @@ export class FormulaireTableComponent implements OnInit {
 
    filters:any=[]
 
-
+   selectedResponse:any=0
    pageSize:any=5
    count:any=0;
    pages:any={
@@ -86,6 +86,9 @@ export class FormulaireTableComponent implements OnInit {
 
    fileNameExported:any=''
    fileNameBarIsOpen:boolean=false
+
+
+   graphsListIsOpen:boolean=false
    ngOnInit(): void {
     if(!this.pageOpened){
       this.getData()
@@ -98,7 +101,17 @@ export class FormulaireTableComponent implements OnInit {
   }
 
   openPythonCompiler(){
-    this.pythonCompilerPopUpIsOpen=!this.pythonCompilerPopUpIsOpen
+this.route.params.subscribe((params:any)=>{
+  this.selectedResponse=params.idR
+  this.pythonCompilerPopUpIsOpen=!this.pythonCompilerPopUpIsOpen
+})
+
+  }
+
+  openGraphList(event:any){
+this.graphsListIsOpen=!this.graphsListIsOpen
+
+
   }
 
   openExportBar(){

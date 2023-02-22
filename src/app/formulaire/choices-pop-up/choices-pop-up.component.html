@@ -15,7 +15,7 @@
                 <li *ngIf="addChoiceItemForm"><input type="text" [(ngModel)]="newChoiceItem" placeholder="choice to add..."></li>
                 <li *ngIf="addChoiceItemForm"><button class="btn btn-secondary" (click)="addChoiceItem()">confirm</button></li>
                 <li *ngIf="addChoiceItemForm"><button class="btn btn-secondary" (click)="openFormChoiceItem()">cancel</button></li>
-                <li *ngIf="addChoiceItemForm"><input type="file" accept=".xlsx" (change)="ReadExcel($event)"></li>
+                <li *ngIf="addChoiceItemForm"><input type="file" accept=".xlsx,.csv,.xls,.xlsm" (change)="ReadExcel($event)"></li>
                 <li *ngIf="addChoiceItemForm&&chooseParmFile"><select [(ngModel)]="fileColChosen">
                     <option value="">choose a col</option>
                     <option *ngFor="let col of fileColNames" value="{{col}}">{{col}}</option>

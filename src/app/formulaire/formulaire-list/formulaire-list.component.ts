@@ -316,7 +316,10 @@ if(this.services.length!=0){
    this.FormulaireService.creatNewReponce(newReponse).subscribe((res:any)=>{
     let index=this.formulaires.findIndex((e:any)=> e.Formulaire_Id==Formulaire_Id)
     this.formulaires[index].addReponseForm=!this.formulaires[index].addReponseForm
-    this.router.navigate(['/formulaire/reponse/',Formulaire_Id,res.Reponse_Id,0])
+    this.FormulaireService.addFirstRow(res.Reponse_Id).subscribe((added:any)=>{
+
+      this.router.navigate(['/formulaire/reponse/',Formulaire_Id,res.Reponse_Id,0])
+    })
 
    })
   }

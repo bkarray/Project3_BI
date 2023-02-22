@@ -1,12 +1,17 @@
 <div class="testbox">
     <form>
-
       <div class="item">
+        <label for="name">Name<span class="red">*</span></label>
+        <div class="name-item">
+          
+            <input *ngIf="!editable" [(ngModel)]="FileName" spellcheck="false"  [ngModelOptions]="{standalone: true}">
+            <h3 *ngIf="editable">{{codeGraph.File_Name}} </h3>
+        </div>
         <label for="name">Code<span class="red">*</span></label>
         <div class="name-item">
           
-            <textarea [(ngModel)]="code" spellcheck="false" (keydown)="handleKeydown($event)" [ngModelOptions]="{standalone: true}"></textarea>
-
+            <textarea *ngIf="!editable" class="coding" [(ngModel)]="code" spellcheck="false" (keydown)="handleKeydown($event)" [ngModelOptions]="{standalone: true}"></textarea>
+            <textarea *ngIf="editable" class="coding" [(ngModel)]="codeGraph.Code" spellcheck="false" (keydown)="handleKeydown($event)" [ngModelOptions]="{standalone: true}"></textarea>
         </div>
 
 
@@ -14,16 +19,22 @@
 
         <label for="name" *ngIf="Output!=''">OutPut</label>
         <div *ngIf="Output!=''" class="name-item">
-            {{Output}}
+          <textarea [(ngModel)]="Output" spellcheck="false" (keydown)="handleKeydown($event)" [ngModelOptions]="{standalone: true}" readonly></textarea> 
         </div>
         <label for="name" *ngIf="Error!=''">Error</label>
         <div *ngIf="Error!=''" class="name-item">
            {{Error}}
         </div>
+        <label for="name" *ngIf="(imgURL!='')&&editable">image</label>
+        <div *ngIf="(imgURL!='')&&editable" class="name-item">
+           <img [src]="getImgUrl()" >
+        </div>
       </div>
 
       <div class="btn-block">
         <button class="redBackGround" (click)="close()" >Cancel</button>
+        <button class="redBackGround" *ngIf="editable" (click)="deleteCode()" >delete</button>
+        <button (click)="SaveCode()" *ngIf="itWorks">Save</button>
         <button (click)="Compile()" >Compile</button>
         
       </div>

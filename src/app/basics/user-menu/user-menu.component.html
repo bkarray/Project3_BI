@@ -7,9 +7,16 @@
             <h3> <span>{{name}} </span></h3>
             <ul>
               <li>
-                <a class="" routerLink="formulaire/list" label="Click" (click)="open()"> <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-basket3" viewBox="0 0 16 16">
+                <a class="" routerLink="formulaire/list" label="Click" (click)="open()"> 
+                  <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-basket3" viewBox="0 0 16 16">
                     <path d="M5.757 1.071a.5.5 0 0 1 .172.686L3.383 6h9.234L10.07 1.757a.5.5 0 1 1 .858-.514L13.783 6H15.5a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5H.5a.5.5 0 0 1-.5-.5v-1A.5.5 0 0 1 .5 6h1.717L5.07 1.243a.5.5 0 0 1 .686-.172zM3.394 15l-1.48-6h-.97l1.525 6.426a.75.75 0 0 0 .729.574h9.606a.75.75 0 0 0 .73-.574L15.056 9h-.972l-1.479 6h-9.21z"/>
                   </svg> Formulaire</a>
+            </li>
+            <li>
+              <a routerLink="formulaire/analysis" label="Click" (click)="open()">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-file-analytics" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path stroke="none" d="M0 0h24v24H0z" fill="none"/> <path d="M14 3v4a1 1 0 0 0 1 1h4" /> <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z" /> <line x1="9" y1="17" x2="9" y2="12" /> <line x1="12" y1="17" x2="12" y2="16" /> <line x1="15" y1="17" x2="15" y2="14" /> </svg>
+                Graphs
+              </a>
             </li>
             </ul>
             <h3 ><button class="" (click)="logout()" ><svg xmlns="http://www.w3.org/2000/svg"  color="black" width="22" height="22" fill="currentColor" class="bi bi-box-arrow-left" viewBox="0 0 16 16">

@@ -733,7 +733,7 @@ else{
                 tables[index]['fields']=fields
                 fields.forEach((field:any,a:any)=>{
                   field.Status='consulté'
-                  this.fields.push(field)
+                  
                   field['orderFront']=a
                   let newOrder={
                     Name:field.Name,
@@ -741,6 +741,7 @@ else{
                   }
                   this.orderFields.push(newOrder)
                 })
+                this.fields=fields
                 console.log('444',this.orderFields);
                 
                 fieldsInArchive.forEach((field:any)=>{

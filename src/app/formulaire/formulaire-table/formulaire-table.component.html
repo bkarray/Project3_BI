@@ -41,6 +41,7 @@
         </div>
         <div class="uploadBar">
             <a class="myButton" (click)="openPythonCompiler()">python</a>
+            <a class="myButton" (click)="openGraphList(null)">graphs</a>
         </div>
         </div>
         
@@ -249,7 +250,7 @@
               (page)="onPaginateChange($event)">
 </mat-paginator>
     <a class="myButton" (click)="returnList()" >return</a> 
-    <a *ngIf="reponseIsOnWork&&isWorking" class="myButton" (click)="nextServ()">next</a>  
+    <a *ngIf="reponseIsOnWork&&isWorking&&!reponse.allIn" class="myButton" (click)="nextServ()">next</a>  
 </div>
 
 
@@ -268,11 +269,12 @@
 
 
 <!--first_line-->
-<div class="bg" *ngIf="(startNew&&isWorking&&!pageOpened)||fileManagerIsOpen||pythonCompilerPopUpIsOpen">
+<div class="bg" *ngIf="(startNew&&isWorking&&!pageOpened)||fileManagerIsOpen||pythonCompilerPopUpIsOpen||graphsListIsOpen">
 
 <app-file-manager *ngIf="fileManagerIsOpen" [Formulaire_Id]="formulair.Formulaire_Id" (closePopUp)="openFileManager($event)"></app-file-manager>
 
-<app-python-compiler *ngIf="pythonCompilerPopUpIsOpen" (closePopUp)="openPythonCompiler()"></app-python-compiler>
+<app-python-compiler *ngIf="pythonCompilerPopUpIsOpen" (closePopUp)="openPythonCompiler()" [reponse_id]="selectedResponse"></app-python-compiler>
+<app-graphs-list *ngIf="graphsListIsOpen" [reponse_id]="reponse.Reponse_Id" (closePopUp)="openGraphList($event)"></app-graphs-list>
     <div class="testbox" *ngIf="startNew&&isWorking&&!pageOpened">
     <form >
       <div class="banner">

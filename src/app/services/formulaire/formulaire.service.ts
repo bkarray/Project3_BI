@@ -224,7 +224,24 @@ export class FormulaireService {
   exportData(id:any){
     return this.http.get(this.APIUrl+'/export_excelFile/'+id,{ responseType: 'blob' })
   }
-  compileCode(val:any){
-    return this.http.post(this.APIUrl+'/compile_code/',val)
+  compileCode(val:any,id:any){
+    return this.http.post(this.APIUrl+'/compile_code/'+id,val)
+  }
+  saveCode(val:any){
+    return this.http.post(this.APIUrl+'/save_code/',val)
+  }
+
+  getCodes(id:any){
+    return this.http.get(this.APIUrl+'/crud_code/'+id)
+  }
+  correctCode(id:any,val:any){
+    return this.http.post(this.APIUrl+'/correct_code/'+id,val)
+  }
+  deleteCode(id:any){
+    return this.http.delete(this.APIUrl+'/crud_code/'+id)
+
+  }
+  addFirstRow(id:any){
+    return this.http.get(this.APIUrl+'/add_first_row/'+id)
   }
 }
