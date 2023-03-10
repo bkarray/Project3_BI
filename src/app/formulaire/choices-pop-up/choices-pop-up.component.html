@@ -34,6 +34,12 @@
                     </span></li>
                 <li *ngIf="!addReferenceForm"><button class="btn btn-secondary" (click)="openReferenceForm()">+</button></li>
                 <li *ngIf="addReferenceForm">
+                    <select [(ngModel)]="groupId" (change)="getForms()">
+                        <option value="" *ngIf="groupId==''">choose one group</option>
+                        <option *ngFor="let group of groups" value="{{group.Group_Id}}">{{group.Group_Name}}</option>
+                    </select>
+                </li>
+                <li *ngIf="addReferenceForm">
                 <select [(ngModel)]="formId" (change)="getTables()">
                     <option value="" *ngIf="formId==''">choose one form</option>
                     <option *ngFor="let form of formToChoose" value="{{form.Formulaire_Id}}">{{form.Formulaire_Name}}</option>
@@ -61,3 +67,9 @@
         <div class="modal-footer justify-content-center">
           <button type="button" class="btn btn-secondary" (click)="close()" >Cancel</button>
       </div>
+
+
+      <!-- <div class="bg" >
+        <app-refrence-field [canUpDateField]="true"
+                            [fieldStartId]="FieldId"></app-refrence-field>
+      </div> -->

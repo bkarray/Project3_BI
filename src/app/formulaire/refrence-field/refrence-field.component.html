@@ -1,0 +1,68 @@
+<div class="container">
+    <table>
+        <tr>
+            <td>Group</td>
+            <td>
+                <select *ngIf="canUpDateField" [(ngModel)]="groupId" (change)="getForms()">
+                    <option value="" *ngIf="groupId==''">choose one group</option>
+                    <option *ngFor="let group of groupsToChoose" value="{{group.Group_Id}}">{{group.Group_Name}}</option>
+                </select>
+            </td>
+        </tr>
+        
+        <tr>
+            <td>{{fieldStart.Formulaire_Name}}</td>
+            <td *ngIf="canUpDateField">
+                <select  [(ngModel)]="formId" (change)="getTables()">
+                    <option value="" *ngIf="formId==''">choose one form</option>
+                    <option *ngFor="let form of formToChoose" value="{{form.Formulaire_Id}}">{{form.Formulaire_Name}}</option>
+                </select>
+                
+            </td>
+            <td *ngIf="!canUpDateField">
+                {{fieldRefers.Formulaire_Name}}
+            </td>
+        </tr>
+
+        
+        <tr>
+            <td>{{fieldStart.Table_Name}}</td>
+            <td *ngIf="canUpDateField">
+
+                <select  [(ngModel)]="tabId" (change)="getFields()">
+                    <option value="" *ngIf="tabId==''">choose one table</option>
+                    <option *ngFor="let tab of tabToChoose" value="{{tab.Table_Id}}">{{tab.Table_Name}}</option>
+                </select>
+            </td>
+            <td *ngIf="!canUpDateField">
+                {{fieldRefers.Table_Name}}
+            </td>
+        </tr>
+
+        
+        <tr>
+            <td>{{fieldStart.Name}}</td>
+            <td *ngIf="canUpDateField">
+
+                <select  [(ngModel)]="newRef">
+                    <option value="" *ngIf="newRef==''">choose one field</option>
+                    <option *ngFor="let field of fieldToChoose" value="{{field.Field_Id}}">{{field.Name}}</option>
+                </select>
+            </td>
+            <td *ngIf="!canUpDateField">
+                {{fieldRefers.Name}}
+            </td>
+        </tr>
+    </table>
+    <div>
+        <button *ngIf="canUpDateField" (click)="createGenerateRelation()">create relation</button>
+    </div>
+    <table *ngIf="!canUpDateField">
+        <tr *ngFor="let field of fieldsToChooseShow">
+            <td>{{field.Name}}</td>
+            <td>{{field.Type}}</td>
+            <td><input type="checkbox" [(ngModel)]="field.selected"></td>
+            <td *ngIf="field.selected&&(field.Type=='list')"><button>open list field</button></td>
+        </tr>
+    </table>
+</div>

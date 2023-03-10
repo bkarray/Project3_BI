@@ -33,6 +33,8 @@ import { PythonCompilerComponent } from './python-compiler/python-compiler.compo
 import { CodeEditorModule } from '@ngstack/code-editor';
 import { GraphsListComponent } from './graphs-list/graphs-list.component';
 import { DataAnalysisComponent } from './data-analysis/data-analysis.component';
+import { RefrenceFieldComponent } from './refrence-field/refrence-field.component';
+import { RestFormsComponent } from './rest-forms/rest-forms.component';
 
 
 @NgModule({
@@ -48,7 +50,9 @@ import { DataAnalysisComponent } from './data-analysis/data-analysis.component';
    FileManagerComponent,
    PythonCompilerComponent,
    GraphsListComponent,
-   DataAnalysisComponent
+   DataAnalysisComponent,
+   RefrenceFieldComponent,
+   RestFormsComponent
   ],
   imports: [
     CommonModule,

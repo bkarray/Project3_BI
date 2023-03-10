@@ -205,7 +205,7 @@ export class FileManagerComponent implements OnInit {
       let tab=tables.find((e:any)=>e.Table_level==0)
       this.Table=tab
       console.log(tab);
-      this.FormulaireService.getAllFields(tab.Table_Id).subscribe((fields:any)=>{
+      this.FormulaireService.getAllFields(tab.Table_Id).then((fields:any)=>{
         fields.forEach((field:any)=>{
           field['correspondent']=''
           this.fields.push(field)

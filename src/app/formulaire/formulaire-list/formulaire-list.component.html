@@ -1,65 +1,94 @@
  <div class="container">
   <!--bouton_list_servs-->
   <div class="btn-block" style="text-align:right ;">
+    <button *ngIf="groupSelected.length!=0" (click)="openExistingPopUp()">Existing Forms</button>
     <button (click)="openServList()">Serv</button>
   </div>
-  <!--tableau_formulaire-->
-    <table>
+  <div class="row">
+
+    <div class="col-2 groupDiv">
+      <table class="tableGroup">
+          <tr class="listGroup" *ngFor="let group of groups;let index=index" >
+            <td class="itemGroup" [ngClass]="{'selectedGroup': group.selected}" (click)="selectGroup(index)">
+              <h6>
+                {{group.Group_Name}}
+              </h6>
+              <span class="material-symbols-outlined deleteGroupIcon" (click)="deleteGroup(index)">
+              do_not_disturb_on
+              </span></td>
+          </tr>
+          <tr class="listGroup">
+            <td style="display: block;" *ngIf="!groupFormIsOpenSide" class="itemGroup" (click)="openSideGroupForm()">+</td>
+            <td *ngIf="groupFormIsOpenSide"><input type="text" [(ngModel)]="newGroupNameSide"></td>
+          </tr>
+          <tr class="listGroup" *ngIf="groupFormIsOpenSide">
+            <td style="display: block;" class="itemGroup" (click)="addGroupSide()">add</td>
+          </tr>
+          <tr class="listGroup" *ngIf="groupFormIsOpenSide">
+            <td style="display: block;" class="itemGroup" (click)="openSideGroupForm()">cancel</td>
+          </tr>
+      </table>
+    </div>
+  <div class="col-10">
+    <!--tableau_formulaire-->
+    <table class="formTable">
       <th></th><th></th><th></th><th></th><th></th>
-        <tbody *ngFor="let formulaire of formulaires;let index=index">
-          <br>
-        <tr class="ligneMere">
-          <td  class="cancelIcon canClick" (click)="opendeleteForm(formulaire.Formulaire_Id,formulaire.Formulaire_Name)"><span class="material-symbols-outlined">
+      <tbody class="formTable" *ngFor="let formulaire of formulaires;let index=index">
+        <br>
+        <tr class="ligneMere formLine">
+          <td  class="cancelIcon canClick formItem" (click)="opendeleteForm(formulaire.Formulaire_Id,formulaire.Formulaire_Name)"><span class="material-symbols-outlined">
             cancel
             </span></td>
-            <td style="text-align:left;" class="canClick" (click)="openFormPage(formulaire.Formulaire_Id)" colspan="3"><h3 class="canClick">{{formulaire.Formulaire_Name}}</h3></td>
-            <td><span (click)="open(index)" class="material-symbols-outlined canClick">
+            <td style="text-align:left;" class="canClick formItem" (click)="openFormPage(formulaire.Formulaire_Id)" colspan="3"><h3 class="canClick">{{formulaire.Formulaire_Name}}</h3></td>
+            <td><span (click)="open(index)" class="material-symbols-outlined canClick formItem">
                 arrow_drop_down_circle
-                </span></td>   
+              </span></td>   
         </tr>
         <br>
-        <tr *ngIf="formulaire.isOpen"> 
-        <td class="responses" colspan="5">
-            <tr *ngFor="let reponse of formulaire.reponses;let indexR=index" class="boder"> 
-                <td ><a  class="myButton"  (click)="openTable(formulaire.Formulaire_Id,reponse.Reponse_Id)">open</a></td>
-                <td class="canClick" (click)="openReponseFormPage(index,indexR)">{{reponse.reponse_Name}}</td>
-                <td><p *ngIf="(reponse.reponse_level!=null)&&(!reponse.allIn)">etape n°{{reponse.currentServ.Serv_order}}</p> 
+        <tr class="formLine" *ngIf="formulaire.isOpen"> 
+          <td class="responses formItem" colspan="5">
+            <tr *ngFor="let reponse of formulaire.reponses;let indexR=index" class="boder formLine"> 
+              <td class="formItem"><a  class="myButton"  (click)="openTable(formulaire.Formulaire_Id,reponse.Reponse_Id)">open</a></td>
+              <td class="formItem"class="canClick" (click)="openReponseFormPage(index,indexR)">{{reponse.reponse_Name}}</td>
+                <td class="formItem"><p *ngIf="(reponse.reponse_level!=null)&&(!reponse.allIn)">etape n°{{reponse.currentServ.Serv_order}}</p> 
                   <p *ngIf="(reponse.reponse_level!=null)&&(reponse.allIn)">In Progresses</p>
                 <p *ngIf="reponse.reponse_level==null">reponse est executé </p></td>
-                <td><p *ngIf="(reponse.reponse_level!=null)&&(!reponse.allIn)">{{reponse.currentServ.Serv_Name}}</p></td>
-                <td><p *ngIf="(reponse.reponse_level!=null)&&(!reponse.allIn)">{{reponse.currentServ.userName}}</p>
+                <td class="formItem"><p *ngIf="(reponse.reponse_level!=null)&&(!reponse.allIn)">{{reponse.currentServ.Serv_Name}}</p></td>
+                <td class="formItem"><p *ngIf="(reponse.reponse_level!=null)&&(!reponse.allIn)">{{reponse.currentServ.userName}}</p>
                 <p *ngIf="(reponse.reponse_level!=null)&&(reponse.allIn)">All in Work</p></td>
-                <td *ngIf="isAdmin" (click)="openDeleteRep(reponse.Reponse_Id,reponse.reponse_Name,index,indexR)" class="canClick"><span class="material-symbols-outlined">
+                <td *ngIf="isAdmin" (click)="openDeleteRep(reponse.Reponse_Id,reponse.reponse_Name,index,indexR)" class="canClick formItem"><span class="material-symbols-outlined">
                   cancel
                   </span></td>
-                  <td *ngIf="!isAdmin"></td>
+                  <td class="formItem" *ngIf="!isAdmin"></td>
                 </tr>
-            <tr *ngIf="isAdmin">
-                <td></td>
-                <td></td>
-                <td><input *ngIf="formulaire.addReponseForm"  type="text" placeholder="Reponse Name..." [(ngModel)]="newReponseName"></td>
-                <td>
+            <tr *ngIf="isAdmin" class="formLine">
+                <td class="formItem"></td>
+                <td class="formItem"></td>
+                <td class="formItem"><input *ngIf="formulaire.addReponseForm"  type="text" placeholder="Reponse Name..." [(ngModel)]="newReponseName"></td>
+                <td class="formItem">
                   <select *ngIf="formulaire.addReponseForm" [(ngModel)]="newReponseType">
                     <option value="">choose reponse type</option>
                     <option value="allInOne">All in one</option>
                     <option value="stepByStep">Step by step</option>
                   </select>
                 </td>
-                <td><span *ngIf="!formulaire.addReponseForm" (click)="openReponseForm(index)" class="material-symbols-outlined canClick">
+                <td class="formItem"><span *ngIf="!formulaire.addReponseForm" (click)="openReponseForm(index)" class="material-symbols-outlined canClick">
                   add_circle
                   </span>
                    <a *ngIf="formulaire.addReponseForm"  class="myButton" (click)="addNewReponse(formulaire.Formulaire_Id)">confirmer</a>
                    </td>
 
-                <td><a *ngIf="formulaire.addReponseForm"  class="myButton" (click)="cancelAddNewReponse(index)">cancel</a></td>
+                <td class="formItem"><a *ngIf="formulaire.addReponseForm"  class="myButton" (click)="cancelAddNewReponse(index)">cancel</a></td>
                 
                 
-            </tr>
+              </tr>
             
         </td>
         
-    </tr>
-  </tbody></table>
+      </tr>
+    </tbody></table>
+    </div>
+  </div>
 
     <!--bouton_créer_formulaire-->
     <div class="btn-block" style="text-align:right ;">
@@ -69,7 +98,7 @@
         <button (click)="openExcelForm(null)"  *ngIf="isAdmin">
           create From Excel
           </button>  
-      </div>
+        </div>
 
 
 
@@ -103,6 +132,24 @@
             <li><input type="checkbox" id="+"  (click)="goToCreatServForm()" value="false"><label for="+"></label></li>
           </ul>
         </div>
+      </div>
+
+
+      <label>Groups:</label>
+      <div class="question-answer">
+        <div>
+          <ul class="ks-cboxtags">
+            <li *ngFor="let group of groups;let index=index"><input type="checkbox" id="{{group.Group_Name}}" 
+              [(ngModel)]="group.selectedToForm"
+               [ngModelOptions]="{standalone: true}" (change)="addOrRemoveGroup(index)">
+              <label for="{{group.Group_Name}}">{{group.Group_Name}}</label></li>
+            <li><input type="checkbox" id="++"  value="groupFormIsOpen" (click)="openAddNewGroupForm()"><label for="++"></label></li>
+          </ul>
+        </div>
+      </div>
+      <div *ngIf="groupFormIsOpen" class="question-answer">
+        <input type="text" [(ngModel)]="newGroupName" [ngModelOptions]="{standalone: true}">
+        <button (click)="creatGroup()">Create Group</button>
       </div>
     </div>
     <div class="btn-block">
@@ -351,5 +398,8 @@
 <app-excel-form [ExcelFormIsOpen]="ExcelFormIsOpen" (closePopUp)="openExcelForm($event)"
 (goToCreatServForm)="goToCreatServExcelForm($event)"></app-excel-form>
 
+
 </div>
 </div> 
+
+<app-rest-forms *ngIf="restFormIsOpen" [groupsSelected]="groupSelected" (closePopUp)="closeExistingPopUp($event)"></app-rest-forms>

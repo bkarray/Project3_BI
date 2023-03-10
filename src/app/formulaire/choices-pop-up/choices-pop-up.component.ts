@@ -40,6 +40,11 @@ export class ChoicesPopUpComponent implements OnInit {
   fileData:any=[]
   fileColChosen:any=''
   chooseParmFile:boolean=false
+
+
+  groupId:any=''
+  groups:any[]=[]
+
   ngOnInit(): void {
     console.log(this.FieldId);
     this.getData()
@@ -69,6 +74,21 @@ export class ChoicesPopUpComponent implements OnInit {
       this.fileColNames=[]
       this.chooseParmFile=false
     }
+  }
+
+
+  getForms(){
+    const group={
+      groups:[Number(this.groupId)]
+    }
+    this.FormulaireService.getFormsByGroups(group).subscribe((forms:any)=>{
+      this.formToChoose=forms
+      this.formId=""
+      this.tabId=""
+      this.newRef=""
+      this.tabToChoose=[]
+      this.fieldToChoose=[]
+    })
   }
 
   ReadExcel(event:any){
@@ -120,7 +140,7 @@ export class ChoicesPopUpComponent implements OnInit {
   }
 
   getFields(){
-    this.FormulaireService.getAllFields(Number(this.tabId)).subscribe((fields:any)=>{
+    this.FormulaireService.getAllFields(Number(this.tabId)).then((fields:any)=>{
       this.fieldToChoose=fields
       this.newRef=''
     })
@@ -133,6 +153,7 @@ export class ChoicesPopUpComponent implements OnInit {
     this.formId=''
     this.tabId=''
     this.newRef=''
+    this.groupId=''
   }
 
 
@@ -211,8 +232,8 @@ export class ChoicesPopUpComponent implements OnInit {
         })
       })
       this.FieldsReferences=names
-      this.FormulaireService.getAllFormulaire().subscribe((forms:any)=>{
-        this.formToChoose=forms
+      this.FormulaireService.getGroups().subscribe((groups:any)=>{
+        this.groups=groups
       })
       console.log(choices,this.ChoicesItems,this.FieldsReferences);
       

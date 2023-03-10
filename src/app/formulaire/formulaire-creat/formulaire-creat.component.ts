@@ -61,6 +61,7 @@ export class FormulaireCreatComponent implements OnInit {
   ChoicesPopUp:boolean=false;
   FieldIdChoices:any=0
   ngOnInit(): void { 
+   
 this.getNewFormulaire()
   }
 
@@ -190,6 +191,8 @@ this.fields[index].editName=!this.fields[index].editName
 
   openfieldForm(){
     this.newFieldName=''
+    this.newFieldLevel='0'
+    if(this.formulaire.tables.length==0)
     this.newFieldLevel=''
     this.newFieldType='character varying(255)'
     this.newFieldStatus='no description'
@@ -216,7 +219,23 @@ this.fields[index].editName=!this.fields[index].editName
       
       this.FormulaireService.addNewfields(newField).subscribe((res:any)=>{
         this.formulaire.tables[indexT].fields.push(newField)
-        this.servsEtap.forEach((serv:any)=>{
+        let newField22= {
+          Table_Id:res.Table_Id,
+          Name:res.Name,
+          Type:res.Type,
+          Status:res.Status,
+          Serv_Id:res.Serv_Id,
+          Serv_description:res.Serv_description ,
+          editDesc:false,
+          editSataus:false,
+          editName:false,
+          editType:false,
+          oldName:'',
+          Field_order:ord
+    
+        }
+        this.fields.push(newField22)
+        this.servsEtap.forEach((serv:any,i:any)=>{
           let newFieldServ={
             Table_Id:this.formulaire.tables[indexT].Table_Id,
             Name:this.newFieldName.replaceAll(' ','_').replaceAll(';','_').toLowerCase(),
@@ -262,7 +281,6 @@ this.fields[index].editName=!this.fields[index].editName
           Field_order:ord,
           orderFront:this.fields.length-1
         }
-        this.fields.push(newField2)
         let newOrder={
           Name:newField2.Name,
           orderFront:this.fields.length-1
@@ -383,6 +401,7 @@ this.indexToExtract=index
               this.AjoutFieldDansLeSystem(this.formulaire.tables.length-1)
             
               this.lastTableIndex++
+
               
 
             
@@ -455,7 +474,11 @@ this.indexToExtract=index
     this.shownServNum=this.currentsrvOrd
 
    this.isGenerated=true
-   this.router.navigate(['/formulaire/new/', this.formulaire.Formulaire_Id,1])
+
+this.router.navigate(['/formulaire/new/', this.formulaire.Formulaire_Id,1]).then((a:any)=>{
+  location.reload()
+})
+   
   }
    else{
     alert("verifier l'organization des colones")
@@ -566,7 +589,7 @@ this.indexToExtract=index
   }
   fieldsToShow(){
     console.log(Number(this.shownServNum),Number(this.currentsrvOrd))
-    if((Number(this.shownServNum)!=Number(this.currentsrvOrd))||(this.formulaire.services.length==this.servsEtap.length)){
+    if((Number(this.shownServNum)!=Number(this.currentsrvOrd))||(this.formulaire.services.length==this.servsEtap.length)||(this.formulaire.services==1)){
       let index=this.servsEtap.findIndex((e:any)=> e.Serv_order==Number(this.shownServNum))
       let indexP=this.servsEtap.findIndex((e:any)=> e.Serv_Id==this.fields[1].Serv_Id)
       if(indexP!=-1) this.servsEtap[indexP].fields=this.fields
@@ -713,22 +736,28 @@ else{
   return fields
  }
 
-  getNewFormulaire(){
+
+ 
+
+
+
+  async getNewFormulaire(){
     this.authService.loadUser();
     this.route.params.subscribe((param:any)=>{
       this.FormulaireService.getFormulaireById(param.id).subscribe((form:any)=>{
         this.FormulaireService.getTables(param.id).subscribe((tables:any)=>{
              this.lastTableIndex=tables.length-1
-             this.FormulaireService.getServicesByformulaire(param.id).subscribe((servs:any)=>{
+             this.FormulaireService.getServicesByformulaire(param.id).subscribe(async (servs:any)=>{
             if(param.generated==1){
               this.isGenerated=true
             }
             let level=0
+            
             for(let i=0;i<tables.length;i++){
               let index=tables.findIndex((e:any)=> e.Table_level==level)
               
               tables[index]['fields']=[]
-              this.FormulaireService.getAllFields(tables[index].Table_Id).subscribe((fields:any)=>{
+              await this.FormulaireService.getAllFields(tables[index].Table_Id).then((fields:any)=>{
               this.FormulaireService.getFieldsInArchive(tables[index].Table_Id).subscribe((fieldsInArchive:any)=>{
                 tables[index]['fields']=fields
                 fields.forEach((field:any,a:any)=>{
@@ -740,8 +769,8 @@ else{
                     orderFront:a
                   }
                   this.orderFields.push(newOrder)
+                  this.fields.push(field)
                 })
-                this.fields=fields
                 console.log('444',this.orderFields);
                 
                 fieldsInArchive.forEach((field:any)=>{
@@ -753,56 +782,65 @@ else{
 
                 
               
-              })  
+              })
               level++
             }
-            this.FormulaireService.workingServices(param.id).subscribe((servs1:any)=>{
-              servs1.forEach((serv:any)=>{
-                serv['fields']=[{
-                  Name:'ID',
-                  Type:'auto_number',
-                  Status:'consulté'
-                }]
-                this.FormulaireService.getFields(serv.Serv_Id).subscribe((fields:any)=>{
-                  fields.forEach((field:any)=>{
-                    field['editDesc']=false
-                    field['editSataus']=false
-                    field['editName']=false
-                    field['editType']=false
-                    field['oldName']=''
-                    serv.fields.push(field)
+
+
+              this.FormulaireService.workingServices(param.id).subscribe((servs1:any)=>{
+                servs1.forEach((serv:any)=>{
+                  serv['fields']=[{
+                    Name:'ID',
+                    Type:'auto_number',
+                    Status:'consulté'
+                  }]
+                  this.FormulaireService.getFields(serv.Serv_Id).subscribe((fields:any)=>{
+                    fields.forEach((field:any)=>{
+                      field['editDesc']=false
+                      field['editSataus']=false
+                      field['editName']=false
+                      field['editType']=false
+                      field['oldName']=''
+                      serv.fields.push(field)
+                    })
                   })
+                  serv.fields=this.setOrder(serv.fields)
+                  if(servs.length==1){
+                    this.fields=serv.fields
+                  }
                 })
-                serv.fields=this.setOrder(serv.fields)
+                this.servsEtap=servs1
+  
+                if ((servs1.length+1<=servs.length))this.currentsrvOrd=servs1.length+1
+                else {
+                  
+                  this.currentsrvOrd=servs.length
+                  let index=servs1.findIndex((e:any)=> e.Serv_order==servs.length)
+                  this.fields=servs1[index].fields
+                  this.fields=this.setOrder(this.fields)
+                }
+                this.shownServNum=this.currentsrvOrd
+  
+  
+                form['tables']=tables
+                form['services']=servs
+  
+                this.formulaire=form
+                console.log(this.formulaire);
+                
+                this.currentsrvName=servs[0].Serv_Name
+                this.numservs=this.formulaire.services.length
+                this.fields.sort((a:any, b:any) => {
+                  if(a.Name=='ID') return -1;
+                  else if(b.Name=='ID') return 1
+          
+                  else return a.Name.localeCompare(b.Name)})
+             console.log("enddd");
+             
+               
+                
               })
-              this.servsEtap=servs1
-
-              if (servs1.length+1<=servs.length)this.currentsrvOrd=servs1.length+1
-              else {this.currentsrvOrd=servs.length
-                let index=servs1.findIndex((e:any)=> e.Serv_order==servs.length)
-                this.fields=servs1[index].fields
-                this.fields=this.setOrder(this.fields)
-              }
-              this.shownServNum=this.currentsrvOrd
-
-
-              form['tables']=tables
-              form['services']=servs
-
-              this.formulaire=form
-              console.log(this.formulaire);
-              
-              this.currentsrvName=servs[0].Serv_Name
-              this.numservs=this.formulaire.services.length
-              this.fields.sort((a:any, b:any) => {
-                if(a.Name=='ID') return -1;
-                else if(b.Name=='ID') return 1
-        
-                else return a.Name.localeCompare(b.Name)})
-              console.log(this.formulaire,this.fields)
-              console.log("archive",this.fieldsInArchive);
-              
-            })
+          
 
               
 
@@ -815,6 +853,8 @@ else{
         
       })
     })
+
+
   }
 
 }

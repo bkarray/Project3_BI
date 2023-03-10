@@ -41,6 +41,10 @@ export class ExcelFormComponent implements OnInit {
   sheetCorespondent:any={}
   Types:any=[{Name:'String',value:'character varying(255)'},{Name:'date',value:'date'},{Name:'list',value:'list'},{Name:"integer",value:"integer"},{Name:"boolean",value:"boolean"},{Name:"float",value:"real"}]
 
+  groups:any[]=[]
+  newGroupFormIsOpen:boolean=false
+  newGroupName:string=""
+
 
 
 
@@ -49,6 +53,32 @@ export class ExcelFormComponent implements OnInit {
   ngOnInit(): void {
     this.getData()
   }
+
+
+  openGroupForm(){
+    this.newGroupFormIsOpen=!this.newGroupFormIsOpen
+    this.newGroupName=""
+  }
+  createGroup(){
+    if(this.newGroupName!=""){
+      const group={
+        Group_Name:this.newGroupName
+      }
+      this.FormulaireService.creatGroup(group).subscribe((newGroup:any)=>{
+        console.log(newGroup);
+        
+        if(newGroup!='error'){
+          newGroup['selected']=false;
+          this.groups.push(newGroup)
+        }
+        this.openGroupForm()
+      })
+    }
+  }
+
+  addOrRemoveGroup(index:any){
+  }
+
 
   close(){
 
@@ -120,6 +150,17 @@ this.fileColNames=this.sheets[this.chosenSheet]
   }
 
 
+  thereIsGroupSelected(){
+    let test=false
+    this.groups.forEach((group:any)=>{
+      if(group.selected){
+        test=true
+      }
+    })
+    return test;
+  }
+
+
   ReadExcel(event:any){
     this.file=event.target.files[0];
 
@@ -168,14 +209,28 @@ console.log(this.file);
   }
 
   createForm(){
-    if((this.newFormName!='')&&(this.services.length!=0)&&(this.chosenSheet!="")){
+    console.log(this.thereIsGroupSelected());
+    
+    if((this.newFormName!='')&&(this.services.length!=0)&&(this.chosenSheet!="")&&this.thereIsGroupSelected()){
+
       let newFormulaireName={
         Formulaire_Name:this.newFormName,
         Formulaire_Status:this.newFormDescription
       }
       if (this.newFormDescription=='') newFormulaireName.Formulaire_Status='no description';
       this.FormulaireService.addNewFormulaire(newFormulaireName).subscribe((formulaire:any)=>{
-
+        this.groups.forEach((group:any)=>{
+          if(group.selected){
+            const relation={
+              Formulaire_Id:formulaire.Formulaire_Id,
+              Group_Id:group.Group_Id
+            }
+            this.FormulaireService.createRelationFormGroup(relation).then((result:any)=>{
+              console.log(result);
+              
+            })
+          }
+        })
       let ExcelFile={
         File_Name:this.file.name,
         Formulaire_Id:formulaire.Formulaire_Id
@@ -230,6 +285,13 @@ console.log(this.file);
         serv['isAdded']=false
       })
       this.servsExamples=servs
+
+      this.FormulaireService.getGroups().subscribe((groups:any)=>{
+        groups.forEach((group:any)=>{
+          group["selected"]=false;
+          this.groups.push(group)
+        })
+      })
     })
   }
 

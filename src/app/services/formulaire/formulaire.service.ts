@@ -80,7 +80,7 @@ export class FormulaireService {
     return this.http.post<any[]>(this.APIUrl+'/getBySup/',val)
   }
   getAllFields(id:any){
-    return this.http.get(this.APIUrl+'/getAllFields/'+id)
+    return this.http.get(this.APIUrl+'/getAllFields/'+id).toPromise()
   }
   getFieldsInArchive(id:any){
     return this.http.get(this.APIUrl+'/getFieldsInArchive/'+id)
@@ -243,5 +243,35 @@ export class FormulaireService {
   }
   addFirstRow(id:any){
     return this.http.get(this.APIUrl+'/add_first_row/'+id)
+  }
+
+
+  getGroups(){
+    return this.http.get(this.APIUrl+'/crud_group/');
+  }
+  getFormsByGroups(val:any){
+    return this.http.post(this.APIUrl+'/get_forms_by_group/',val)
+  }
+
+  creatGroup(val:any){
+    return this.http.post(this.APIUrl+"/crud_group/",val)
+  }
+  createRelationFormGroup(val:any){
+    return this.http.post(this.APIUrl+'/create_relation_form_group/',val).toPromise()
+  }
+  getOneField(id:any){
+    return this.http.get(this.APIUrl+'/get_one_field/'+id)
+  }
+  deleteGroup(id:any,idTo:any){
+    return this.http.delete(this.APIUrl+"/crud_group/"+id+"/"+idTo)
+  }
+  getRestForms(val:any){
+    return this.http.post(this.APIUrl+'/get_rest_of_forms/',val)
+  }
+  checkFormGroups(id:any){
+    return this.http.get(this.APIUrl+'/check_form_groups/'+id)
+  }
+  deleteGroupFormRelation(idG:any,idF:any){
+    return this.http.delete(this.APIUrl+"/delete_group_form_relation/"+idG+"/"+idF)
   }
 }

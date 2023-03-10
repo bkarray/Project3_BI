@@ -1,0 +1,74 @@
+<div class="bg">
+
+    <div class="testbox container">
+        <form>
+    
+            <label for="name">Forms<span class="red"></span></label>
+            <div class="name-item">
+              
+                <table>
+    
+                   <tr *ngFor="let form of formsHere;let index=index" >
+                    <td>{{form.Formulaire_Name}}</td>
+                    <td><span (click)="deleteRelation(index)" class="material-symbols-outlined delete">
+                      delete
+                      </span></td>
+                   </tr> 
+                   <tr *ngIf="!addFormIsOpen">
+                    <td></td>
+                    <td>
+                      <span (click)="openAddForm()" class="material-symbols-outlined blueHover">
+                        add_circle
+                        </span>
+                    </td>
+                   </tr>
+                   <tr *ngIf="addFormIsOpen">
+                    <td><select [(ngModel)]="newFormId" [ngModelOptions]="{standalone: true}">
+                        <option value="">choose a form</option>
+                        <option *ngFor="let form of formsToBeAdded" value="{{form.Formulaire_Id}}">{{form.Formulaire_Name}}</option>
+                    </select></td>
+                    <td></td>
+                   </tr>
+
+                   <tr *ngIf="addFormIsOpen">
+                     <td>
+                       <span (click)="closeAddForm()" class="material-symbols-outlined delete">
+                         keyboard_return
+                         </span></td>
+                    <td>
+                      <span (click)="addNewForm()" class="material-symbols-outlined blueHover">
+                        check
+                        </span></td>
+                   </tr>
+
+                   <tr *ngIf="helpIsNeeded">
+                    <td><select [(ngModel)]="newGroupToHelp" [ngModelOptions]="{standalone: true}">
+                        <option value="">choose a group</option>
+                        <option *ngFor="let group of groupsToHelp" value="{{group.Group_Id}}">{{group.Group_Name}}</option>
+                    </select></td>
+                    <td></td>
+                   </tr>
+                   <tr *ngIf="helpIsNeeded">
+                    <td>
+                      <span (click)="closeDeletePop()" class="material-symbols-outlined delete">
+                        keyboard_return
+                        </span></td>
+                   <td>
+                     <span (click)="ConfirmDelete()" class="material-symbols-outlined blueHover">
+                       check
+                       </span></td>
+                   </tr>
+                </table>
+    
+    
+            </div>
+          
+    
+          <div class="btn-block">
+            <button class="redBackGround" (click)="close()" >Cancel</button>
+            
+          </div>
+        </form>
+      </div>
+
+</div>

@@ -62,6 +62,24 @@
           </div>
         </div>
       </div>
+
+      <div class="question">
+        <label>Groups:</label>
+        <div class="question-answer">
+          <div>
+            <ul class="ks-cboxtags">
+              <li *ngFor="let group of groups;let index=index"><input type="checkbox" id="{{group.Group_Name}}" 
+                [(ngModel)]="group.selected" (change)="addOrRemoveGroup(index)" [ngModelOptions]="{standalone: true}">
+                <label for="{{group.Group_Name}}">{{group.Group_Name}}</label></li>
+              <li><input type="checkbox" id="++"  (click)="openGroupForm()" value="false"><label for="++"></label></li> 
+            </ul>
+          </div>
+          <div *ngIf="newGroupFormIsOpen">
+            <input type="text" [(ngModel)]="newGroupName" [ngModelOptions]="{standalone: true}">
+            <button (click)="createGroup()">Create Group</button>
+          </div>
+        </div>
+      </div>
       <div class="btn-block">
         <button class="redBackGround" (click)="close()" >Cancel</button>
         <button (click)="createForm()">Create Formulaire</button>
