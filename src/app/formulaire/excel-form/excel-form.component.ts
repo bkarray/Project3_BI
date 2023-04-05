@@ -39,7 +39,7 @@ export class ExcelFormComponent implements OnInit {
   stopAll:boolean=false
   fieldsToCreate:any=[]
   sheetCorespondent:any={}
-  Types:any=[{Name:'String',value:'character varying(255)'},{Name:'date',value:'date'},{Name:'list',value:'list'},{Name:"integer",value:"integer"},{Name:"boolean",value:"boolean"},{Name:"float",value:"real"}]
+  Types:any=[{Name:'String',value:'character varying(255)'},{Name:'list',value:'list'}]
 
   groups:any[]=[]
   newGroupFormIsOpen:boolean=false
@@ -150,15 +150,7 @@ this.fileColNames=this.sheets[this.chosenSheet]
   }
 
 
-  thereIsGroupSelected(){
-    let test=false
-    this.groups.forEach((group:any)=>{
-      if(group.selected){
-        test=true
-      }
-    })
-    return test;
-  }
+
 
 
   ReadExcel(event:any){
@@ -209,9 +201,8 @@ console.log(this.file);
   }
 
   createForm(){
-    console.log(this.thereIsGroupSelected());
     
-    if((this.newFormName!='')&&(this.services.length!=0)&&(this.chosenSheet!="")&&this.thereIsGroupSelected()){
+    if((this.newFormName!='')&&(this.services.length!=0)&&(this.chosenSheet!="")){
 
       let newFormulaireName={
         Formulaire_Name:this.newFormName,

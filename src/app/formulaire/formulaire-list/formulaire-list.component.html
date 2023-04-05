@@ -1,23 +1,29 @@
  <div class="container">
   <!--bouton_list_servs-->
   <div class="btn-block" style="text-align:right ;">
-    <button *ngIf="groupSelected.length!=0" (click)="openExistingPopUp()">Existing Forms</button>
+    <button *ngIf="(groupSelected.length!=0)&&isAdmin" (click)="openExistingPopUp()">Existing Forms</button>
     <button (click)="openServList()">Serv</button>
   </div>
   <div class="row">
 
     <div class="col-2 groupDiv">
       <table class="tableGroup">
+        <tr class="listGroup">
+          <td class="itemGroup" style="display: block;" [ngClass]="{'selectedGroup': allFormIsShown}" (click)="selectGroup(-1)">
+            <h6>
+              All
+            </h6></td>
+        </tr>
           <tr class="listGroup" *ngFor="let group of groups;let index=index" >
             <td class="itemGroup" [ngClass]="{'selectedGroup': group.selected}" (click)="selectGroup(index)">
               <h6>
                 {{group.Group_Name}}
               </h6>
-              <span class="material-symbols-outlined deleteGroupIcon" (click)="deleteGroup(index)">
+              <span *ngIf="isAdmin" class="material-symbols-outlined deleteGroupIcon" (click)="deleteGroup(index)">
               do_not_disturb_on
               </span></td>
           </tr>
-          <tr class="listGroup">
+          <tr class="listGroup" *ngIf="isAdmin">
             <td style="display: block;" *ngIf="!groupFormIsOpenSide" class="itemGroup" (click)="openSideGroupForm()">+</td>
             <td *ngIf="groupFormIsOpenSide"><input type="text" [(ngModel)]="newGroupNameSide"></td>
           </tr>
@@ -40,7 +46,7 @@
             cancel
             </span></td>
             <td style="text-align:left;" class="canClick formItem" (click)="openFormPage(formulaire.Formulaire_Id)" colspan="3"><h3 class="canClick">{{formulaire.Formulaire_Name}}</h3></td>
-            <td><span (click)="open(index)" class="material-symbols-outlined canClick formItem">
+            <td><span (click)="open(index)" class="material-symbols-outlined canClick formItem" >
                 arrow_drop_down_circle
               </span></td>   
         </tr>

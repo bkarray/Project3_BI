@@ -48,9 +48,6 @@
     </div>
   </div>
 </div> -->
-
-
-
 <div class="overlay">
   <!-- LOGN IN FORM by Omar Dsoky -->
   <form [formGroup]="log" (ngSubmit)="onSubmit()">
@@ -64,8 +61,9 @@
      </header>
      <!--     End  header Content  -->
      <br>
+
+
      <div class="field-set">
-       
         <!--   user name -->
            <span class="input-item">
              <i class="fa fa-user-circle icon"></i>
@@ -75,11 +73,8 @@
             placehoder="unter login"
             [(ngModel)]="U_login"
             formControlName="login">
-       
         <br>
-       
              <!--   Password -->
-       
         <span class="input-item">
           <i class="fa fa-key icon"></i>
          </span>
@@ -87,16 +82,11 @@
         <input class="form-input" style="height:35px ;" type="password" placeholder="Password" id="pwd"  name="password" required
         [(ngModel)]="U_pwd"
         formControlName="password">
-       
-
-       
-       
         <br>
   <!--        buttons -->
   <!--      button LogIn -->
         <button class="log-in" type="submit"> Log In </button>
      </div>
-    
   <!--   other buttons -->
      <div class="other">
   <!--      Forgot Password button-->

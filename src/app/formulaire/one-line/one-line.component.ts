@@ -247,7 +247,7 @@ export class OneLineComponent implements OnInit {
          }
          
     
-          this.FormulaireService.getFields(servFound.Serv_Refer).subscribe((fields:any)=>{
+          this.FormulaireService.getFields(servFound.Serv_Refer).then((fields:any)=>{
             this.FormulaireService.getTables(res.idF).subscribe(async (tables:any)=>{
               reponse['tables']=tables
 
@@ -271,7 +271,7 @@ export class OneLineComponent implements OnInit {
              this.reponse.tables.forEach((tab:any)=>{
               tab.fields.forEach((field:any)=>{
                 if(field.Type=='list') {
-                  this.FormulaireService.getChoices(field.Field_Id).subscribe((choices:any)=>{
+                  this.FormulaireService.getChoices(field.Field_Id).then((choices:any)=>{
                     field['choisesList']=choices
                   })
                   }
@@ -328,7 +328,7 @@ export class OneLineComponent implements OnInit {
     servToShow=servs[0]
   }
   
-  this.FormulaireService.getFields(servToShow.Serv_Refer).subscribe((fields:any)=>{
+  this.FormulaireService.getFields(servToShow.Serv_Refer).then((fields:any)=>{
     this.FormulaireService.getTables(res.idF).subscribe(async (tables:any)=>{
       reponse['tables']=tables
       reponse['tables'].forEach((tab:any)=>{
@@ -350,7 +350,7 @@ export class OneLineComponent implements OnInit {
      this.reponse.tables.forEach((tab:any)=>{
       tab.fields.forEach((field:any)=>{
         if(field.Type=='list') {
-          this.FormulaireService.getChoices(field.Field_Id).subscribe((choices:any)=>{
+          this.FormulaireService.getChoices(field.Field_Id).then((choices:any)=>{
             field['choisesList']=choices
           })
           }

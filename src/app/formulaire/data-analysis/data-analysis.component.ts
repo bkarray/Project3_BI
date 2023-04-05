@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthService } from 'src/app/services/auth/authservice';
 import { FormulaireService } from 'src/app/services/formulaire/formulaire.service';
 
 @Component({
@@ -9,6 +10,7 @@ import { FormulaireService } from 'src/app/services/formulaire/formulaire.servic
 export class DataAnalysisComponent implements OnInit {
 
   constructor(
+    private authService: AuthService,
     private FormulaireService:FormulaireService
   ) { }
 forms:any=[]
@@ -52,7 +54,11 @@ addCode(){
       form.selected=false
     })
     this.forms[index].selected=!this.forms[index].selected
-    this.FormulaireService.getReponsesByFormulaire(this.forms[index].Formulaire_Id).subscribe((reponces:any)=>{
+    let idUser=0;
+    if(!this.authService.isAdmin()){
+      idUser=this.authService.authenticatedUser.U_Id
+    }
+    this.FormulaireService.getReponsesByFormulaire(this.forms[index].Formulaire_Id,idUser).subscribe((reponces:any)=>{
       reponces.forEach((reponce:any)=>{
         reponce['selected']=false
         this.responses.push(reponce)
@@ -82,6 +88,7 @@ this.showCodeIsOpen=!this.showCodeIsOpen
 
 
   getData(){
+    this.authService.loadUser();
 this.FormulaireService.getAllFormulaire().subscribe((forms:any)=>{
   forms.forEach((form:any)=>{
     form['selected']=false

@@ -23,7 +23,6 @@ newFormId:any=''
 
 groupsToHelp:any[]=[]
 newGroupToHelp:any=''
-helpIsNeeded:boolean=false
 FormToBeDeleted:any=0
   ngOnInit(): void {
     this.getData()
@@ -49,28 +48,20 @@ FormToBeDeleted:any=0
   deleteRelation(index:any){
     const formId=this.formsHere[index].Formulaire_Id
 this.FormulaireService.checkFormGroups(formId).subscribe((groups:any)=>{
-  if(groups.length>this.groupsSelected.length){
+
     this.groupsSelected.forEach((groupId:any)=>{
       this.FormulaireService.deleteGroupFormRelation(groupId,formId).subscribe((res:any)=>{
         console.log(res);
       })
     })
     this.formsHere.splice(index,1)
-  }
-  else{
-    this.FormulaireService.getGroups().subscribe((groups:any)=>{
-      this.groupsToHelp=groups.filter((e:any)=>this.groupsSelected.indexOf(e.Group_Id)==-1)
-      this.FormToBeDeleted=formId
-      this.helpIsNeeded=!this.helpIsNeeded
-    })
-  }
+
 })
   }
 
 
   closeDeletePop(){
     this.FormToBeDeleted=0
-    this.helpIsNeeded=!this.helpIsNeeded
     this.groupsToHelp=[]
   }
   ConfirmDelete(){

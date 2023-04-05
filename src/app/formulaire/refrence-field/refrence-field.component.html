@@ -1,14 +1,18 @@
-<div class="container">
+<div class="testbox">
+<!-- 
+<div class="row">
+    <div class="col-6">
+        <table class="tableGroup">
+            <tr class="listGroup">
+                <td></td>
+            </tr>
+        </table>
+    </div>
+</div> -->
+<span *ngIf="levelAdvancement>0" class="material-symbols-outlined" (click)="returnByOneLevel()">
+    arrow_back
+    </span>
     <table>
-        <tr>
-            <td>Group</td>
-            <td>
-                <select *ngIf="canUpDateField" [(ngModel)]="groupId" (change)="getForms()">
-                    <option value="" *ngIf="groupId==''">choose one group</option>
-                    <option *ngFor="let group of groupsToChoose" value="{{group.Group_Id}}">{{group.Group_Name}}</option>
-                </select>
-            </td>
-        </tr>
         
         <tr>
             <td>{{fieldStart.Formulaire_Name}}</td>
@@ -57,12 +61,27 @@
     <div>
         <button *ngIf="canUpDateField" (click)="createGenerateRelation()">create relation</button>
     </div>
-    <table *ngIf="!canUpDateField">
-        <tr *ngFor="let field of fieldsToChooseShow">
-            <td>{{field.Name}}</td>
-            <td>{{field.Type}}</td>
-            <td><input type="checkbox" [(ngModel)]="field.selected"></td>
-            <td *ngIf="field.selected&&(field.Type=='list')"><button>open list field</button></td>
-        </tr>
-    </table>
+    <h6 *ngIf="!canUpDateField"  class="litleFieldsRef">
+        fields to be Referenced 
+    </h6>
+    <div>    
+        <table *ngIf="!canUpDateField">
+            <tr *ngFor="let field of fieldsToChooseShow;let index=index">
+                <td>{{field.Name}}</td>
+                <td>{{field.Type}}</td>
+                <td><input type="checkbox" (change)="addOrRemoveField($event,index)" [(ngModel)]="field.selected"></td>
+                <td *ngIf="field.selected&&(field.Type=='list')"><span (click)="nextReferenceToSee(field)" class="material-symbols-outlined">
+                    more_vert
+                    </span></td>
+                <td *ngIf="!(field.selected&&(field.Type=='list'))"></td>
+            </tr>
+        </table>
+
+        <!-- <app-table-fields-reference [fieldRefersId]="fieldRefersId" [choiceId]="choiceId"></app-table-fields-reference> -->
+    </div>
+
+
+    <div>
+        <button (click)="close()">return</button>
+    </div>
 </div>

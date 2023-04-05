@@ -367,7 +367,7 @@ addNewEtape(){
         this.reponse=reponse
    console.log(reponse);
    
-       if(res.isCreated==0) this.FormulaireService.workingServices(res.idF).subscribe((servs:any)=>{
+       if(res.isCreated==0) this.FormulaireService.workingServices(res.idF).then((servs:any)=>{
           this.services=servs
             console.log(servs);
           this.servsExample=servs
@@ -383,7 +383,7 @@ addNewEtape(){
           this.FormulaireService.getServicesByReponse(res.idF,reponseToFind).subscribe((servs:any)=>{
             
 
-            this.FormulaireService.workingServices(res.idF).subscribe((servs1:any)=>{
+            this.FormulaireService.workingServices(res.idF).then((servs1:any)=>{
               this.services=servs
               this.etapes=servs
               console.log(servs1);

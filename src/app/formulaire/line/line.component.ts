@@ -410,7 +410,7 @@ if(test||(index==1)){
          }
          
     
-          this.FormulaireService.getFields(servFound.Serv_Refer).subscribe((fields:any)=>{
+          this.FormulaireService.getFields(servFound.Serv_Refer).then((fields:any)=>{
             this.FormulaireService.getTables(res.idF).subscribe(async (tables:any)=>{
               reponse['tables']=tables
 
@@ -433,7 +433,7 @@ if(test||(index==1)){
              this.reponse.tables.forEach((tab:any)=>{
               tab.fields.forEach((field:any)=>{
                 if(field.Type=='list') {
-                  this.FormulaireService.getChoices(field.Field_Id).subscribe((choices:any)=>{
+                  this.FormulaireService.getChoices(field.Field_Id).then((choices:any)=>{
                     field['choisesList']=choices
                   })
                   }
@@ -489,7 +489,7 @@ if(test||(index==1)){
     servToShow=servs[0]
   }
   
-  this.FormulaireService.getFields(servToShow.Serv_Refer).subscribe((fields:any)=>{
+  this.FormulaireService.getFields(servToShow.Serv_Refer).then((fields:any)=>{
     this.FormulaireService.getTables(res.idF).subscribe(async (tables:any)=>{
       reponse['tables']=tables
       reponse['tables'].forEach((tab:any)=>{
@@ -511,7 +511,7 @@ if(test||(index==1)){
      this.reponse.tables.forEach((tab:any)=>{
       tab.fields.forEach((field:any)=>{
         if(field.Type=='list') {
-          this.FormulaireService.getChoices(field.Field_Id).subscribe((choices:any)=>{
+          this.FormulaireService.getChoices(field.Field_Id).then((choices:any)=>{
             field['choisesList']=choices
           })
           }

@@ -60,11 +60,12 @@ export class FormulaireListComponent implements OnInit {
   newGroupName:any=""
   newFormGroups:any[]=[]
 
-
+allFormIsShown:boolean=false;
   restFormIsOpen:boolean=false
 
   ngOnInit(): void {
     this.getData()
+    this.selectGroup(-1);
   }
   @Output() emitter: EventEmitter<string> = new EventEmitter<string>();
   openExcelForm(event:any){
@@ -74,8 +75,6 @@ export class FormulaireListComponent implements OnInit {
 
 
   openExistingPopUp(){
-    console.log("hellooooooo");
-    
     this.restFormIsOpen=!this.restFormIsOpen
   }
   closeExistingPopUp(event:any){
@@ -107,15 +106,10 @@ export class FormulaireListComponent implements OnInit {
   }
 
   deleteGroup(index:any){
-    if(this.groups.length>1){
-      let idTo=0
-      if(index==0)
-      idTo=this.groups[1].Group_Id
-      else
-      idTo=this.groups[0].Group_Id
+    
       const  id=this.groups[index].Group_Id
 
-      this.FormulaireService.deleteGroup(id,idTo).subscribe((res:any)=>{
+      this.FormulaireService.deleteGroup(id).subscribe((res:any)=>{
           console.log(res);
         
           const indexDel=this.groupSelected.findIndex((e:any)=>e==this.groups[index].Group_Id)
@@ -126,10 +120,13 @@ export class FormulaireListComponent implements OnInit {
               this.getForms(forms)
             })
           }
+          if(this.groups.length==1){
+            this.selectGroup(-1);
+          }
           this.groups.splice(index,1)
         
       })
-    }
+    
   }
 
   addGroupSide(){
@@ -352,7 +349,7 @@ this.FormulaireService.putReponseInArchive(id).subscribe((res:any)=>{
     }
     if (this.newFormulaireStatus=='') newFormulaireName.Formulaire_Status='no description';
 console.log(newFormulaireName,this.services,(this.newFormGroups.length!=0))
-if((this.services.length!=0)&&(this.newFormGroups.length!=0)){    
+if(this.services.length!=0){    
       this.FormulaireService.addNewFormulaire(newFormulaireName).subscribe((formulaire:any)=>{
         this.newFormGroups.forEach((group:any)=>{
           const relation={
@@ -416,7 +413,8 @@ if((this.services.length!=0)&&(this.newFormGroups.length!=0)){
     this.formulaires[index].addReponseForm=!this.formulaires[index].addReponseForm
   }
   openReponseFormPage(indexF:any,indexR:any){
-    this.router.navigate(['/formulaire/reponse/',this.formulaires[indexF].Formulaire_Id,this.formulaires[indexF].reponses[indexR].Reponse_Id,1])
+    if(this.isAdmin){
+    this.router.navigate(['/formulaire/reponse/',this.formulaires[indexF].Formulaire_Id,this.formulaires[indexF].reponses[indexR].Reponse_Id,1])}
   }
   openForm() {
     this.groups.forEach((group:any)=>{
@@ -443,7 +441,12 @@ this.serviceFormIsOpen=!this.serviceFormIsOpen
   selectGroup(index:any){
    
     
-this.groups[index].selected=!this.groups[index].selected
+if(index!=-1){
+  if(this.allFormIsShown){
+    this.allFormIsShown=false;
+    this.formulaires=[]
+  }
+  this.groups[index].selected=!this.groups[index].selected
 if(this.groups[index].selected){
 this.groupSelected.push(this.groups[index].Group_Id)
 }
@@ -461,6 +464,21 @@ this.FormulaireService.getFormsByGroups({groups:this.groupSelected}).subscribe((
   this.formulaires=[]
   this.getForms(forms)
 })
+}
+else{
+  this.allFormIsShown=!this.allFormIsShown;
+  if(this.allFormIsShown){
+    this.groups.forEach((group:any)=>{
+      group.selected=false;
+      
+    })
+    this.groupSelected=[]
+    this.FormulaireService.getAllFormulaire().subscribe((forms:any)=>{
+      this.formulaires=[]
+      this.getForms(forms)
+    })
+  }
+}
   }
 getData(){
 
@@ -523,7 +541,11 @@ creatGroup(){
       
       data.forEach((formulaire:any)=>{
   console.log("000")
-        this.FormulaireService.getReponsesByFormulaire(formulaire.Formulaire_Id).subscribe((reponses:any)=>{
+  let idUser=0;
+  if(!this.isAdmin){
+    idUser=this.authService.authenticatedUser.U_Id
+  }
+        this.FormulaireService.getReponsesByFormulaire(formulaire.Formulaire_Id,idUser).subscribe((reponses:any)=>{
 
           formulaire['reponses']=[]
           formulaire['isOpen']=false
@@ -551,8 +573,10 @@ creatGroup(){
               else reponse['currentUser']=null;
             })
             formulaire['reponses']=reponses
-
-            this.formulaires.push(formulaire)
+            console.log("reps",reponses);
+            
+            if((reponses.length!=0)||this.isAdmin){
+            this.formulaires.push(formulaire)}
           
 
           //console.log(this.formulaires)

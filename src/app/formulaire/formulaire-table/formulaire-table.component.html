@@ -69,13 +69,13 @@
          
            <th cdkDrag *ngFor="let field of fields;let index=index"  [ngClass]="{resize:field.Name.substring(0, 3)!='ID_'}" (resized)="onResized($event)">
                
-               <p cdkDragHandle style="color:#fff ;" class="grab">{{field.Name}}<span *ngIf="(field.Name.substring(0, 3)!='ID_')&&!field.filterTypeSelector&&verifieIfFirstLevel(field.Table_Id)" 
+               <p cdkDragHandle style="color:#fff ;" class="grab">{{field.Name}}<span *ngIf="(field.Name.substring(0, 3)!='ID_')&&!field.filterTypeSelector&&verifieIfFirstLevel(field.Field_Id)" 
                 class="material-symbols-outlined"
                 (click)="openSelector(index)">
                 arrow_drop_down
                 </span>
                 <br>
-                <input type="text" class="filedSearch" *ngIf="(field.Name.substring(0, 3)!='ID_')" (change)="addFilter($event,field.Name,field.Table_Id)">
+                <input type="text" class="filedSearch" *ngIf="(field.Name.substring(0, 3)!='ID_')&&(!field.related)" (change)="addFilter($event,field.Name,field.Table_Id)">
             <select [(ngModel)]="filterType" *ngIf="(field.Name.substring(0, 3)!='ID_')&&field.filterTypeSelector" (change)="filterData(field.Name,index)">
                 <option value="">choose filter Type</option>
                 <option *ngFor="let type of typesOfFilter" value="{{type}}">{{type}}</option>

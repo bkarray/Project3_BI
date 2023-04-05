@@ -234,6 +234,9 @@ this.fields[index].editName=!this.fields[index].editName
           Field_order:ord
     
         }
+
+
+
         this.fields.push(newField22)
         this.servsEtap.forEach((serv:any,i:any)=>{
           let newFieldServ={
@@ -741,7 +744,7 @@ else{
 
 
 
-  async getNewFormulaire(){
+getNewFormulaire(){
     this.authService.loadUser();
     this.route.params.subscribe((param:any)=>{
       this.FormulaireService.getFormulaireById(param.id).subscribe((form:any)=>{
@@ -757,8 +760,8 @@ else{
               let index=tables.findIndex((e:any)=> e.Table_level==level)
               
               tables[index]['fields']=[]
-              await this.FormulaireService.getAllFields(tables[index].Table_Id).then((fields:any)=>{
               this.FormulaireService.getFieldsInArchive(tables[index].Table_Id).subscribe((fieldsInArchive:any)=>{
+              this.FormulaireService.getAllFields(tables[index].Table_Id).then((fields:any)=>{
                 tables[index]['fields']=fields
                 fields.forEach((field:any,a:any)=>{
                   field.Status='consulté'
@@ -787,23 +790,25 @@ else{
             }
 
 
-              this.FormulaireService.workingServices(param.id).subscribe((servs1:any)=>{
+              this.FormulaireService.workingServices(param.id).then((servs1:any)=>{
                 servs1.forEach((serv:any)=>{
                   serv['fields']=[{
                     Name:'ID',
                     Type:'auto_number',
                     Status:'consulté'
                   }]
-                  this.FormulaireService.getFields(serv.Serv_Id).subscribe((fields:any)=>{
+                  this.FormulaireService.getFields(serv.Serv_Id).then((fields:any)=>{
                     fields.forEach((field:any)=>{
                       field['editDesc']=false
                       field['editSataus']=false
                       field['editName']=false
                       field['editType']=false
                       field['oldName']=''
-                      serv.fields.push(field)
                     })
+                    serv.fields=fields
+                    console.log('fields serv',fields);
                   })
+                  
                   serv.fields=this.setOrder(serv.fields)
                   if(servs.length==1){
                     this.fields=serv.fields
@@ -813,6 +818,7 @@ else{
   
                 if ((servs1.length+1<=servs.length))this.currentsrvOrd=servs1.length+1
                 else {
+                  
                   
                   this.currentsrvOrd=servs.length
                   let index=servs1.findIndex((e:any)=> e.Serv_order==servs.length)
@@ -826,7 +832,7 @@ else{
                 form['services']=servs
   
                 this.formulaire=form
-                console.log(this.formulaire);
+                console.log("form",this.formulaire,"servs",servs);
                 
                 this.currentsrvName=servs[0].Serv_Name
                 this.numservs=this.formulaire.services.length

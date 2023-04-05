@@ -19,8 +19,8 @@ export class FormulaireService {
   addNewFormulaire(val:any){
     return this.http.post(this.APIUrl+'/formulaire/',val)
   }
-  getReponsesByFormulaire(id:any){
-    return this.http.get(this.APIUrl+'/reponses/'+id) 
+  getReponsesByFormulaire(id:any,idUser:any){
+    return this.http.get(this.APIUrl+'/reponses/'+id+"/"+idUser) 
   }
   getServices(id:any){
     return this.http.get(this.APIUrl+'/services/'+id)
@@ -62,7 +62,7 @@ export class FormulaireService {
     return this.http.put(this.APIUrl+'/reponses/',val)
   }
   getFields(id:any){
-    return this.http.get(this.APIUrl+'/fields/'+id)
+    return this.http.get(this.APIUrl+'/fields/'+id).toPromise()
   }
   postField(val:any){
     return this.http.post(this.APIUrl+'/fields/',val)
@@ -92,7 +92,7 @@ export class FormulaireService {
     return this.http.post(this.APIUrl+'/fields/',val)   
   }
   workingServices(id:any){
-    return this.http.get(this.APIUrl+'/workingServices/'+id)
+    return this.http.get(this.APIUrl+'/workingServices/'+id).toPromise()
   }
   getServsExamples(){
     return this.http.get(this.APIUrl+'/servsExamples/')
@@ -171,13 +171,13 @@ export class FormulaireService {
     return this.http.put(this.APIUrl+'/crud_choices/',val);
   }
   getChoicesFromField(id:any){
-    return this.http.get(this.APIUrl+'/crud_choices/'+id);
+    return this.http.get(this.APIUrl+'/crud_choices/'+id).toPromise();
   }
   deleteChoice(id:any){
     return this.http.delete(this.APIUrl+'/crud_choices/'+id);
   }
   getChoices(id:any){
-    return this.http.get(this.APIUrl+'/getChoices/'+id)
+    return this.http.get(this.APIUrl+'/getChoices/'+id).toPromise()
   }
   giveInformationOnChoice(val:any){
     return this.http.post(this.APIUrl+'/giveInformationOnChoice/',val)
@@ -262,8 +262,8 @@ export class FormulaireService {
   getOneField(id:any){
     return this.http.get(this.APIUrl+'/get_one_field/'+id)
   }
-  deleteGroup(id:any,idTo:any){
-    return this.http.delete(this.APIUrl+"/crud_group/"+id+"/"+idTo)
+  deleteGroup(id:any){
+    return this.http.delete(this.APIUrl+"/crud_group/"+id)
   }
   getRestForms(val:any){
     return this.http.post(this.APIUrl+'/get_rest_of_forms/',val)
@@ -273,5 +273,24 @@ export class FormulaireService {
   }
   deleteGroupFormRelation(idG:any,idF:any){
     return this.http.delete(this.APIUrl+"/delete_group_form_relation/"+idG+"/"+idF)
+  }
+
+  addFieldToView(idChoice:any,idField:any){
+    return this.http.get(this.APIUrl+"/add_remove_field/"+idChoice+"/"+idField);
+  }
+  removeFieldToView(idChoice:any,idField:any){
+    return this.http.delete(this.APIUrl+"/add_remove_field/"+idChoice+"/"+idField)
+  }
+  verifiesFieldView(idChoice:any,idField:any){
+    return this.http.get(this.APIUrl+"/verifies_field_view/"+idChoice+"/"+idField).toPromise()
+  }
+  getFieldsInReference(id:any){
+    return this.http.get(this.APIUrl+'/get_fields_in_reference/'+id).toPromise()
+  }
+  getFieldReference(id:any){
+    return this.http.get(this.APIUrl+'/get_field_Reference/'+id).toPromise()
+  }
+  getFieldsInRelation(idChoice:any,idField:any){
+    return this.http.get(this.APIUrl+"/get_fields_in_relation/"+idChoice+"/"+idField).toPromise()
   }
 }

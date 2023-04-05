@@ -40,27 +40,10 @@
                         check
                         </span></td>
                    </tr>
-
-                   <tr *ngIf="helpIsNeeded">
-                    <td><select [(ngModel)]="newGroupToHelp" [ngModelOptions]="{standalone: true}">
-                        <option value="">choose a group</option>
-                        <option *ngFor="let group of groupsToHelp" value="{{group.Group_Id}}">{{group.Group_Name}}</option>
-                    </select></td>
-                    <td></td>
-                   </tr>
-                   <tr *ngIf="helpIsNeeded">
-                    <td>
-                      <span (click)="closeDeletePop()" class="material-symbols-outlined delete">
-                        keyboard_return
-                        </span></td>
-                   <td>
-                     <span (click)="ConfirmDelete()" class="material-symbols-outlined blueHover">
-                       check
-                       </span></td>
-                   </tr>
                 </table>
     
-    
+  
+
             </div>
           
     

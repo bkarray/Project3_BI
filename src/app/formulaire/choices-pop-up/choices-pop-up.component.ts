@@ -45,10 +45,55 @@ export class ChoicesPopUpComponent implements OnInit {
   groupId:any=''
   groups:any[]=[]
 
+
+  referenceTabIsOpen:boolean=false;
+  referenceId:any=null;
+  canUpDateField:boolean=true;
+  choiceToReferId:any=null;
   ngOnInit(): void {
     console.log(this.FieldId);
     this.getData()
     
+  }
+
+returnReference(choices:any[]){
+let i=0;
+while(i<choices.length){
+  if(choices[i].fieldFromTable){
+    return choices[i]
+  }
+  i++;
+}
+return null;
+}
+
+
+
+
+  openReferenceTab(){
+this.FormulaireService.getChoicesFromField(this.FieldId).then((choices:any)=>{
+  const choiceToWorkOn=this.returnReference(choices)
+  if(choiceToWorkOn!=null){
+this.FormulaireService.getFieldReference(choiceToWorkOn.Choice_Id).then((field:any)=>{
+
+  this.referenceId=field.Field_Id;
+  this.choiceToReferId=choiceToWorkOn.Choice_Id;
+  this.canUpDateField=this.referenceId==null;
+  this.referenceTabIsOpen=true;
+})
+}
+else{
+  this.referenceId=null;
+this.choiceToReferId=null;
+this.canUpDateField=this.referenceId==null;
+this.referenceTabIsOpen=true;
+}
+})
+  }
+
+
+  closeReferenceTab(){
+this.referenceTabIsOpen=false;
   }
   loadDataExcel(){
     if(this.fileColChosen!=''){
@@ -222,7 +267,7 @@ export class ChoicesPopUpComponent implements OnInit {
 
 
   getData(){
-    this.FormulaireService.getChoicesFromField(this.FieldId).subscribe((choices:any)=>{
+    this.FormulaireService.getChoicesFromField(this.FieldId).then((choices:any)=>{
       this.ChoicesItems=choices.filter((e:any)=>e.fieldFromTable==null)
       this.FieldsReferences=choices.filter((e:any)=>e.choiceItem==null)
       let names:any[]=[]

@@ -144,8 +144,9 @@ this.graphsListIsOpen=!this.graphsListIsOpen
 
 
   verifieIfFirstLevel(id:any){
-    let tab=this.reponse.tables.find((e:any)=>e.Table_Id==id)
-    return tab.Table_level==0
+    const tab=this.reponse.tables.find((e:any)=>e.Table_level==0)
+    const index=tab.fields.findIndex((e:any)=>e.Field_Id==id)
+    return index!=-1
   }
 
 
@@ -590,7 +591,6 @@ upDateOrderLigs(){
          data[index][change.fieldchanged]=change.newValue
          if(change&&change.id) FormulaireServ.deleteUpdate(change.id).subscribe((res:any)=>{})
         }
-        console.log("58",change.newValue)
       }
       else { console.log("(data&&data.children)")
         if(data){
@@ -609,7 +609,6 @@ upDateOrderLigs(){
     }
     this.socket.onmessage=function(e:any){
       let data=JSON.parse(e.data)
-      console.log("bb",this.data)
       if(data&&data.payload&&(data.payload.chagementType=='edit')) keepUpdate(FormulaireServ,info,0,data.payload)
       else if(data&&data.payload&&(data.payload.chagementType=='add')){
         if(data.payload&&data.payload.id) FormulaireServ.deleteUpdate(data.payload.id).subscribe((res:any)=>{})
@@ -760,7 +759,7 @@ upDateOrderLigs(){
       Value:val,
       id:Id
     }
-    if(Name=='date') newChange.Value=newChange.Value.toString()
+    if(field.Type=='date') newChange.Value=newChange.Value.toString()
     this.FormulaireService.upDateFieldVal(newChange).subscribe((res:any)=>{
      
       
@@ -778,6 +777,10 @@ upDateOrderLigs(){
         is_seen:false
       }
       console.log("newup",newUpdate)
+      this.data=[]
+setTimeout(() => {
+  this.getInfo(this.pages.inf,this.pages.sup)
+}, 1);
      this.FormulaireService.addNewUpdate(newUpdate).subscribe((res:any)=>{console.log(res)})
     })
   }
@@ -1036,9 +1039,40 @@ if(!this.formIsOpen){
     return res
   }
 
+  returnReference(choices:any[]){
+    let i=0;
+    while(i<choices.length){
+      if(choices[i].fieldFromTable){
+        return choices[i]
+      }
+      i++;
+    }
+    return null;
+    }
 
+getReferencesByFieldList(listField:any,choice:any,index:any,indexTable:any,order:any,tableID:any){
+this.FormulaireService.getFieldsInRelation(choice.Choice_Id,listField.Field_Id).then((fieldsResult:any)=>{
 
-
+fieldsResult.forEach((field:any)=>{
+field.Status='consulté'
+field.Field_order=order
+field.Table_Id=tableID
+field['related']=true
+field['filterTypeSelector']=false
+if(field.Type=="list"){
+  this.FormulaireService.getChoices(field.Field_Id).then((choices:any)=>{
+    field['choisesList']=choices
+  })
+}
+console.log("insertion2");
+this.fields.splice(index, 0, field)
+this.reponse.tables[indexTable].fields.push(field)
+if(field.Type=='list'){
+    this.getReferencesByFieldList(field,choice,index+1,indexTable,order,tableID)
+  }
+})
+})
+}
 
 
 
@@ -1144,7 +1178,7 @@ async getInfo(inf:any,sup:any){
   }
   this.FormulaireService.getAllInformation(table0).subscribe((data:any)=>{
      
-    //console.log(this.data)
+    console.log("datahello",this.data)
     
     
    this.getInferData(this.reponse.tables[1],data,0);
@@ -1203,7 +1237,7 @@ async configurationStepByStep(reponse:any,res:any){
        }
        
   
-        this.FormulaireService.getFields(servFound.Serv_Refer).subscribe((fields:any)=>{
+        this.FormulaireService.getFields(servFound.Serv_Refer).then((fields:any)=>{
           this.FormulaireService.getTables(res.idF).subscribe(async (tables:any)=>{
             reponse['tables']=tables
             fields.forEach((field:any)=>{
@@ -1234,15 +1268,19 @@ async configurationStepByStep(reponse:any,res:any){
            this.reponse.tables.forEach((tab:any)=>{
             tab.fields.forEach((field:any)=>{
               if(field.Type=='list') {
-                this.FormulaireService.getChoices(field.Field_Id).subscribe((choices:any)=>{
+                this.FormulaireService.getChoices(field.Field_Id).then((choices:any)=>{
                   field['choisesList']=choices
                 })
                 }
               if(field.Status=='modifié') this.thereIsWork=true
               field['filterTypeSelector']=false
+              field['related']=false
               this.fields.push(field)
             })
+           
+
            })
+           this.insertFieldsRelated()
            console.log(this.fields,this.servs)
            await this.getInfo(0,5)
            
@@ -1292,7 +1330,7 @@ else{
   servToShow=servs[0]
 }
 
-this.FormulaireService.getFields(servToShow.Serv_Refer).subscribe((fields:any)=>{
+this.FormulaireService.getFields(servToShow.Serv_Refer).then((fields:any)=>{
   this.FormulaireService.getTables(res.idF).subscribe(async (tables:any)=>{
     reponse['tables']=tables
     reponse['tables'].forEach((tab:any)=>{
@@ -1319,13 +1357,17 @@ this.FormulaireService.getFields(servToShow.Serv_Refer).subscribe((fields:any)=>
    this.reponse.tables.forEach((tab:any)=>{
     tab.fields.forEach((field:any)=>{
       if(field.Type=='list') {
-        this.FormulaireService.getChoices(field.Field_Id).subscribe((choices:any)=>{
+        this.FormulaireService.getChoices(field.Field_Id).then((choices:any)=>{
           field['choisesList']=choices
+
         })
         }
+        field['related']=false
       this.fields.push(field)
+
     })
    })
+   this.insertFieldsRelated()
    console.log(this.fields,this.servs)
    await this.getInfo(0,5)
    
@@ -1336,6 +1378,23 @@ this.FormulaireService.getFields(servToShow.Serv_Refer).subscribe((fields:any)=>
       })
 
 })
+}
+
+
+insertFieldsRelated(){
+  this.fields.forEach((field:any,index:any)=>{
+    if(field.Type=='list'){
+      console.log("insertion1");
+      
+      this.FormulaireService.getChoicesFromField(field.Field_Id).then((choices:any)=>{
+        const choiceToWorkOn=this.returnReference(choices)
+        if(choiceToWorkOn!=null){
+          let indexTable=this.reponse.tables.findIndex((e:any)=>e.Table_Id==field.Table_Id)
+          this.getReferencesByFieldList(field,choiceToWorkOn,index+1,indexTable,field.Field_order,field.Table_Id)
+        }
+      })
+    }
+  })
 }
 
  getData(){
