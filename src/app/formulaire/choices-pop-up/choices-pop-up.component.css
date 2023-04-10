@@ -1,14 +1,15 @@
 .deletePopUp{
+  display: flex;
+    align-content: space-between;
+    align-items: center;
 	border-radius: 10px;
 	background-color: white;
 	box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 	position: absolute;
 	top: 50%;
 	left: 50%;
-    min-width: 500px;
-    min-width: 500px;
-    min-height: 500px;
-    max-height: 500px;
+    min-width: 400px;
+    min-height: 400px;
 	transform: translate(-50%, -50%);
 	z-index: 1;
   overflow:hidden;
@@ -25,13 +26,37 @@
   .material-symbols-outlined:hover{
     color: rgb(19, 115, 216);
   }
+
+
+  .btn-choice{
+    border: solid;
+    border-color: #153462;
+    margin: 2%;
+    width: 140px;
+  }
+  .choice-block{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .btn-choice:hover{
+    background-color: #153462;
+    color: #fff;
+    border-color: darkgrey;
+  }
+  .validation-block{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    margin-top: 15%;
+  }
   .bg{
-    position: fixed;
+    position:absolute;
+    width: 100% !important;
     top: 0;
     left: 0;
     z-index: 1040;
-    width: 100vw;
-    height: 100vh;
+    min-height: 400px;
     background-color: rgba(0, 0, 0, 0.4);
     backdrop-filter: blur(15px);
   }

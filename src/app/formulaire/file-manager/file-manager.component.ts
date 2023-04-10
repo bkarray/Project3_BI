@@ -201,7 +201,7 @@ export class FileManagerComponent implements OnInit {
 
 
   getData(){
-    this.FormulaireService.getTables(this.Formulaire_Id).subscribe((tables:any)=>{
+    this.FormulaireService.getTables(this.Formulaire_Id).then((tables:any)=>{
       let tab=tables.find((e:any)=>e.Table_level==0)
       this.Table=tab
       console.log(tab);

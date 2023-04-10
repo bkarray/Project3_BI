@@ -58,9 +58,7 @@
             </td>
         </tr>
     </table>
-    <div>
-        <button *ngIf="canUpDateField" (click)="createGenerateRelation()">create relation</button>
-    </div>
+  
     <h6 *ngIf="!canUpDateField"  class="litleFieldsRef">
         fields to be Referenced 
     </h6>
@@ -81,7 +79,8 @@
     </div>
 
 
-    <div>
-        <button (click)="close()">return</button>
+    <div class="btnBlock">
+        <button *ngIf="canUpDateField" (click)="createGenerateRelation()">create relation</button>
+        <button (click)="close()">validate</button>
     </div>
 </div>

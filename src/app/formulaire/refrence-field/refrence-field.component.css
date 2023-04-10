@@ -219,7 +219,7 @@ table.blueTable tfoot .links a{
 
 */
 table{
-  width: 30%; 
+  width: 100%; 
   border-collapse: collapse;
   border-spacing: 0 20px ;
 
@@ -508,6 +508,10 @@ a {
   overflow-y:auto;
   
 }
+.btnBlock{
+  display: flex;
+  justify-content: flex-end;
+}
 .bg{
   position: fixed;
   top: 0;
@@ -668,6 +672,7 @@ tr td:first-child { border-left-style: solid; }
   }
   .testbox {
   justify-content: center;
+  width: 100%;
   padding: 20px;
   top:5%;
   right: 35%;

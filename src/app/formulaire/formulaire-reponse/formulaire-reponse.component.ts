@@ -361,7 +361,7 @@ addNewEtape(){
   this.isAdmin=this.authService.isAdmin()
     console.log('user=',this.authService.isAdmin());
     this.route.params.subscribe((res:any)=>{
-      this.FormulaireService.getFormulaireById(res.idF).subscribe((formulaire:any)=>{
+      this.FormulaireService.getFormulaireById(res.idF).then((formulaire:any)=>{
         this.FormulaireService.getReponseById(res.idR).subscribe((reponse:any)=>{
         this.formulaire=formulaire
         this.reponse=reponse

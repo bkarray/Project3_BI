@@ -536,7 +536,7 @@ if((this.fields[event.previousIndex].Name.substring(0, 3)!='ID_')&&(event.curren
         field.isChanged=!test.result;}
       })
        
-
+this.correctLastLine()
      }
 upDateOrderLigs(){
   this.data.forEach((lig:any,i:any)=>{
@@ -563,7 +563,7 @@ upDateOrderLigs(){
         );
       }
       this.upDateOrderLigs()
-      
+      this.correctLastLine()
      }
     
      
@@ -1161,6 +1161,7 @@ console.log(this.filters);
 this.data=[]
 setTimeout(() => {
   this.getInfo(this.pages.inf,this.pages.sup)
+  this.correctLastLine()
 }, 1);
 
 
@@ -1215,6 +1216,19 @@ async getInfo(inf:any,sup:any){
 }
 
 
+correctLastLine(){
+  for(let i=0;i<this.data.length;i++){
+    if(i!=this.data.length-1){
+      this.data[i]['last']=false
+    }
+    else{
+      this.data[i]['last']=true
+    }
+  }
+}
+
+
+
 async configurationStepByStep(reponse:any,res:any){
   let servTofind=reponse.reponse_level
     if(servTofind==null) servTofind=0
@@ -1238,7 +1252,7 @@ async configurationStepByStep(reponse:any,res:any){
        
   
         this.FormulaireService.getFields(servFound.Serv_Refer).then((fields:any)=>{
-          this.FormulaireService.getTables(res.idF).subscribe(async (tables:any)=>{
+          this.FormulaireService.getTables(res.idF).then(async (tables:any)=>{
             reponse['tables']=tables
             fields.forEach((field:any)=>{
               field['isChanged']=false
@@ -1331,7 +1345,7 @@ else{
 }
 
 this.FormulaireService.getFields(servToShow.Serv_Refer).then((fields:any)=>{
-  this.FormulaireService.getTables(res.idF).subscribe(async (tables:any)=>{
+  this.FormulaireService.getTables(res.idF).then(async (tables:any)=>{
     reponse['tables']=tables
     reponse['tables'].forEach((tab:any)=>{
       if(tab.Table_level==0){

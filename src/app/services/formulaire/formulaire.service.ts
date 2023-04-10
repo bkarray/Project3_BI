@@ -26,7 +26,7 @@ export class FormulaireService {
     return this.http.get(this.APIUrl+'/services/'+id)
   }
   getFormulaireById(id:any){
-    return this.http.get(this.APIUrl+'/formulaire/'+id)
+    return this.http.get(this.APIUrl+'/formulaire/'+id).toPromise()
   }
   creatNewTable(val:any){
     return this.http.post(this.APIUrl+'/creatTable/',val)
@@ -41,7 +41,7 @@ export class FormulaireService {
     return this.http.post(this.APIUrl+'/addForeignKey/',val)
   }
   getServicesByformulaire(id:any){
-     return this.http.get(this.APIUrl+'/servicesByFormulaire/'+id);
+     return this.http.get(this.APIUrl+'/servicesByFormulaire/'+id).toPromise();
   }
   creatNewService(val:any){
     return this.http.post(this.APIUrl+'/services/',val)
@@ -68,7 +68,7 @@ export class FormulaireService {
     return this.http.post(this.APIUrl+'/fields/',val)
   }
   getTables(id:any){
-    return this.http.get(this.APIUrl+'/table/'+id)
+    return this.http.get(this.APIUrl+'/table/'+id).toPromise()
   }
   getAllTables(){
     return this.http.get(this.APIUrl+'/table/')
@@ -83,7 +83,7 @@ export class FormulaireService {
     return this.http.get(this.APIUrl+'/getAllFields/'+id).toPromise()
   }
   getFieldsInArchive(id:any){
-    return this.http.get(this.APIUrl+'/getFieldsInArchive/'+id)
+    return this.http.get(this.APIUrl+'/getFieldsInArchive/'+id).toPromise()
   }
   updateField(val:any){
     return this.http.put(this.APIUrl+'/fields/',val)
@@ -165,7 +165,7 @@ export class FormulaireService {
     return this.http.post(this.APIUrl+'/getDataList/',val);
   }
   creatChoice(val:any){
-    return this.http.post(this.APIUrl+'/crud_choices/',val);
+    return this.http.post(this.APIUrl+'/crud_choices/',val).toPromise();
   }
   correctChoice(val:any){
     return this.http.put(this.APIUrl+'/crud_choices/',val);

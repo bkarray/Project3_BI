@@ -411,7 +411,7 @@ if(test||(index==1)){
          
     
           this.FormulaireService.getFields(servFound.Serv_Refer).then((fields:any)=>{
-            this.FormulaireService.getTables(res.idF).subscribe(async (tables:any)=>{
+            this.FormulaireService.getTables(res.idF).then(async (tables:any)=>{
               reponse['tables']=tables
 
               reponse['tables'].forEach((tab:any)=>{
@@ -490,7 +490,7 @@ if(test||(index==1)){
   }
   
   this.FormulaireService.getFields(servToShow.Serv_Refer).then((fields:any)=>{
-    this.FormulaireService.getTables(res.idF).subscribe(async (tables:any)=>{
+    this.FormulaireService.getTables(res.idF).then(async (tables:any)=>{
       reponse['tables']=tables
       reponse['tables'].forEach((tab:any)=>{
         if(!this.reponseIsOnWork||!this.isWorking){

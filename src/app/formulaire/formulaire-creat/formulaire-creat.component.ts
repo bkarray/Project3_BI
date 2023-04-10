@@ -238,6 +238,7 @@ this.fields[index].editName=!this.fields[index].editName
 
 
         this.fields.push(newField22)
+        const index=this.servsEtap.findIndex((e:any)=> e.Serv_order==Number(this.shownServNum))
         this.servsEtap.forEach((serv:any,i:any)=>{
           let newFieldServ={
             Table_Id:this.formulaire.tables[indexT].Table_Id,
@@ -265,9 +266,11 @@ this.fields[index].editName=!this.fields[index].editName
               Field_order:ord
         
             }
+            if(index!=i)
             serv.fields.push(newField2)
           })
         })
+        
 
         if(Number(this.shownServNum)==Number(this.currentsrvOrd)){let newField2= {
           Table_Id:this.formulaire.tables[indexT].Table_Id,
@@ -357,7 +360,7 @@ this.indexToExtract=index
                     Name:newField2.Name,
                     orderFront:this.fields.length-1
                   }
-                  this.orderFields.push(newOrder)
+    this.orderFields.push(newOrder)
     this.openfieldForm()
     this.newFieldName=''
     this.newFieldType='character varying(255)'
@@ -746,11 +749,12 @@ else{
 
 getNewFormulaire(){
     this.authService.loadUser();
+    let starterFields:any[]=[]
     this.route.params.subscribe((param:any)=>{
-      this.FormulaireService.getFormulaireById(param.id).subscribe((form:any)=>{
-        this.FormulaireService.getTables(param.id).subscribe((tables:any)=>{
+      this.FormulaireService.getFormulaireById(param.id).then((form:any)=>{
+        this.FormulaireService.getTables(param.id).then((tables:any)=>{
              this.lastTableIndex=tables.length-1
-             this.FormulaireService.getServicesByformulaire(param.id).subscribe(async (servs:any)=>{
+             this.FormulaireService.getServicesByformulaire(param.id).then(async (servs:any)=>{
             if(param.generated==1){
               this.isGenerated=true
             }
@@ -760,7 +764,7 @@ getNewFormulaire(){
               let index=tables.findIndex((e:any)=> e.Table_level==level)
               
               tables[index]['fields']=[]
-              this.FormulaireService.getFieldsInArchive(tables[index].Table_Id).subscribe((fieldsInArchive:any)=>{
+              this.FormulaireService.getFieldsInArchive(tables[index].Table_Id).then((fieldsInArchive:any)=>{
               this.FormulaireService.getAllFields(tables[index].Table_Id).then((fields:any)=>{
                 tables[index]['fields']=fields
                 fields.forEach((field:any,a:any)=>{
@@ -772,7 +776,8 @@ getNewFormulaire(){
                     orderFront:a
                   }
                   this.orderFields.push(newOrder)
-                  this.fields.push(field)
+                  
+                  starterFields.push(field)
                 })
                 console.log('444',this.orderFields);
                 
@@ -806,6 +811,10 @@ getNewFormulaire(){
                       field['oldName']=''
                     })
                     serv.fields=fields
+                    if((servs1.length+1>servs.length)&&(serv.Serv_order==servs.length)){
+                      this.fields=fields
+                      this.fields=this.setOrder(this.fields)
+                    }
                     console.log('fields serv',fields);
                   })
                   
@@ -816,15 +825,15 @@ getNewFormulaire(){
                 })
                 this.servsEtap=servs1
   
-                if ((servs1.length+1<=servs.length))this.currentsrvOrd=servs1.length+1
-                else {
-                  
-                  
-                  this.currentsrvOrd=servs.length
-                  let index=servs1.findIndex((e:any)=> e.Serv_order==servs.length)
-                  this.fields=servs1[index].fields
-                  this.fields=this.setOrder(this.fields)
+                if ((servs1.length+1<=servs.length)){
+                  console.log(starterFields,"aaaaaaaaa")
+                  this.currentsrvOrd=servs1.length+1
+                  this.fields=starterFields
                 }
+                else{
+                  this.currentsrvOrd=servs.length
+                }
+
                 this.shownServNum=this.currentsrvOrd
   
   

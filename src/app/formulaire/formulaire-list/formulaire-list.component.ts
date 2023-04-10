@@ -459,11 +459,15 @@ else{
   
 }
 console.log(this.groupSelected);
-
+if(this.groupSelected.length!=0){
 this.FormulaireService.getFormsByGroups({groups:this.groupSelected}).subscribe((forms:any)=>{
   this.formulaires=[]
   this.getForms(forms)
 })
+}
+else{
+  this.selectGroup(-1)
+}
 }
 else{
   this.allFormIsShown=!this.allFormIsShown;

@@ -1,0 +1,25 @@
+<div class="testbox">
+    <div *ngFor="let choice of ChoicesItems" >
+<div class="choice-bloc">
+
+    <input type="text" [(ngModel)]="choice.choiceItem" value="{{choice.choiceItem}}" (change)="correctChoice(choice['Choice_Id'],choice.choiceItem)"><span class="material-symbols-outlined"(click)="deleteChoice(choice.Choice_Id,false)">
+        delete
+    </span>
+</div>
+    </div>
+    <div>
+
+        <button *ngIf="!addChoiceItemForm" class="btn btn-add" (click)="openFormChoiceItem()">+</button>
+        <p *ngIf="addChoiceItemForm">New Choice:</p>
+        <input *ngIf="addChoiceItemForm" type="text" [(ngModel)]="newChoiceItem" placeholder="choice to add...">
+        <div *ngIf="addChoiceItemForm" class="btn-block">
+            <button class="btn btn-choice btn-cancel" (click)="openFormChoiceItem()">cancel</button>
+            <button  class="btn btn-choice" (click)="addChoiceItem()">confirm</button>
+        </div>
+    </div>
+
+<div class="validate-block">
+    <button class="btn btn-add btn-validate" (click)="close()">Validate</button>
+</div>
+    
+</div>

@@ -51,7 +51,7 @@ export class RefrenceFieldComponent implements OnInit {
     })
   }
   getTables(){
-    this.FormulaireService.getTables(Number(this.formId)).subscribe((tabs:any)=>{
+    this.FormulaireService.getTables(Number(this.formId)).then((tabs:any)=>{
       this.tabToChoose=tabs
       this.tabId=''
       this.fieldToChoose=[]
@@ -73,7 +73,7 @@ export class RefrenceFieldComponent implements OnInit {
         fieldFromTable:Number(this.newRef),
         choiceItem:null
       }
-      this.FormulaireService.creatChoice(newChoice).subscribe((choice:any)=>{
+      this.FormulaireService.creatChoice(newChoice).then((choice:any)=>{
         this.choiceId=choice.Choice_Id
         this.FormulaireService.giveInformationOnChoice(choice).subscribe((correctedChoice:any)=>{
           this.FormulaireService.getOneField(Number(this.newRef)).subscribe((field:any)=>{

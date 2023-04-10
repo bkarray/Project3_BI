@@ -78,6 +78,8 @@ import {MatTableModule} from '@angular/material/table';
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatTooltipModule} from '@angular/material/tooltip';
+import { ManuelChoiceComponent } from './manuel-choice/manuel-choice.component';
+import { ExcelChoiceComponent } from './excel-choice/excel-choice.component';
 
 
 
@@ -98,7 +100,9 @@ import {MatTooltipModule} from '@angular/material/tooltip';
    GraphsListComponent,
    DataAnalysisComponent,
    RefrenceFieldComponent,
-   RestFormsComponent
+   RestFormsComponent,
+   ManuelChoiceComponent,
+   ExcelChoiceComponent
   ],
   imports: [
     CommonModule,

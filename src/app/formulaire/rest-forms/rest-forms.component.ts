@@ -96,10 +96,10 @@ this.FormulaireService.checkFormGroups(formId).subscribe((groups:any)=>{
       this.FormulaireService.createRelationFormGroup(relation).then((res:any)=>{
         console.log(res);
         
+        this.closeAddForm()
+        this.getData()
       })
     })}
-    this.closeAddForm()
-    this.getData()
   }
 
   closeAddForm(){
@@ -120,6 +120,7 @@ getData(){
 
     this.FormulaireService.getFormsByGroups(groups).subscribe((formsHere:any)=>{
       this.formsHere=[]
+      console.log(formsHere)
       this.formsHere=formsHere
 
   })

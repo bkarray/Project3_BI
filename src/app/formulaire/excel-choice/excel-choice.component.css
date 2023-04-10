@@ -1,0 +1,91 @@
+.testbox {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 20px;
+    top:5%;
+    right: 35%;
+    z-index: 100;
+    align-items: center;
+    overflow:hidden;
+    
+    }
+select{
+    margin: 20%;
+    width: 50%;
+    border-radius: 10px;
+}
+    .choice-bloc{
+        display: flex;
+        margin: 5%;
+    
+    }
+    
+    .choice-bloc input{
+        border: none;
+        border-radius: 9px;
+    }
+    .btn-add{
+        border: solid;
+        border-color: #fff;
+        color: #fff;
+        background-color: #153462;
+        margin: 2%;
+        width: 50px;
+    }
+    .btn-add:hover{
+        background-color: #fff;
+        color: #153462;
+        border-color: #153462;
+      }
+    .btn-choice{
+        border: solid;
+        border-color: #fff;
+        color: #fff;
+        background-color: #153462;
+        margin: 2%;
+        width: 140px;
+      }
+    .btn-choice:hover{
+        background-color: #fff;
+        color: #153462;
+        border-color: #153462;
+      }
+    
+      .btn-cancel{
+        background-color: #6f0e0e;
+      }
+    
+    .btn-block{
+        display: flex;
+        flex-wrap: nowrap;
+        justify-content: space-between;
+        align-items: center;
+        margin: 5%;  
+    }
+    
+    .material-symbols-outlined {
+        cursor: pointer;
+        font-variation-settings:
+        'FILL' 0,
+        'wght' 400,
+        'GRAD' 0,
+        'opsz' 48
+      }
+      .material-symbols-outlined:hover{
+        color: rgb(255, 0, 0);
+      }
+    
+      .validate-block{
+        display: flex;
+        flex-wrap: nowrap;
+        justify-content: flex-end;
+        margin-left: 50%;
+        margin-top: 16%;
+      }
+      .btn-validate{
+        width: 100%;
+      }

@@ -1,7 +1,27 @@
 <div class="deletePopUp" *ngIf="ChoicesPopUp">
 
         <div class="modal-body">
-          <ol>
+
+<div class="choice-block">
+  <button class="btn btn-choice" (click)="openChoicesItemsList()">Manual</button>
+  <button class="btn btn-choice" (click)="openParmFile()">From Excel</button>
+  <button class="btn btn-choice" (click)="openReferenceTab()">Reference</button>
+</div>
+
+
+
+<div class="validation-block">
+  <button class="btn btn-choice" (click)="close()">validate</button>
+</div>
+
+
+
+
+
+
+
+
+          <!-- <ol>
             <li><span class="material-symbols-outlined" (click)="openChoicesItemsList()">
                 arrow_drop_down
                 </span>
@@ -24,19 +44,22 @@
 
             </ul>
             </li>
-          </ol>
+          </ol> -->
         </div>
 
-        <div class="modal-footer justify-content-center">
+        <!-- <div class="modal-footer justify-content-center">
             <button type="button" class="btn btn-secondary" (click)="openReferenceTab()" >create reference</button>
 
           <button type="button" class="btn btn-secondary" (click)="close()" >Cancel</button>
-      </div>
+      </div> -->
 
 
-    <div class="bg" *ngIf="referenceTabIsOpen">
+    <div class="bg" *ngIf="referenceTabIsOpen||choicesItemsIsOpen||chooseParmFile">
         <app-refrence-field *ngIf="referenceTabIsOpen" [canUpDateField]="canUpDateField"
                             [fieldStartId]="FieldId" [fieldRefersId]="referenceId" 
                             (closePopUp)="closeReferenceTab()"
                             [choiceId]="choiceToReferId"></app-refrence-field>
+
+        <app-manuel-choice *ngIf="choicesItemsIsOpen" [FieldId]="FieldId" (closePopUp)="openChoicesItemsList()"></app-manuel-choice>
+        <app-excel-choice *ngIf="chooseParmFile" [FieldId]="FieldId" (closePopUp)="openParmFile()"></app-excel-choice>
       </div>

@@ -1,0 +1,15 @@
+<div class="testbox">
+    <input type="file" accept=".xlsx,.csv,.xls,.xlsm" (change)="ReadExcel($event)">
+    <div  *ngIf="chooseParmFile">
+
+    </div>
+    <select [(ngModel)]="fileColChosen">
+        <option value="">choose a col</option>
+        <option *ngFor="let col of fileColNames" value="{{col}}">{{col}}</option>
+    </select>
+    <div class="btn-block">
+
+        <button class="btn btn-choice btn-cancel" (click)="close()">cancel</button>
+        <button class="btn btn-choice" (click)="loadDataExcel()">confirm</button>
+    </div>
+</div>
