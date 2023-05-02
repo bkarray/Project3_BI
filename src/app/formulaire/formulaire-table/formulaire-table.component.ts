@@ -89,6 +89,18 @@ export class FormulaireTableComponent implements OnInit {
 
 
    graphsListIsOpen:boolean=false
+
+  functions:any={
+    FileManagerIsOpen:false,
+    DeleteAllIsOpen:false,
+    DeleteUploadIsOpen:false,
+    ExportDataIsOpen:false,
+    PythonIsOpen:false,
+    GraphsIsOpen:false
+  }
+
+
+
    ngOnInit(): void {
     if(!this.pageOpened){
       this.getData()
@@ -112,6 +124,43 @@ this.route.params.subscribe((params:any)=>{
 this.graphsListIsOpen=!this.graphsListIsOpen
 
 
+  }
+
+  getFunctions(Serv_Id:any){
+    this.FormulaireService.getFunctions(Serv_Id).subscribe((functions:any)=>{
+      if(functions.length!=0){
+        functions.forEach((fuctionOn:any)=>{
+          switch (fuctionOn.Function_Name) {
+            case "File Manager":
+            case "file manager":
+              this.functions.FileManagerIsOpen=fuctionOn.Is_Visible
+              break;
+            case "Delete All":
+            case "delete all":
+              this.functions.DeleteAllIsOpen=fuctionOn.Is_Visible
+              break;
+            case "Delete Upload":
+            case "delete upload":
+              this.functions.DeleteUploadIsOpen=fuctionOn.Is_Visible
+              break;
+            case "Export Data":
+            case "export data":
+              this.functions.ExportDataIsOpen=fuctionOn.Is_Visible
+              break;
+            case "Graphs":
+            case "graphs":
+              this.functions.GraphsIsOpen=fuctionOn.Is_Visible
+              break;
+            case "Python":
+            case "python":
+              this.functions.PythonIsOpen=fuctionOn.Is_Visible
+              break;
+            default:
+              break;
+          }
+        })
+      }
+    })
   }
 
   openExportBar(){
@@ -777,10 +826,12 @@ upDateOrderLigs(){
         is_seen:false
       }
       console.log("newup",newUpdate)
-      this.data=[]
-setTimeout(() => {
+      if(field.Type=="list"){
+        this.data=[]
+        setTimeout(() => {
   this.getInfo(this.pages.inf,this.pages.sup)
 }, 1);
+}
      this.FormulaireService.addNewUpdate(newUpdate).subscribe((res:any)=>{console.log(res)})
     })
   }
@@ -1245,6 +1296,7 @@ async configurationStepByStep(reponse:any,res:any){
       if(servFound.Serv_User==this.userId) this.isWorking=true;
       this.etapNum=servFound.Serv_order
     this.reponseIsOnWork=true
+    this.getFunctions(servFound.Serv_Id)
   }
        else{
         servFound=servs[0]
@@ -1307,6 +1359,14 @@ async configurationStepByStep(reponse:any,res:any){
   
 }
 
+getChoices(index:any){
+  this.FormulaireService.getChoices(this.fields[index].Field_Id).then((choices:any)=>{
+    this.fields[index]['choisesList']=choices
+
+  })
+}
+
+
 organizationServs(servs:any){
   servs.forEach((serv:any)=>{
     if(serv.Serv_User!=null)  {this.authService.getUserById(serv.Serv_User).subscribe((user:any)=>{
@@ -1332,6 +1392,7 @@ if(this.authService.authenticatedUser){
   servToShow=this.servs.find((e:any)=> e.Serv_User==this.authService.authenticatedUser.U_Id)
   if(servToShow) {
     this.isWorking=true 
+    this.getFunctions(servToShow.Serv_Id)
   }
   else{
     console.log(servs[0])

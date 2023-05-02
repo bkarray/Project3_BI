@@ -80,7 +80,8 @@
 
 
     <div class="btnBlock">
-        <button *ngIf="canUpDateField" (click)="createGenerateRelation()">create relation</button>
+        <button class="btn-delete" *ngIf="choiceId" (click)="deleteReference()">Delete Reference</button>
         <button (click)="close()">validate</button>
+        <button *ngIf="canUpDateField" (click)="createGenerateRelation()">create relation</button>
     </div>
 </div>

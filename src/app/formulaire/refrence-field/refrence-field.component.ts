@@ -81,7 +81,8 @@ export class RefrenceFieldComponent implements OnInit {
             this.canUpDateField=false
             this.FormulaireService.getAllFields(field.Table_Id).then((fields:any)=>{
               fields.forEach((field:any)=>{
-                if(this.fieldRefers.Name!=field.Name){
+                console.log('show',this.fieldRefers.Table_Id,field.Table_Id);
+                if((this.fieldRefers.Name!=field.Name)&&(this.fieldStart.Table_Id!=field.Table_Id)){
                 field['selected']=false
                 this.fieldsToChooseShow.push(field)}
               })
@@ -131,6 +132,33 @@ else{
 }
 }
 
+
+
+deleteReference(){
+this.FormulaireService.deleteChoice(this.choiceId).subscribe((res:any)=>{
+  this.choiceId=null
+  this.fieldRefersId=null
+  this.canUpDateField=true
+
+
+
+  this.ChoiceShownId=null
+  this.fieldStart={}
+  this.fieldRefers={}
+  this.formToChoose=[]
+  this.tabToChoose=[]
+  this.fieldToChoose=[]
+  this.formId=''
+  this.tabId=''
+  this.newRef=''
+  this.fieldsToChooseShow=[]
+
+  this.RecentFields=[]
+
+  this.levelAdvancement=0
+  this.ngOnInit()
+})
+}
 
 
 getDataFieldsToShow(data:any[]){
@@ -213,7 +241,7 @@ if(choiceToWorkOn){
     
       this.FormulaireService.getOneField(idStart).subscribe((fieldStart:any)=>{
         this.fieldStart=fieldStart
-        console.log("hello",this.fieldStart);
+        console.log("hello",this.choiceId);
         
         if(!this.canUpDateField){
           this.FormulaireService.getOneField(idEnd).subscribe((fieldRef:any)=>{
@@ -224,7 +252,9 @@ if(choiceToWorkOn){
 
                   field['selected']=result=="selected"
                 })
-                if(this.fieldRefers.Name!=field.Name)
+                console.log('show',this.fieldRefers.Table_Id,field.Table_Id);
+                
+                if((this.fieldRefers.Name!=field.Name)&&(this.fieldStart.Table_Id!=field.Table_Id))
                 this.fieldsToChooseShow.push(field)
               })
               this.getDataFieldsToShow(this.fieldsToChooseShow)

@@ -29,10 +29,10 @@ import { ChoicesPopUpComponent } from './choices-pop-up/choices-pop-up.component
 import { ExcelFormComponent } from './excel-form/excel-form.component';
 import { FileManagerComponent } from './file-manager/file-manager.component';
 import { MatPaginatorModule } from '@angular/material/paginator';
-import { PythonCompilerComponent } from './python-compiler/python-compiler.component';
+import { PythonCompilerComponent } from '../graphs/python-compiler/python-compiler.component';
 import { CodeEditorModule } from '@ngstack/code-editor';
 import { GraphsListComponent } from './graphs-list/graphs-list.component';
-import { DataAnalysisComponent } from './data-analysis/data-analysis.component';
+import { DataAnalysisComponent } from '../graphs/data-analysis/data-analysis.component';
 import { RefrenceFieldComponent } from './refrence-field/refrence-field.component';
 import { RestFormsComponent } from './rest-forms/rest-forms.component';
 
@@ -80,9 +80,9 @@ import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import { ManuelChoiceComponent } from './manuel-choice/manuel-choice.component';
 import { ExcelChoiceComponent } from './excel-choice/excel-choice.component';
+import { SelectReponseComponent } from '../graphs/select-reponse/select-reponse.component';
 
-
-
+import { GraphsModule } from '../graphs/graphs.module';
 
 @NgModule({
 
@@ -102,7 +102,8 @@ import { ExcelChoiceComponent } from './excel-choice/excel-choice.component';
    RefrenceFieldComponent,
    RestFormsComponent,
    ManuelChoiceComponent,
-   ExcelChoiceComponent
+   ExcelChoiceComponent,
+   
   ],
   imports: [
     CommonModule,
@@ -118,6 +119,7 @@ import { ExcelChoiceComponent } from './excel-choice/excel-choice.component';
     AngularResizedEventModule,
     NgxDragResizeModule,
     MatPaginatorModule,
+    GraphsModule,
     
     CodeEditorModule.forRoot()
     

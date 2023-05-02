@@ -1,0 +1,70 @@
+.blocDataHeader div{
+    background-color: #003865;
+    color: aliceblue;
+border-radius: 20px;
+width: 30%;
+margin: 1%;
+padding: 1%;
+}
+
+
+
+.blocData div{
+border: solid #003865;
+border-radius: 20px;
+width: 30%;
+margin: 1%;
+padding: 1%;
+}
+input ,textarea{
+    margin: 2%;
+}
+
+.item{
+    width: 100% !important;
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    cursor: pointer;
+}
+
+.item:hover{
+    background-color: #003865;
+    color: aliceblue;
+}
+
+.selected{
+    background-color: #01559a;
+    color: aliceblue;
+}
+
+.material-symbols-outlined {
+    font-variation-settings:
+    'FILL' 0,
+    'wght' 400,
+    'GRAD' 0,
+    'opsz' 20;
+    cursor: pointer;
+
+  }
+
+  .addBtn:hover{
+    color: #003865;
+  }
+
+  .deleteBtn:hover{
+    color: #bf0808;
+  }
+  .btnBloc{
+    text-align: left;
+  }
+
+
+  .tableAction{
+    border: #003865 solid;
+    border-radius: 20px;
+    margin: 10px 0;
+  }
+  

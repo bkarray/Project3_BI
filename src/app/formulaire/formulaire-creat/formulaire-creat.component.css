@@ -628,8 +628,12 @@ box-shadow: 0px 0px rgba(64,64,64,.7);
 .choise{
 border-radius: 20px;
 box-shadow: 0 2px 15px rgba(64,64,64,.7);
+margin: 0 5px;
 width: 70px;
 cursor: pointer;
+}
+.choise:hover{
+  background-color:#B1D0E0
 }
 .role_access{
   width: 10%;
@@ -642,7 +646,14 @@ cursor: pointer;
  left: 30%; 
 }
 
+.functionsChoice{
+  width: 35%;
+  margin: 5% 0;
+}
 
+.functionsChoice table td{
+  width: 160px;
+}
 
 
 

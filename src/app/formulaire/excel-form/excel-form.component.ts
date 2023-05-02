@@ -68,7 +68,12 @@ export class ExcelFormComponent implements OnInit {
         console.log(newGroup);
         
         if(newGroup!='error'){
-          newGroup['selected']=false;
+          newGroup['selected']=false
+          newGroup['selectedToForm']=false
+          newGroup['level']=0
+          newGroup['children']=[]
+          newGroup['formIsOpened']=false
+          newGroup['editForm']=false
           this.groups.push(newGroup)
         }
         this.openGroupForm()

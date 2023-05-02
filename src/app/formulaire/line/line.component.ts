@@ -76,10 +76,11 @@ addNewRowForm(index:any){
     
       let address=""
       for(let i=0;i<this.toShow.length;i++){
+        console.log(address);
         if(i==0){
           address=this.toShow[0].id+":"
         }
-        else if(i<this.toShow.length-1){
+        else if(i<this.toShow.length-2){
         let line=this.toShow[i].find((e:any)=>e.isClicked)
           address=address+line.id+":"
         }
@@ -87,7 +88,6 @@ addNewRowForm(index:any){
           address=address+lig.id;
         }
       }
-      console.log(address);
       this.router.navigate(["/formulaire/oneLine/",this.reponse.Formulaire_Id,this.reponse.Reponse_Id,address])
       
     
@@ -244,9 +244,14 @@ addNewRowForm(index:any){
   }
 
   getInferData(table:any,data:any,level:any){
+console.log('getInfer',data.length);
 
     if (data.length!=0) { 
       data.forEach((lig:any,index:number)=>{
+        if((level==0)&&(Number(this.idLine)==Number(lig.id))){
+            this.toShow[0]=lig
+            this.toShow[1]=[]
+        }
          if(table){
           let val={
           table:table.Table_Name.toLowerCase(),
@@ -256,12 +261,9 @@ addNewRowForm(index:any){
           lig['level']=level;
           lig['isClicked']=false
           let newTab=this.reponse.tables.find((e:any)=> e.Table_level==table.Table_level+1)
-          if(level==0){
-            if(this.idLine==lig.id) {
-              this.toShow[0]=lig
-              this.toShow[1]=infoInf}
+          if((level==0)&&(Number(this.idLine)==Number(lig.id))){
+              this.toShow[1]=infoInf
           }
-          
           this.getInferData(newTab,lig['children'],level+1)
         })}
         else{
@@ -328,16 +330,16 @@ if(test||(index==1)){
       }
       
 
-     this.FormulaireService.addNewUpdate(newUpdate).subscribe((res:any)=>{console.log(res)})
+     this.FormulaireService.addNewUpdate(newUpdate).subscribe((res:any)=>{    this.newRow={}
+     this.formIsOpen=false
+     this.getInfo()})
 
      this.levelsAddLine[index].formIsOpen=!this.levelsAddLine[index].formIsOpen
     //  this.newRow['children']=[]
     //  this.newRow['level']=index;
     //  this.newRow['isClicked']=false
 
-    this.newRow={}
-    this.formIsOpen=false
-    this.getInfo()
+
     })}
   }
   

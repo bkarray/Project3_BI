@@ -1,6 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { concat } from 'rxjs';
 import { AuthService } from 'src/app/services/auth/authservice';
 
 @Component({
@@ -13,7 +12,6 @@ export class UserMenuComponent implements OnInit {
   name: string = '';
   isAuthentificated!: boolean;
   isAdmin!:boolean;
-  isFnx!:boolean;
   ngOnInit(): void {
     this.authService.loadUser();
     console.log('auth=',this.authService.isAuthenticated())
@@ -23,7 +21,6 @@ export class UserMenuComponent implements OnInit {
    
 
     this.isAdmin=this.authService.isAdmin()
-    this.isFnx=this.authService.isFnx()
   }
 
   logout() {

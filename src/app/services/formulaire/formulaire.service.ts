@@ -224,30 +224,20 @@ export class FormulaireService {
   exportData(id:any){
     return this.http.get(this.APIUrl+'/export_excelFile/'+id,{ responseType: 'blob' })
   }
-  compileCode(val:any,id:any){
-    return this.http.post(this.APIUrl+'/compile_code/'+id,val)
-  }
-  saveCode(val:any){
-    return this.http.post(this.APIUrl+'/save_code/',val)
-  }
 
-  getCodes(id:any){
-    return this.http.get(this.APIUrl+'/crud_code/'+id)
-  }
-  correctCode(id:any,val:any){
-    return this.http.post(this.APIUrl+'/correct_code/'+id,val)
-  }
-  deleteCode(id:any){
-    return this.http.delete(this.APIUrl+'/crud_code/'+id)
 
-  }
+
+
   addFirstRow(id:any){
     return this.http.get(this.APIUrl+'/add_first_row/'+id)
   }
 
 
-  getGroups(){
-    return this.http.get(this.APIUrl+'/crud_group/');
+  getGroups():Observable<any[]>{
+    return this.http.get<any[]>(this.APIUrl+'/crud_group/');
+  }
+  getInferGroup(id:any){
+    return this.http.get(this.APIUrl+'/crud_group/'+id).toPromise();
   }
   getFormsByGroups(val:any){
     return this.http.post(this.APIUrl+'/get_forms_by_group/',val)
@@ -292,5 +282,38 @@ export class FormulaireService {
   }
   getFieldsInRelation(idChoice:any,idField:any){
     return this.http.get(this.APIUrl+"/get_fields_in_relation/"+idChoice+"/"+idField).toPromise()
+  }
+  getFunctions(idService:any){
+    return this.http.get(this.APIUrl+"/crud_functions/"+idService)
+  }
+  postFunctions(val:any){
+    return this.http.post(this.APIUrl+"/crud_functions/",val).toPromise()
+  }
+  correctFunction(idFunction:any,val:any){
+    return this.http.put(this.APIUrl+"/crud_functions/"+idFunction,val)
+  }
+
+
+  updateGroupName(id:any,val:any){
+    return this.http.put(this.APIUrl+'/crud_group/'+id,val)
+  }
+
+
+  getFirstOrderGroups(){
+    return this.http.get(this.APIUrl+'/get_first_order_groups/').toPromise()
+  }
+
+  depthGroupsTree(){
+    return this.http.get(this.APIUrl+'/depth_groups_tree/')
+  }
+
+  getGroupRelated(id:any){
+    return this.http.get(this.APIUrl+'/get_group_related/'+id)
+  }
+  getFormsByGroupId(id:any){
+    return this.http.get(this.APIUrl+'/get_forms_by_groupId/'+id)
+  }
+  getInformationOnForm(id:any){
+    return this.http.get(this.APIUrl+'/get_information_on_form/'+id)
   }
 }

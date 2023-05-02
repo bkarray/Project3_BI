@@ -66,9 +66,7 @@ export class RequestComponent implements OnInit {
           U_Statut: res[0].U_Statut,
           U_Pwd: res[0].U_Pwd,
           U_Admin: true,
-          U_Transporter:false,
           U_Client: false,
-          U_Supplier: false,
         };
         console.log(val)
 
@@ -93,9 +91,7 @@ export class RequestComponent implements OnInit {
           U_Statut: res[0].U_Statut,
           U_Pwd: res[0].U_Pwd,
           U_Admin: false,
-          U_Transporter:false,
           U_Client: false,
-          U_Supplier: true,
         };
         console.log(val2)
         this.authService.updateUser(val2).subscribe((res: any) => {

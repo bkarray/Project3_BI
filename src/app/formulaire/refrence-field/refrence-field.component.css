@@ -512,6 +512,13 @@ a {
   display: flex;
   justify-content: flex-end;
 }
+.btn-delete{
+  background-color: #c62121;
+}
+.btn-delete:hover{
+  background-color: #fff;
+  color: #c62121;
+}
 .bg{
   position: fixed;
   top: 0;

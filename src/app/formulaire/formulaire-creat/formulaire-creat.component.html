@@ -55,7 +55,7 @@ cdkDropListOrientation="vertical">
         <i class="material-icons editIcon" *ngIf="field.editName&&(field.Name!='ID')" (click)="closeNameForm(index)">edit</i></td>
     <td> <p *ngIf="!field.editType">{{field.Type}}<i class="material-icons editIcon" *ngIf="(field.Name!='ID')&&!isGenerated" (click)="openTypeForm(index)" >edit</i></p>
         <select *ngIf="field.editType" [(ngModel)]="field.Type" (change)="openTypeForm(index)" >
-            <option *ngIf="field.Type==''" value="">choose Type</option>
+            <option *ngIf="field.Type==''" value="" >choose Type</option>
             <option *ngFor="let type of Types" value="{{type.value}}">{{type.Name}}</option>
         </select>
         <i class="material-icons editIcon" *ngIf="(field.Name!='ID')&&!isGenerated&&field.editType" (click)="openTypeForm(index)" >edit</i>
@@ -91,7 +91,7 @@ cdkDropListOrientation="vertical">
     <td><input type="text" [(ngModel)]="newFieldName" placeholder="field Name..."></td>
     <td>
         <select [(ngModel)]="newFieldType">
-         <option *ngIf="newFieldType==''" value="">choose type</option>
+         <option *ngIf="newFieldType==''" value="" >choose type</option>
          <option *ngFor="let type of Types" value="{{type.value}}">{{type.Name}}</option>
         </select>
     </td>
@@ -100,7 +100,7 @@ cdkDropListOrientation="vertical">
     <td><input type="text" [(ngModel)]="newFieldStatus"></td>
     <td></td>
     <td *ngIf="isGenerated"><select [(ngModel)]="newFieldLevel">
-        <option value="">choose level</option>
+        <option value="" >choose level</option>
         <option *ngFor="let table of formulaire.tables" value="{{table.Table_level}}">{{table.Table_level}} </option>
         <option  value="new">new...</option>
     </select></td>
@@ -169,6 +169,27 @@ id="{{index}}">
         </tbody>
     </table>
 </div>
+
+<div class="functionsChoice" *ngIf="isGenerated">
+    <table>
+        <tr *ngFor="let function of functions;let index=index">
+            <td>{{function.Function_Name}}</td>
+            <td>
+                <tr>
+                    <td class="choise" [ngStyle]=" function.Is_Visible ? {'background-color':'#B1D0E0'}:{}" (click)="correctionFunction(index)">visible</td>
+                    <td class="choise" [ngStyle]=" !function.Is_Visible ? {'background-color':'#B1D0E0'}:{}" (click)="correctionFunction(index)">invisible</td>
+                </tr>
+
+            </td>
+            
+        </tr>
+    </table>
+</div>
+
+
+
+
+
     <div class="currentserv">
         <a *ngIf="!isGenerated" class="myButton" (click)="generatFields()">Generat</a>
         <a *ngIf="isGenerated" class="myButton" (click)="End()">End</a>

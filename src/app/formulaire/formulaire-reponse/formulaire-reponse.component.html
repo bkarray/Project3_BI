@@ -36,7 +36,7 @@
       <tr *ngIf="openNewServFormIsOpen">
         <td><p>role n°{{etapes.length+1}}</p></td>
         <td><select [(ngModel)]="newServName">
-          <option value="">new</option>
+          <option value="" >new</option>
           <option *ngFor="let serv of servsExample" value="{{serv.Serv_Name}}">{{serv.Serv_Name}}</option>
         </select></td>
         <td>

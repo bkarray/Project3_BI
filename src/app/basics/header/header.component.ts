@@ -12,13 +12,11 @@ export class HeaderComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private FormulaireService:FormulaireService,) { }
-isFnx:any=false
 authentificated:any=false
 numberOfnotifications:Number=0
 
   ngOnInit(): void {
     this.authService.loadUser()
-this.isFnx=this.authService.isFnx();
 this.authentificated=this.authService.isAuthenticated();
 console.log('nn',this.authService.authenticatedUser)
 if(this.authentificated){this.FormulaireService.verifierUserWork(this.authService.authenticatedUser.U_Id).subscribe((res:any)=>{

@@ -50,7 +50,7 @@ export class FormulaireListComponent implements OnInit {
 
   ExcelFormIsOpen:boolean=false;
 
-  groups:any[]=[]
+  groups:any=[]
   groupSelected:any[]=[]
 
   groupFormIsOpenSide:boolean=false
@@ -60,8 +60,21 @@ export class FormulaireListComponent implements OnInit {
   newGroupName:any=""
   newFormGroups:any[]=[]
 
+  tagGroups:any=['groups']
+  nbGroups:any=0
+
 allFormIsShown:boolean=false;
   restFormIsOpen:boolean=false
+
+
+  canEdit:boolean=false
+  canDelete:boolean=false
+  canAddRelation:boolean=false
+
+
+getInfer:boolean=false
+
+
 
   ngOnInit(): void {
     this.getData()
@@ -80,7 +93,7 @@ allFormIsShown:boolean=false;
   closeExistingPopUp(event:any){
     console.log(event);
     this.groupSelected=event
-    this.FormulaireService.getFormsByGroups({groups:this.groupSelected}).subscribe((forms:any)=>{
+    this.FormulaireService.getFormsByGroups({groups:this.groupSelected,InferGroup:this.getInfer}).subscribe((forms:any)=>{
       this.formulaires=[]
       this.getForms(forms)
       this.openExistingPopUp()
@@ -93,6 +106,95 @@ allFormIsShown:boolean=false;
     this.todelete=!this.todelete
 
   }
+
+  updateFilsSelection(){
+    if(!this.allFormIsShown){
+
+      this.FormulaireService.getFormsByGroups({groups:this.groupSelected,InferGroup:this.getInfer}).subscribe((forms:any)=>{
+        this.formulaires=[]
+        this.getForms(forms)
+      })
+    }
+  }
+
+  addNewGroupWithRelation(node:any){
+    console.log(this.newGroupNameSide);
+    
+    if(this.newGroupNameSide!=""){
+      const group={
+        Superior_Group:node.node.Group_Id,
+        Group_Name:this.newGroupNameSide
+
+      }
+      this.FormulaireService.creatGroup(group).subscribe((newGroup:any)=>{
+        console.log(newGroup);
+        
+        if(newGroup!='error'){
+                newGroup['selected']=false
+          newGroup['selectedToForm']=false
+          newGroup['level']=node.node.level+1
+          newGroup['children']=[]
+          newGroup['formIsOpened']=false
+          newGroup['editForm']=false
+          node.node.children.push(newGroup)
+          const groupsCopied=this.groups
+          this.groups=[]
+          setTimeout(()=>{
+            this.groups=groupsCopied
+          },1)
+        }
+        this.cancelAddingGroup(node)
+      })
+    }
+  }
+
+
+  openEditForm(node:any){
+    node.node.editForm=!node.node.editForm
+    if(!node.node.editForm){
+      this.editGroupName(node)
+    }
+  }
+
+
+  editGroupName(node:any){
+    const val={
+      Group_Name:node.node.Group_Name
+    }
+    this.FormulaireService.updateGroupName(node.node.Group_Id,val).subscribe((res:any)=>{
+      console.log(res);
+      
+    })
+  }
+
+
+functionToDoOnGroup(choice:any){
+if(choice=='edit'){
+this.canEdit=!this.canEdit
+}
+else if(choice=='delete'){
+  this.canDelete=!this.canDelete
+}
+else if(choice=='add'){
+ this.canAddRelation=!this.canAddRelation
+}
+}
+  
+
+
+
+  openNewGroupFormRElation(node:any){
+    if(!this.groupFormIsOpen){
+    node.node.formIsOpened=!node.node.formIsOpened
+    this.newGroupNameSide=""
+  this.groupFormIsOpen=true}
+  }
+  cancelAddingGroup(node:any){
+    node.node.formIsOpened=!node.node.formIsOpened
+    this.newGroupNameSide=""
+  this.groupFormIsOpen=false
+
+  }
   openDeleteRep(id:any,name:any,formIndex:any,deleteReponceIndex:any){
     this.deleteFormID=formIndex;
     this.deleteReponceID=Number(id);
@@ -101,46 +203,85 @@ allFormIsShown:boolean=false;
     this.todeleteRep=!this.todeleteRep;
   }
   openSideGroupForm(){
+
     this.newGroupNameSide=""
     this.groupFormIsOpenSide=!this.groupFormIsOpenSide
   }
 
-  deleteGroup(index:any){
+  deleteGroup(node:any){
     
-      const  id=this.groups[index].Group_Id
+      const  id=node.node.Group_Id
 
       this.FormulaireService.deleteGroup(id).subscribe((res:any)=>{
           console.log(res);
         
-          const indexDel=this.groupSelected.findIndex((e:any)=>e==this.groups[index].Group_Id)
+          const indexDel=this.groupSelected.findIndex((e:any)=>e==node.node.Group_Id)
           if(indexDel!=-1){
             this.groupSelected.splice(indexDel,1)
-            this.FormulaireService.getFormsByGroups({groups:this.groupSelected}).subscribe((forms:any)=>{
+            this.FormulaireService.getFormsByGroups({groups:this.groupSelected,InferGroup:this.getInfer}).subscribe((forms:any)=>{
               this.formulaires=[]
               this.getForms(forms)
             })
           }
-          if(this.groups.length==1){
-            this.selectGroup(-1);
-          }
-          this.groups.splice(index,1)
-        
-      })
+          
+          const groups=this.deleteGroupFromTree(this.groups,node.node.Group_Id,0)
+          this.groups=[]
+          setTimeout(()=>{
+            console.log('azaa');
+            
+            this.groups=groups
+            console.log(this.groups);
+            
+          },1)
+        })
     
   }
+
+
+deleteGroupFromTree(groups:any,Group_Id:any,level:any){
+  const index=groups.findIndex((e:any)=>e.Group_Id==Group_Id)
+  console.log("index",index,groups,Group_Id);
+  if(index!=-1){
+    if(level==0){
+      this.nbGroups=this.nbGroups-1
+    }
+    groups.splice(index,1)
+    return groups
+  }
+  else{
+    groups.forEach((group:any)=>{
+      group.children=this.deleteGroupFromTree(group.children,Group_Id,level+1)
+    })
+    return groups
+  }
+}
+
+
 
   addGroupSide(){
     if(this.newGroupNameSide!=""){
       const group={
         Group_Name:this.newGroupNameSide
+
       }
       this.FormulaireService.creatGroup(group).subscribe((newGroup:any)=>{
         console.log(newGroup);
         
-        if(newGroup!='error'){
-          newGroup['selected']=false;
-          newGroup["selectedToForm"]=false;
+        if(newGroup!='error'){       
+          newGroup['selected']=false
+          newGroup['selectedToForm']=false
+          newGroup['level']=0
+          newGroup['children']=[]
+          newGroup['formIsOpened']=false
+          newGroup['editForm']=false
+          
           this.groups.push(newGroup)
+          const groupsCopied=this.groups
+          this.groups=[]
+          setTimeout(()=>{
+            this.groups=groupsCopied
+            this.nbGroups=this.nbGroups+1
+          },1)
         }
         this.openSideGroupForm()
       })
@@ -438,29 +579,29 @@ this.serviceFormIsOpen=!this.serviceFormIsOpen
     this.ExcelFormIsOpen=!this.ExcelFormIsOpen
     this.servFormIsOpen=!this.servFormIsOpen
   }
-  selectGroup(index:any){
+  selectGroup(node:any){
    
     
-if(index!=-1){
+if(node!=-1){
   if(this.allFormIsShown){
     this.allFormIsShown=false;
     this.formulaires=[]
   }
-  this.groups[index].selected=!this.groups[index].selected
-if(this.groups[index].selected){
-this.groupSelected.push(this.groups[index].Group_Id)
+  node.node.selected=!node.node.selected
+if(node.node.selected){
+this.groupSelected.push(node.node.Group_Id)
 }
 else{
 
-  const indexG=this.groupSelected.findIndex((e:any)=>e==this.groups[index].Group_Id)
+  const indexG=this.groupSelected.findIndex((e:any)=>e==node.node.Group_Id)
   this.groupSelected.splice(indexG,1)
-  console.log("cut",indexG,this.groups[index].Group_Id);
+  console.log("cut",indexG,node.node.Group_Id);
   
   
 }
 console.log(this.groupSelected);
 if(this.groupSelected.length!=0){
-this.FormulaireService.getFormsByGroups({groups:this.groupSelected}).subscribe((forms:any)=>{
+this.FormulaireService.getFormsByGroups({groups:this.groupSelected,InferGroup:this.getInfer}).subscribe((forms:any)=>{
   this.formulaires=[]
   this.getForms(forms)
 })
@@ -472,10 +613,9 @@ else{
 else{
   this.allFormIsShown=!this.allFormIsShown;
   if(this.allFormIsShown){
-    this.groups.forEach((group:any)=>{
-      group.selected=false;
-      
-    })
+    this.unselectAllGroups(this.groups)
+    console.log('unselected',this.groups);
+    
     this.groupSelected=[]
     this.FormulaireService.getAllFormulaire().subscribe((forms:any)=>{
       this.formulaires=[]
@@ -484,26 +624,42 @@ else{
   }
 }
   }
+
+
+
+  unselectAllGroups(groups:any){
+    groups.forEach((group:any)=>{
+      group['selected']=false
+      this.unselectAllGroups(group['children'])
+    })
+  }
+
+
+
+
+
+
 getData(){
 
   this.authService.loadUser();
   this.isAdmin=this.authService.isAdmin()
+  this.FormulaireService.getGroups().subscribe((groups:any[])=>{
+    this.nbGroups=groups.length
   this.authService.getAllUsers().subscribe((users:any)=>{
     this.users=users
     console.log("u=",this.users)
     this.FormulaireService.getServsExamples().subscribe((res:any)=>{
      console.log(res)
-     this.FormulaireService.getGroups().subscribe((groups:any)=>{
-      groups.forEach((group:any)=>{
-        group['selected']=false;
-        group["selectedToForm"]=false
-        this.groups.push(group)
+      this.groups=groups
+      console.log(this.groups,"heee");
+      
+      res.forEach((serv:any)=>{
+        serv['isAdded']=false
       })
-     })
-     res.forEach((serv:any)=>{
-       serv['isAdded']=false
-     })
-     this.servsExamples=res;})})
+      console.log('poj',this.groups);
+      
+      this.servsExamples=res;})})
+    })
 }
 
 addOrRemoveGroup(index:any){
@@ -531,13 +687,25 @@ creatGroup(){
       console.log(newGroup);
       
       if(newGroup!='error'){
-        newGroup['selected']=false;
-        newGroup["selectedToForm"]=false;
+        newGroup['selected']=false
+        newGroup['selectedToForm']=false
+        newGroup['level']=0
+        newGroup['children']=[]
+        newGroup['formIsOpened']=false
+        newGroup['editForm']=false
         this.groups.push(newGroup)
       }
       this.openAddNewGroupForm()
     })
   }
+}
+
+indentSpace(level:any){
+  const res:any[]=[]
+  for(let i=0;i<level;i++){
+    res.push(0)
+  }
+  return res
 }
 
   getForms(data:any){

@@ -1,0 +1,28 @@
+<div class="groupSelection">
+    <h6>Groups:</h6>
+    <table>
+      <tr *ngFor="let groups of groupsMatrix;let index=index">
+        <td *ngFor="let group of groups" [ngClass]="{'groupSelected':group.selected}" (click)="selectGroup(group,index)">
+          {{group.Group_Name}}
+        </td>
+        
+      </tr>
+    </table>
+  <h6 *ngIf="forms.length!=0">Forms:</h6>
+    <table *ngIf="forms.length!=0">
+      <tr>
+        <td *ngFor="let form of forms" [ngClass]="{'groupSelected':form.selected}" (click)="selectFrom(form)">
+          {{form.Formulaire_Name}}
+        </td>
+      </tr>
+    </table>
+    <h6 *ngIf="responses.length!=0">Reposes:</h6>
+    <table *ngIf="responses.length!=0">
+      <tr>
+        <td *ngFor="let response of responses" [ngClass]="{'groupSelected':response.selected}" (click)="selectResponse(response)">
+          {{response.reponse_Name}}
+        </td>
+      </tr>
+    </table>
+    <button *ngIf="responseSelected!=0" (click)="validateValue()">validate</button>
+  </div>

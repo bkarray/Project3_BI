@@ -18,11 +18,11 @@
      <div class="param">
         <div>
         <div class="uploadBar">
-        <a class="myButton" (click)="openFileManager(null)">file manager</a>
+        <a *ngIf="functions.FileManagerIsOpen" class="myButton" (click)="openFileManager(null)">file manager</a>
         </div>
         <div class="uploadBar">
-            <a class="myButton" (click)="deleteAllRows()">delete all</a>
-            <a class="myButton" *ngIf="!deleteUploadBarIsOpen" (click)="openDeleteBar()">delete upload</a>
+            <a class="myButton" *ngIf="functions.DeleteAllIsOpen" (click)="deleteAllRows()">delete all</a>
+            <a class="myButton" *ngIf="!deleteUploadBarIsOpen&&functions.DeleteUploadIsOpen" (click)="openDeleteBar()">delete upload</a>
             <select  *ngIf="deleteUploadBarIsOpen" [(ngModel)]="deleteUpload">
                 <option value="">choose a file</option>
                 <option *ngFor="let file of filesDel" value="{{file.ExcelFile_Id}}">{{file.File_Name}}</option>
@@ -33,15 +33,15 @@
         </div>
         <div class="uploadBarData">
             <div class="uploadBar">
-        <a class="myButton" *ngIf="!fileNameBarIsOpen" (click)="openExportBar()">export data</a>
+        <a class="myButton" *ngIf="!fileNameBarIsOpen&&functions.ExportDataIsOpen" (click)="openExportBar()">export data</a>
         <input type="text" *ngIf="fileNameBarIsOpen" [(ngModel)]="fileNameExported">
         <br>
         <a class="myButton" *ngIf="fileNameBarIsOpen" (click)="exportData()">confirm</a>
         <a class="myButton" *ngIf="fileNameBarIsOpen" (click)="openExportBar()">cancel</a>
         </div>
         <div class="uploadBar">
-            <a class="myButton" (click)="openPythonCompiler()">python</a>
-            <a class="myButton" (click)="openGraphList(null)">graphs</a>
+            <a class="myButton" *ngIf="functions.PythonIsOpen" (click)="openPythonCompiler()">python</a>
+            <a class="myButton" *ngIf="functions.GraphsIsOpen" (click)="openGraphList(null)">graphs</a>
         </div>
         </div>
         
@@ -112,7 +112,9 @@
                 <textarea (change)="changeInField(rowNode,field.Table_Id,field.Name,rowNode['node'][field.Name],rowNode['node']['id'])" 
                 *ngSwitchCase="'character varying(255)'" [(ngModel)]="rowNode['node'][field.Name]"></textarea>
                 <select  (change)="changeInField(rowNode,field.Table_Id,field.Name,rowNode['node'][field.Name],rowNode['node']['id'])" 
-                *ngSwitchCase="'list'" [(ngModel)]="rowNode['node'][field.Name]">
+                *ngSwitchCase="'list'" [(ngModel)]="rowNode['node'][field.Name]"
+                (click)="getChoices(i)"
+                >
                     <option value="">choose</option>
                     <option *ngFor="let choix of field.choisesList" value="{{choix}}">{{choix}}</option>
                 </select>

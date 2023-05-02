@@ -124,18 +124,7 @@ export class AuthService {
     }
     else return false;
   }
-  isFnx(){
-    if(this.authenticatedUser){
-      return this.authenticatedUser.U_Supplier==true;
-    }
-    else return false;
-  }
-  isTansporter(){
-    if(this.authenticatedUser){
-      return this.authenticatedUser.U_Transporter==true;
-    }
-    else return false;
-  }
+
 
   isAuthenticated(){
     return this.authenticated;

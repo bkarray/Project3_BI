@@ -2,40 +2,117 @@
   <!--bouton_list_servs-->
   <div class="btn-block" style="text-align:right ;">
     <button *ngIf="(groupSelected.length!=0)&&isAdmin" (click)="openExistingPopUp()">Existing Forms</button>
-    <button (click)="openServList()">Serv</button>
+    <button *ngIf="isAdmin" (click)="openServList()">Serv</button>
+  </div>
+  <div class="filsOption" *ngIf="!allFormIsShown">
+    <label for="fils">fils</label>
+    <input type="checkbox" id="fils" [(ngModel)]="getInfer" (change)="updateFilsSelection()">
   </div>
   <div class="row">
 
-    <div class="col-2 groupDiv">
-      <table class="tableGroup">
-        <tr class="listGroup">
-          <td class="itemGroup" style="display: block;" [ngClass]="{'selectedGroup': allFormIsShown}" (click)="selectGroup(-1)">
-            <h6>
-              All
-            </h6></td>
-        </tr>
-          <tr class="listGroup" *ngFor="let group of groups;let index=index" >
-            <td class="itemGroup" [ngClass]="{'selectedGroup': group.selected}" (click)="selectGroup(index)">
-              <h6>
-                {{group.Group_Name}}
+    <div class="col-3 groupDiv" *ngIf="groups.length==nbGroups">
+      <p-treeTable [value]="groups" [columns]="tagGroups"class="tableGroup">
+        <ng-template pTemplate="header" let-columns>
+
+            <tr class="listGroup">
+              <td class="itemGroup" [ngClass]="{'selectedGroup': allFormIsShown}" (click)="selectGroup(-1)">
+                <h6>All</h6>
+              </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowNode let-rowData="rowData" let-columns="tagGroups">
+          <tr class="listGroup">
+            <td *ngFor="let element of indentSpace(rowNode['node']['level'])" class="fillIndent">
+            </td>
+            <td class="fillIndent addIcon" *ngIf="canEdit">
+              <span class="material-symbols-outlined" (click)="openEditForm(rowNode)">
+                edit
+                </span>
+            </td>
+            <td class="fillIndent addIcon" *ngIf="canAddRelation">
+              <span class="material-symbols-outlined" (click)="openNewGroupFormRElation(rowNode)">
+                bookmark_add
+                </span>
+            </td>
+            <td class="fillIndent addIcon" *ngIf="canDelete">
+              <span *ngIf="isAdmin" class="material-symbols-outlined deleteGroupIcon" (click)="deleteGroup(rowNode)">
+                do_not_disturb_on
+                </span>
+
+            </td>
+            <td *ngFor="let tag of tagGroups" class="itemGroup" [ngClass]="{'selectedGroup': rowNode.node.selected}" >
+              
+              <h6 >
+                <input type="text" *ngIf="rowNode['node']['editForm']" [(ngModel)]="rowNode['node']['Group_Name']">
+                <p *ngIf="!rowNode['node']['editForm']" (click)="selectGroup(rowNode)">
+                {{rowNode['node']['Group_Name']}}
+                </p>
               </h6>
-              <span *ngIf="isAdmin" class="material-symbols-outlined deleteGroupIcon" (click)="deleteGroup(index)">
-              do_not_disturb_on
-              </span></td>
+              <p-treeTableToggler [rowNode]="rowNode"></p-treeTableToggler>
+            </td>
           </tr>
+
+
+
+
+
+          <tr class="listGroup" *ngIf="rowNode['node']['formIsOpened']">
+            <td *ngFor="let element of indentSpace(rowNode['node']['level'])" class="fillIndent">
+            </td>
+            <td class="fillIndent">
+            </td>
+            <td>new group:</td>
+          </tr>
+          <tr class="listGroup" *ngIf="rowNode['node']['formIsOpened']">
+            <td *ngFor="let element of indentSpace(rowNode['node']['level'])" class="fillIndent">
+            </td>
+            <td class="fillIndent">
+            </td>
+            <td><input type="text" [(ngModel)]="newGroupNameSide"></td>
+          </tr>
+          <tr class="listGroup" *ngIf="rowNode['node']['formIsOpened']">
+            <td *ngFor="let element of indentSpace(rowNode['node']['level'])" class="fillIndent">
+            </td>
+            <td class="fillIndent">
+            </td>
+            <td><button (click)="addNewGroupWithRelation(rowNode)">confirm</button></td>
+            <td><button (click)="cancelAddingGroup(rowNode)">cancel</button></td>
+          </tr>
+        </ng-template>
+      </p-treeTable>
+
+      <table class="tableGroup">
           <tr class="listGroup" *ngIf="isAdmin">
             <td style="display: block;" *ngIf="!groupFormIsOpenSide" class="itemGroup" (click)="openSideGroupForm()">+</td>
             <td *ngIf="groupFormIsOpenSide"><input type="text" [(ngModel)]="newGroupNameSide"></td>
           </tr>
           <tr class="listGroup" *ngIf="groupFormIsOpenSide">
             <td style="display: block;" class="itemGroup" (click)="addGroupSide()">add</td>
-          </tr>
-          <tr class="listGroup" *ngIf="groupFormIsOpenSide">
             <td style="display: block;" class="itemGroup" (click)="openSideGroupForm()">cancel</td>
           </tr>
       </table>
+
+
+
+      <div class="row functionBar">
+        <div class="col-4 functionItem" [ngClass]="{'functionSelected': canEdit}" (click)="functionToDoOnGroup('edit')">
+          <span class="material-symbols-outlined itemFunctionIcon" >
+            edit
+            </span>
+        </div>
+        <div class="col-4 functionItem" [ngClass]="{'functionSelected': canAddRelation}" (click)="functionToDoOnGroup('add')">
+          <span class="material-symbols-outlined itemFunctionIcon">
+            bookmark_add
+            </span>
+        </div>
+        <div class="col-4 functionItem" [ngClass]="{'functionSelected': canDelete}" (click)="functionToDoOnGroup('delete')">
+          <span *ngIf="isAdmin" class="material-symbols-outlined itemFunctionIcon" >
+            do_not_disturb_on
+            </span>
+        </div>
+      </div>
     </div>
-  <div class="col-10">
+  <div class="col-9">
     <!--tableau_formulaire-->
     <table class="formTable">
       <th></th><th></th><th></th><th></th><th></th>
@@ -73,7 +150,7 @@
                 <td class="formItem"><input *ngIf="formulaire.addReponseForm"  type="text" placeholder="Reponse Name..." [(ngModel)]="newReponseName"></td>
                 <td class="formItem">
                   <select *ngIf="formulaire.addReponseForm" [(ngModel)]="newReponseType">
-                    <option value="">choose reponse type</option>
+                    <option value="" >choose reponse type</option>
                     <option value="allInOne">All in one</option>
                     <option value="stepByStep">Step by step</option>
                   </select>

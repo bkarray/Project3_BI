@@ -18,7 +18,7 @@
         <label *ngIf="(sheetNames.length!=0)&&uploaded" for="name">Sheet Name<span class="red">*</span></label>
         <div class="name-item">
           <select *ngIf="(sheetNames.length!=0)&&uploaded" style="border-radius:20px ;" id="name"  name="name" [(ngModel)]="chosenSheet" (change)="getExcelData()" >
-        <option *ngIf="chosenSheet==''" value="">choose a sheet</option>
+        <option *ngIf="chosenSheet==''" value="" >choose a sheet</option>
         <option *ngFor="let sheet of sheetNames" value="{{sheet}}">{{sheet}}</option>
         </select>
   

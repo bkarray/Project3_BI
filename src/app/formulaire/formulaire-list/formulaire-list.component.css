@@ -22,6 +22,12 @@ body {
   border: 1px solid rgba(0, 0, 0, 0.1);
   border-radius: 0.1rem;
 }
+
+.pi-chevron-right:before {
+  content: '\e905' !important;
+  vertical-align: middle !important;
+  font-size: 25px;
+}
 .card-body {
   -webkit-box-flex: 1;
   -ms-flex: 1 1 auto;
@@ -33,6 +39,21 @@ body {
   background-color: #eeeeee;
   font-family: "Open Sans", serif;
 }
+
+
+.fillIndent{
+  width: 25px;
+}
+
+.filsOption{
+  text-align: right;
+}
+.filsOption input{
+  width: auto;
+  margin: 1%;
+}
+
+
 .container {
   margin-top: 50px;
   margin-bottom: 50px;
@@ -389,11 +410,51 @@ width: 500px;
   'GRAD' 0,
   'opsz' 20;
   position: relative;
+  cursor: pointer;
 }
+.material-symbols-outlined:hover{
+  color: #003865;
+}
+
 .inputdate{
   margin-bottom: 25px;
 }
+.functionBar{
+  width: 60%;
+}
+.itemFunctionIcon:hover{
+color: #fff;
+}
 
+.functionItem{
+  border-radius: 50px;
+  display: flex;
+  width: auto;
+  padding: 6%;
+  margin: 3%;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: column;
+}
+.functionItem:hover{
+  background-color: #153462;
+  color: #fff;
+}
+
+.functionSelected{
+  border-radius: 50px;
+  display: flex;
+  width: auto;
+  padding: 6%;
+  margin: 3%;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: column;
+  background-color: #153462;
+  color: #fff;
+}
 .material-symbols-outlined {
   cursor: pointer;
   font-variation-settings:
@@ -799,28 +860,38 @@ background-color: #eeeeee;
   color: red;
 }
 
-.listGroup tr{
-  box-shadow: 0 2px 5px rgba(123, 119, 119, 0.7);
-  width: 100%;
-  background-color: #fafafa;
+.listGroup{
+  
   font-family: 'Montserrat', sans-serif;
   border-radius: 100px;
   height: auto;
+  display: flex;
+
 }
+
+.addIcon{
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: center;
+}
+
+.addIcon:hover{
+  color: rgba(27, 66, 194, 0.724);;
+}
+
 .itemGroup{
   background-color: rgba(173, 181, 181, 0.724);
   color: black;
   padding: 15px 20px;
   text-align: center;
-  width: auto;
   max-width: 200px;
   border-radius: 300px;
   cursor: pointer;
   display: flex;
     flex-wrap: nowrap;
-    justify-content: space-between;
+    justify-content: right;
     align-items: center;
-    overflow: auto;
 }
 .itemGroup:hover{
   background-color: rgba(27, 66, 194, 0.724);
@@ -867,6 +938,9 @@ background-color: #eeeeee;
 	text-align: center;
 	font-size: 26px;
 	margin: 30px 0 -10px;
+}
+.groupDiv{
+  max-width: 50%;
 }
 .modal-confirm .close {
 	position: absolute;

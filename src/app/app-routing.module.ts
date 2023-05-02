@@ -20,6 +20,12 @@ const routes: Routes = [
     loadChildren: () =>
       import('./formulaire/formulaire.module').then((m) => m.FormulaireModule),
     canActivate: [GuardGuard],
+  },
+  {
+    path: 'graphs',
+    loadChildren: () =>
+      import('./graphs/graphs.module').then((m) => m.GraphsModule),
+    canActivate: [GuardGuard],
   }
 ];
 

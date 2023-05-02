@@ -60,8 +60,6 @@ export class RegisterComponent implements OnInit {
       U_Pwd: this.U_pwd,
       U_Admin: true,
       U_Client: false,
-      U_Transporter:false,
-      U_Supplier: false,
     };
     this.submitted = true;
     // stop here if form is invalid

@@ -1,5 +1,7 @@
 import { Component, OnInit ,Output,EventEmitter,Input} from '@angular/core';
+import { GraphsService } from 'src/app/services/Graphs/graphs.service';
 import { FormulaireService } from 'src/app/services/formulaire/formulaire.service';
+
 
 @Component({
   selector: 'app-graphs-list',
@@ -8,7 +10,8 @@ import { FormulaireService } from 'src/app/services/formulaire/formulaire.servic
 })
 export class GraphsListComponent implements OnInit {
 
-  constructor(private FormulaireService:FormulaireService) { }
+  constructor(private FormulaireService:FormulaireService,
+    private GraphsService:GraphsService) { }
   @Input() reponse_id=0;
   @Output() closePopUp=new EventEmitter<any>()
 
@@ -23,13 +26,13 @@ export class GraphsListComponent implements OnInit {
   }
 
   getData(){
-this.FormulaireService.getCodes(this.reponse_id).subscribe((codes:any)=>{
+this.GraphsService.getCodes(this.reponse_id).subscribe((codes:any)=>{
   this.codes=codes
 })
   }
 
   deleteCode(index:any){
-    this.FormulaireService.deleteCode(this.codes[index].Code_Id).subscribe((res:any)=>{
+    this.GraphsService.deleteCode(this.codes[index].Code_Id).subscribe((res:any)=>{
       this.codes.splice(index,1)
     })
   }

@@ -1,0 +1,66 @@
+
+
+
+
+
+<div class="groupSelection">
+  <h6>Groups:</h6>
+  <table>
+    <tr *ngFor="let groups of groupsMatrix;let index=index">
+      <td *ngFor="let group of groups" [ngClass]="{'groupSelected':group.selected}" (click)="selectGroup(group,index)">
+        {{group.Group_Name}}
+      </td>
+      
+    </tr>
+  </table>
+<h6 *ngIf="forms.length!=0">Forms:</h6>
+  <table *ngIf="forms.length!=0">
+    <tr>
+      <td *ngFor="let form of forms" [ngClass]="{'groupSelected':form.selected}" (click)="selectFrom(form)">
+        {{form.Formulaire_Name}}
+      </td>
+    </tr>
+  </table>
+  <h6 *ngIf="responses.length!=0">Response:</h6>
+  <table *ngIf="responses.length!=0">
+    <tr>
+      <td *ngFor="let response of responses" [ngClass]="{'groupSelected':response.selected}" (click)="selectResponse(response)">
+        {{response.reponse_Name}}
+      </td>
+    </tr>
+  </table>
+</div>
+    
+
+<div class="cards-list">
+  
+  <div class="card" *ngFor="let graph of graphs;let index=index"  (click)="getcode(index)">
+  
+    <div class="card_title title-white">
+      <p>{{graph.File_Name}}</p>
+    </div>
+  </div>
+
+
+  <div class="card" *ngIf="canAdd" (click)="addCode()">
+
+    <div class="card_title title-white">
+      <p>+</p>
+    </div>
+  </div>
+
+</div>
+
+
+
+
+
+
+
+
+    <div class="bg" *ngIf="showCodeIsOpen||addCodeFormIsOpen">
+      <app-python-compiler  *ngIf="showCodeIsOpen" [editable]="true" [codeGraph]="codeGraph" (closePopUp)="openCode()" [reponse_id]="responseSelected"></app-python-compiler>
+      <app-python-compiler *ngIf="addCodeFormIsOpen" [reponse_id]="responseSelected" (closePopUp)="openAddCode()"></app-python-compiler>
+    </div>
+    
+

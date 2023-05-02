@@ -60,12 +60,64 @@ export class FormulaireCreatComponent implements OnInit {
   indexToExtract:any=-1
   ChoicesPopUp:boolean=false;
   FieldIdChoices:any=0
+
+
+  functions:any[]=[
+    {
+      Despatch_Id:null,
+      Function_Name:"File Manager",
+      Is_Visible:true,
+      Serv_Id:null
+    },
+    {
+      Despatch_Id:null,
+      Function_Name:"Delete All",
+      Is_Visible:true,
+      Serv_Id:null
+    },
+    {
+      Despatch_Id:null,
+      Function_Name:"Delete Upload",
+      Is_Visible:true,
+      Serv_Id:null
+    },
+    {
+      Despatch_Id:null,
+      Function_Name:"Export Data",
+      Is_Visible:true,
+      Serv_Id:null
+    },
+    {
+      Despatch_Id:null,
+      Function_Name:"Python",
+      Is_Visible:true,
+      Serv_Id:null
+    },
+    {
+      Despatch_Id:null,
+      Function_Name:"Graphs",
+      Is_Visible:true,
+      Serv_Id:null
+    }
+
+  ]
   ngOnInit(): void { 
    
 this.getNewFormulaire()
   }
 
-
+  correctionFunction(index:any){
+    this.functions[index].Is_Visible=!this.functions[index].Is_Visible
+    if(this.functions[index].Despatch_Id!=null){
+      const val={
+        Is_Visible:this.functions[index].Is_Visible
+      }
+      this.FormulaireService.correctFunction(this.functions[index].Despatch_Id,val).subscribe((res:any)=>{
+        console.log(res);
+        
+      })
+    }
+  }
 
   openChoicesPopUp(FieldId:any){
     this.ChoicesPopUp=true;
@@ -198,6 +250,70 @@ this.fields[index].editName=!this.fields[index].editName
     this.newFieldStatus='no description'
     this.fieldFormIsOpen=!this.fieldFormIsOpen
   }
+getFunctions(Serv_Id:any){
+this.FormulaireService.getFunctions(Serv_Id).subscribe((functions:any)=>{
+  if(functions.length!=0){
+    this.functions=functions;
+  }
+  else{
+    this.functions=[
+      {
+        Despatch_Id:null,
+        Function_Name:"File Manager",
+        Is_Visible:true,
+        Serv_Id:null
+      },
+      {
+        Despatch_Id:null,
+        Function_Name:"Delete All",
+        Is_Visible:true,
+        Serv_Id:null
+      },
+      {
+        Despatch_Id:null,
+        Function_Name:"Delete Upload",
+        Is_Visible:true,
+        Serv_Id:null
+      },
+      {
+        Despatch_Id:null,
+        Function_Name:"Export Data",
+        Is_Visible:true,
+        Serv_Id:null
+      },
+      {
+        Despatch_Id:null,
+        Function_Name:"Python",
+        Is_Visible:true,
+        Serv_Id:null
+      },
+      {
+        Despatch_Id:null,
+        Function_Name:"Graphs",
+        Is_Visible:true,
+        Serv_Id:null
+      }
+  
+    ]
+  }
+})
+}
+
+
+createFunctions(Serv_Id:any){
+  let funcs:any[]=[]
+  this.functions.forEach((functionOn:any)=>{
+    const val={
+      Function_Name:functionOn.Function_Name,
+      Is_Visible:functionOn.Is_Visible,
+      Serv_Id:Serv_Id
+    }
+    this.FormulaireService.postFunctions(val).then((result:any)=>{
+      funcs.push(result)
+    })
+  })
+  this.functions=funcs
+}
 
   AjoutFieldDansLeSystem(indexT:any){
     let ord=0
@@ -294,6 +410,8 @@ this.fields[index].editName=!this.fields[index].editName
         this.orderFields.push(newOrder)}
         
         this.openfieldForm()
+        if(this.isGenerated)
+        location.reload()
         this.newFieldName=''
         this.newFieldType='character varying(255)'
         this.newfieldChoises=null
@@ -309,6 +427,7 @@ confirmAdd(){
   let test=this.fieldsInArchive.findIndex((e:any)=>e.Name==newName)
   if(test==-1){
     this.addnewfield()
+    
   }
   else{
     console.log(this.fieldsInArchive[test]);
@@ -362,6 +481,8 @@ this.indexToExtract=index
                   }
     this.orderFields.push(newOrder)
     this.openfieldForm()
+    if(this.isGenerated)
+    location.reload()
     this.newFieldName=''
     this.newFieldType='character varying(255)'
     this.newfieldChoises=null
@@ -598,7 +719,10 @@ this.router.navigate(['/formulaire/new/', this.formulaire.Formulaire_Id,1]).then
     if((Number(this.shownServNum)!=Number(this.currentsrvOrd))||(this.formulaire.services.length==this.servsEtap.length)||(this.formulaire.services==1)){
       let index=this.servsEtap.findIndex((e:any)=> e.Serv_order==Number(this.shownServNum))
       let indexP=this.servsEtap.findIndex((e:any)=> e.Serv_Id==this.fields[1].Serv_Id)
-      if(indexP!=-1) this.servsEtap[indexP].fields=this.fields
+      if(indexP!=-1) {
+        this.servsEtap[indexP].fields=this.fields
+      }
+      this.getFunctions(this.servsEtap[index].Serv_Id)
       this.fields=this.servsEtap[index].fields
       this.fields=this.setOrder(this.fields)
 
@@ -618,9 +742,13 @@ else{
       field.Serv_Id=null
     }
   })
+  this.getFunctions(0)
   this.fields=this.setOrder(this.fields)
 }
   }
+
+
+
 
   correctionField(index:any,result:any){
     this.fields[index].Status=result
@@ -653,6 +781,7 @@ else{
       }
       if((this.currentsrvOrd==this.shownServNum)&&(this.servsEtap.length<=this.formulaire.services.length)){
         if(this.servsEtap.findIndex((e:any)=>e.Serv_Name==this.currentsrvName)==-1){this.FormulaireService.creatNewService(newServ).subscribe((serv:any)=>{
+          this.createFunctions(serv.Serv_Id)
     serv['fields']=[{
     Name:'ID',
     Type:'auto_number',
@@ -813,6 +942,7 @@ getNewFormulaire(){
                     serv.fields=fields
                     if((servs1.length+1>servs.length)&&(serv.Serv_order==servs.length)){
                       this.fields=fields
+                      this.getFunctions(serv.Serv_Id)
                       this.fields=this.setOrder(this.fields)
                     }
                     console.log('fields serv',fields);
@@ -821,6 +951,7 @@ getNewFormulaire(){
                   serv.fields=this.setOrder(serv.fields)
                   if(servs.length==1){
                     this.fields=serv.fields
+                    this.getFunctions(serv.Serv_Id)
                   }
                 })
                 this.servsEtap=servs1
@@ -829,6 +960,7 @@ getNewFormulaire(){
                   console.log(starterFields,"aaaaaaaaa")
                   this.currentsrvOrd=servs1.length+1
                   this.fields=starterFields
+                  this.getFunctions(0)
                 }
                 else{
                   this.currentsrvOrd=servs.length
