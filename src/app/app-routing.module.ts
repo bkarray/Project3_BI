@@ -26,6 +26,12 @@ const routes: Routes = [
     loadChildren: () =>
       import('./graphs/graphs.module').then((m) => m.GraphsModule),
     canActivate: [GuardGuard],
+  },
+  {
+    path: 'dashboard',
+    loadChildren: () =>
+      import('./mydashboards/mydashboards.module').then((m) => m.MydashboardsModule),
+    canActivate: [GuardGuard],
   }
 ];
 

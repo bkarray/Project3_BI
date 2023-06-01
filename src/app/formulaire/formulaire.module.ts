@@ -120,6 +120,7 @@ import { GraphsModule } from '../graphs/graphs.module';
     NgxDragResizeModule,
     MatPaginatorModule,
     GraphsModule,
+    MatTabsModule,
     
     CodeEditorModule.forRoot()
     
@@ -137,7 +138,6 @@ import { GraphsModule } from '../graphs/graphs.module';
     MatButtonModule,
     MatButtonToggleModule,
     MatCardModule,
-    MatCheckboxModule,
     MatChipsModule,
     MatStepperModule,
     MatDatepickerModule,
@@ -161,12 +161,12 @@ import { GraphsModule } from '../graphs/graphs.module';
     MatSnackBarModule,
     MatSortModule,
     MatTableModule,
-    MatTabsModule,
     MatToolbarModule,
     MatTooltipModule,
     MatTreeModule,
     PortalModule,
     ScrollingModule,
+    PythonCompilerComponent
   ]
 })
 export class FormulaireModule { }

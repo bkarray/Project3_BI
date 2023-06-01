@@ -52,48 +52,40 @@
         description:
         <textarea [(ngModel)]="descriptionSelected" cols="30" rows="10" (change)="updateContent('Content')"></textarea>
     </div>
-    <div class="row btnBloc">
-        <span class="material-symbols-outlined deleteBtn" *ngIf="!newFormIsOpen" (click)="deleteCurrent()">
-            do_not_disturb_on
-            </span>
-            <span class="material-symbols-outlined addBtn" *ngIf="newFormIsOpen" (click)="createNewInstance()">
-                add_circle
-                </span>
-    </div>
     <div class="tableAction" *ngIf="actionSelected!=null">
-    <div class="row">
+        <div class="row">
+            
 
-
-        <table >
-            <thead>
-                <tr>
+            <table >
+                <thead>
+                    <tr>
 
                     <th>Responsible production</th>
                     <th>Estimated Date</th>
                     <th>Real Date</th>
                     <th>Deliverable</th>
                 </tr>
-
+                
             </thead>
             <tbody>
                 <tr>
                     <td>
-                <select  name="" id="" [(ngModel)]="actionSelected.Responsible_Realization" (change)="changeValueActionParm('Responsible_Realization')">
-                    <option value="">choose one user</option>
-                    <option *ngFor="let user of users" value="{{user.U_Id}}">{{user.U_FirstName + " " + user.U_LastName}}</option>
-                </select></td>
-                    <td>
-                <input [(ngModel)]="actionSelected.Date_Submission_Estimated" (change)="changeValueActionParm('Date_Submission_Estimated')" type="date" placeholder="yyyy-mm-dd" min="1999-01-31" max="2999-01-31">
-                </td>
-                    <td><input [(ngModel)]="actionSelected.Date_Submission_Real" type="date" placeholder="yyyy-mm-dd" min="1999-01-31" max="2999-01-31" (change)="changeValueActionParm('changeValueActionParm')"></td>
-                    <td><span class="material-symbols-outlined">
-                        more_horiz
+                        <select  name="" id="" [(ngModel)]="actionSelected.Responsible_Realization" (change)="changeValueActionParm('Responsible_Realization')">
+                            <option value="">choose one user</option>
+                            <option *ngFor="let user of users" value="{{user.U_Id}}">{{user.U_FirstName + " " + user.U_LastName}}</option>
+                        </select></td>
+                        <td>
+                            <input [(ngModel)]="actionSelected.Date_Submission_Estimated" (change)="changeValueActionParm('Date_Submission_Estimated')" type="date" placeholder="yyyy-mm-dd" min="1999-01-31" max="2999-01-31">
+                        </td>
+                        <td><input [(ngModel)]="actionSelected.Date_Submission_Real" type="date" placeholder="yyyy-mm-dd" min="1999-01-31" max="2999-01-31" (change)="changeValueActionParm('changeValueActionParm')"></td>
+                        <td><span class="material-symbols-outlined">
+                            more_horiz
                         </span></td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
         <div class="row">
  <table >
             <thead>
@@ -109,26 +101,34 @@
             <tbody>
                 <tr>
                     <td>
-                <select name="" id="" [(ngModel)]="actionSelected.Responsible_Validation"
-                (change)="changeValueActionParm('Responsible_Validation')">
-                    <option value="">choose one user</option>
-                    <option *ngFor="let user of users" value="{{user.U_Id}}">{{user.U_FirstName + " " + user.U_LastName}}</option>
-                </select></td>
+                        <select name="" id="" [(ngModel)]="actionSelected.Responsible_Validation"
+                        (change)="changeValueActionParm('Responsible_Validation')">
+                        <option value="">choose one user</option>
+                        <option *ngFor="let user of users" value="{{user.U_Id}}">{{user.U_FirstName + " " + user.U_LastName}}</option>
+                    </select></td>
                     <td>
-                <input type="date" placeholder="yyyy-mm-dd" min="1999-01-31" max="2999-01-31" name="" id="" [(ngModel)]="actionSelected.Date_Validation_Estimated"
-                (change)="changeValueActionParm('Date_Validation_Estimated')">
-                </td>
+                        <input type="date" placeholder="yyyy-mm-dd" min="1999-01-31" max="2999-01-31" name="" id="" [(ngModel)]="actionSelected.Date_Validation_Estimated"
+                        (change)="changeValueActionParm('Date_Validation_Estimated')">
+                    </td>
                     <td><input [(ngModel)]="actionSelected.Date_Validation_Real" type="date" placeholder="yyyy-mm-dd" min="1999-01-31" max="2999-01-31" name="" id=""
                         (change)="changeValueActionParm('Date_Validation_Real')"></td>
-                    <td><span class="material-symbols-outlined">
-                        more_horiz
+                        <td><span class="material-symbols-outlined">
+                            more_horiz
                         </span></td>
-                </tr>
-            </tbody>
-        </table>
-
-
+                    </tr>
+                </tbody>
+            </table>
+            
+            
     </div>
+</div>
+<div class="row btnBloc">
+    <span class="material-symbols-outlined deleteBtn" *ngIf="!newFormIsOpen" (click)="deleteCurrent()">
+        do_not_disturb_on
+        </span>
+        <span class="material-symbols-outlined addBtn" *ngIf="newFormIsOpen" (click)="createNewInstance()">
+            add_circle
+            </span>
 </div>
 </div>
 </div>

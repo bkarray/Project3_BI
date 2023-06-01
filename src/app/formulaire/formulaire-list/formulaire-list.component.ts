@@ -644,7 +644,7 @@ getData(){
   this.authService.loadUser();
   this.isAdmin=this.authService.isAdmin()
   this.FormulaireService.getGroups().subscribe((groups:any[])=>{
-    this.nbGroups=groups.length
+    this.nbGroups=groups ? groups.length : 0
   this.authService.getAllUsers().subscribe((users:any)=>{
     this.users=users
     console.log("u=",this.users)

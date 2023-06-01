@@ -36,10 +36,10 @@ restart(){
   }
 }
 
-validateValue(){
-  this.restart()
-  this.validate.emit(this.responseSelected)
-}
+// validateValue(){
+//   this.restart()
+//   this.validate.emit(this.responseSelected)
+// }
 
   selectGroup(groupSelected:any,index:any){
     groupSelected.selected=!groupSelected.selected
@@ -80,7 +80,7 @@ validateValue(){
       }
     }
   
-  
+  this.validate.emit(0)
   }
   
   selectFrom(form:any){
@@ -96,13 +96,14 @@ validateValue(){
       this.graphs=[]
       this.responseSelected=0
     })
+
   }
   else{
     this.responses=[]
     this.graphs=[]
     this.responseSelected=0
   }
-
+ this.validate.emit(0)
   }
 
   selectResponse(response:any){
@@ -117,6 +118,7 @@ validateValue(){
       this.graphs=[]
       this.responseSelected=0
     }
+    this.validate.emit(response.Reponse_Id)
     }
 
 

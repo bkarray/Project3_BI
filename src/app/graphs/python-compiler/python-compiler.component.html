@@ -1,163 +1,170 @@
 <div class="testbox container">
-<div class="row title">
-    <div class="titleContainer">
-        <h6 *ngIf="editable">{{codeGraph.File_Name}}</h6>
-        <input *ngIf="!editable" [(ngModel)]="FileName" spellcheck="false"  [ngModelOptions]="{standalone: true}">
-    </div>
-</div>
-<div class="row iconManagement">
-    <div *ngFor="let tag of dataManagement;let index=index" [ngClass]="{'selected':tag.isOpen}" (click)="openManagementDataTab(index)">
-        <h6>
-            {{tag.name}}
-        </h6>
-    </div>
-</div>
-<div *ngIf="verifiesIsOpen('Code')">
-<div class="row newOldChoice">
-    <div [ngClass]="{'selected':codeIsNew}" (click)="setCodeIsNew(true)">
-        new
-    </div>
-    <div [ngClass]="{'selected':!codeIsNew}" (click)="setCodeIsNew(false)">
-        Existing
-    </div>
-
-</div>
-<div class="row" *ngIf="codeGraph.Related_Code&&!codeIsNew">
-    <h3>graph: {{refrencedCode.File_Name}}</h3>
-</div>
-<div class="row">
-
-
-    <div class="col-1">
-        Principal
-    </div>
-    <div class="col-1">
-        <input type="checkbox" id="isPrincipal" [(ngModel)]="isPrincipal" (change)="changeIfPrincipal()">
-    </div>
-</div>
-<div class="row">
-    <div class="col-7">
-        <div *ngIf="codeIsNew" class="codeText">
-            <textarea *ngIf="!editable" class="coding" [(ngModel)]="code" spellcheck="false" (keydown)="handleKeydown($event)" [ngModelOptions]="{standalone: true}"></textarea>
-            <textarea *ngIf="editable" class="coding" [(ngModel)]="codeGraph.Code" spellcheck="false" (keydown)="handleKeydown($event)" [ngModelOptions]="{standalone: true}"></textarea>
+    <div class="row title">
+        <div class="titleContainer">
+            <h6 *ngIf="editable">{{codeGraph.File_Name}}</h6>
+            <input *ngIf="!editable" [(ngModel)]="FileName" spellcheck="false"  [ngModelOptions]="{standalone: true}">
         </div>
-        <div *ngIf="!codeIsNew">
-            <app-select-reponse  (validate)="getResponseWithGraphs($event)"></app-select-reponse>
-            <button *ngIf="codeGraph.Related_Code" class="redBackGround" (click)="deleteReference()">delete</button>
-            <div *ngIf="codesToChooseFrom.length!=0">
-
-                <select name="" id="" [(ngModel)]="newCodeRef">
-                    <option value="">choose a graph</option>
-                    <option *ngFor="let code of codesToChooseFrom" value="{{code.Code_Id}}" >{{code.File_Name}}</option>
-                </select>
-                <button (click)="createReferenceCode()">confirm</button>
-                <button class="redBackGround" (click)="emptyChooseCode()">Cancel</button>
+    </div>
+    <div class="row iconManagement" *ngIf="editable">
+        <div *ngFor="let tag of dataManagement;let index=index" [ngClass]="{'selected':tag.isOpen}" (click)="openManagementDataTab(index)">
+            <h6>
+                {{tag.name}}
+            </h6>
+        </div>
+    </div>
+    <div *ngIf="verifiesIsOpen('Code')" style="padding: 5px;">
+    <div class="row newOldChoice">
+        <div [ngClass]="{'selected':codeIsNew}" (click)="setCodeIsNew(true)">
+            new
+        </div>
+        <div *ngIf="editable" [ngClass]="{'selected':!codeIsNew}" (click)="setCodeIsNew(false)">
+            Existing
+        </div>
+    
+    </div>
+    <div class="row" *ngIf="codeGraph.Related_Code&&!codeIsNew">
+        <h3>graph: {{refrencedCode.File_Name}}</h3>
+    </div>
+    <div class="row">
+    
+    
+        <div class="col-1">
+            Principal
+        </div>
+        <div class="col-1">
+            <input type="checkbox" id="isPrincipal" [(ngModel)]="isPrincipal" (change)="changeIfPrincipal()">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-7">
+            <div *ngIf="codeIsNew" class="codeText">
+                <textarea *ngIf="!editable" class="coding" [(ngModel)]="code" spellcheck="false" (keydown)="handleKeydown($event)" [ngModelOptions]="{standalone: true}"></textarea>
+                <textarea *ngIf="editable" class="coding" [(ngModel)]="codeGraph.Code" spellcheck="false" (keydown)="handleKeydown($event)" [ngModelOptions]="{standalone: true}"></textarea>
+            </div>
+            <div *ngIf="!codeIsNew">
+                <app-select-reponse  (validate)="getResponseWithGraphs($event)"></app-select-reponse>
+                <button *ngIf="codeGraph.Related_Code" class="redBackGround" (click)="deleteReference()">delete</button>
+                <div *ngIf="codesToChooseFrom.length!=0">
+    
+                    <select name="" id="" [(ngModel)]="newCodeRef">
+                        <option value="">choose a graph</option>
+                        <option *ngFor="let code of codesToChooseFrom" value="{{code.Code_Id}}" >{{code.File_Name}}</option>
+                    </select>
+                    <button (click)="createReferenceCode()">confirm</button>
+                    <button class="redBackGround" (click)="emptyChooseCode()">Cancel</button>
+                </div>
+            </div>
+            <div class="codeResult">
+            <label for="name" *ngIf="Output!=''">OutPut</label>
+            <div *ngIf="Output!=''" class="name-item">
+              <textarea [(ngModel)]="Output" spellcheck="false" (keydown)="handleKeydown($event)" [ngModelOptions]="{standalone: true}" readonly></textarea> 
+            </div>
+            <label for="name" *ngIf="Error!=''">Error</label>
+            <div *ngIf="Error!=''" class="name-item">
+               {{Error}}
+            </div>
+            </div>
+            <div class="btn-block-compile">
+                <button (click)="SaveCode()" *ngIf="itWorks">Save</button>
+                <button (click)="Compile()" >Compile</button>
+            </div>
+            <div class="dataSets">
+                <table>
+                    <tr *ngFor="let reponse  of dataSets">
+                        <td>{{reponse.Formulaire_Name}} </td>
+                        <td>{{reponse.reponse_Name}}</td>
+                        <td *ngIf="!reponse?.fixed">
+                            <span class="material-symbols-outlined">
+                                workspaces
+                                </span>
+                        </td>
+    
+    
+                    </tr>
+                </table>
+                <span *ngIf="!newDatasetFormIsOpen" class="material-symbols-outlined addDataSetIcon" (click)="getNewDataSet()">
+                    add_circle
+                    </span>
+    
+                    <app-select-reponse *ngIf="newDatasetFormIsOpen" (validate)="getNewDatasetId($event)"></app-select-reponse>
             </div>
         </div>
-        <div class="codeResult">
-        <label for="name" *ngIf="Output!=''">OutPut</label>
-        <div *ngIf="Output!=''" class="name-item">
-          <textarea [(ngModel)]="Output" spellcheck="false" (keydown)="handleKeydown($event)" [ngModelOptions]="{standalone: true}" readonly></textarea> 
+       
+       
+        <div *ngIf="(imgURL!='')&&editable" class="col-5 imgContainer">
+                <img [src]="getImgUrl()" > 
         </div>
-        <label for="name" *ngIf="Error!=''">Error</label>
-        <div *ngIf="Error!=''" class="name-item">
-           {{Error}}
+    
+    </div>
+    </div>
+    <div *ngIf="verifiesIsOpen('Reports')">
+    <app-reports [codeGraph]="codeGraph"></app-reports>
+    </div>
+    <div *ngIf="verifiesIsOpen('Causes')">
+        <app-causes (openGraphTab)="openGraphTab($event)" [codeGraph]="codeGraph"></app-causes>
         </div>
+        <div *ngIf="verifiesIsOpen('Consequences')">
+            <app-consequences [codeGraph]="codeGraph" (openGraphTab)="openGraphTab($event)"></app-consequences>
+            </div>
+    <div class="row">
+        <div class="btn-block">
+            <button class="redBackGround" *ngIf="editable" (click)="deleteCode()" >delete</button>
+            <button  (click)="close()" >Validate</button>
         </div>
-        <div class="btn-block-compile">
+    </div>
+    
+    
+    </div>
+    
+    
+    
+    
+    
+    
+    
+    
+    <!-- <div class="testbox">
+        <form>
+          <div class="item">
+            <label for="name">Name<span class="red">*</span></label>
+            <div class="name-item">
+              
+                <input *ngIf="!editable" [(ngModel)]="FileName" spellcheck="false"  [ngModelOptions]="{standalone: true}">
+                <h3 *ngIf="editable">{{codeGraph.File_Name}} </h3>
+            </div>
+            <label for="name">Code<span class="red">*</span></label>
+            <div class="name-item">
+              
+                <textarea *ngIf="!editable" class="coding" [(ngModel)]="code" spellcheck="false" (keydown)="handleKeydown($event)" [ngModelOptions]="{standalone: true}"></textarea>
+                <textarea *ngIf="editable" class="coding" [(ngModel)]="codeGraph.Code" spellcheck="false" (keydown)="handleKeydown($event)" [ngModelOptions]="{standalone: true}"></textarea>
+            </div>
+    
+    
+    
+    
+            <label for="name" *ngIf="Output!=''">OutPut</label>
+            <div *ngIf="Output!=''" class="name-item">
+              <textarea [(ngModel)]="Output" spellcheck="false" (keydown)="handleKeydown($event)" [ngModelOptions]="{standalone: true}" readonly></textarea> 
+            </div>
+            <label for="name" *ngIf="Error!=''">Error</label>
+            <div *ngIf="Error!=''" class="name-item">
+               {{Error}}
+            </div>
+            <label for="name" *ngIf="(imgURL!='')&&editable">image</label>
+            <div *ngIf="(imgURL!='')&&editable" class="name-item">
+               <img [src]="getImgUrl()" >
+            </div>
+          </div>
+    
+          <div class="btn-block">
+            <button class="redBackGround" (click)="close()" >Cancel</button>
+            <button class="redBackGround" *ngIf="editable" (click)="deleteCode()" >delete</button>
             <button (click)="SaveCode()" *ngIf="itWorks">Save</button>
             <button (click)="Compile()" >Compile</button>
-        </div>
-        <div class="dataSets">
-            <table>
-                <tr *ngFor="let reponse  of dataSets">
-                    <td>{{reponse.Formulaire_Name}} </td>
-                    <td>{{reponse.reponse_Name}}</td>
-                    <td *ngIf="!reponse?.fixed">
-                        <span class="material-symbols-outlined">
-                            workspaces
-                            </span>
-                    </td>
-
-
-                </tr>
-            </table>
-            <span *ngIf="!newDatasetFormIsOpen" class="material-symbols-outlined addDataSetIcon" (click)="getNewDataSet()">
-                add_circle
-                </span>
-
-                <app-select-reponse *ngIf="newDatasetFormIsOpen" (validate)="getNewDatasetId($event)"></app-select-reponse>
-        </div>
-    </div>
-   
-   
-    <div *ngIf="(imgURL!='')&&editable" class="col-5 imgContainer">
-            <img [src]="getImgUrl()" > 
-    </div>
-
-</div>
-</div>
-<div *ngIf="verifiesIsOpen('Reports')">
-<app-reports [codeGraph]="codeGraph"></app-reports>
-</div>
-<div class="row">
-    <div class="btn-block">
-        <button class="redBackGround" *ngIf="editable" (click)="deleteCode()" >delete</button>
-        <button (click)="close()" >Validate</button>
-    </div>
-</div>
-
-
-</div>
-
-
-
-
-
-
-
-
-<!-- <div class="testbox">
-    <form>
-      <div class="item">
-        <label for="name">Name<span class="red">*</span></label>
-        <div class="name-item">
-          
-            <input *ngIf="!editable" [(ngModel)]="FileName" spellcheck="false"  [ngModelOptions]="{standalone: true}">
-            <h3 *ngIf="editable">{{codeGraph.File_Name}} </h3>
-        </div>
-        <label for="name">Code<span class="red">*</span></label>
-        <div class="name-item">
-          
-            <textarea *ngIf="!editable" class="coding" [(ngModel)]="code" spellcheck="false" (keydown)="handleKeydown($event)" [ngModelOptions]="{standalone: true}"></textarea>
-            <textarea *ngIf="editable" class="coding" [(ngModel)]="codeGraph.Code" spellcheck="false" (keydown)="handleKeydown($event)" [ngModelOptions]="{standalone: true}"></textarea>
-        </div>
-
-
-
-
-        <label for="name" *ngIf="Output!=''">OutPut</label>
-        <div *ngIf="Output!=''" class="name-item">
-          <textarea [(ngModel)]="Output" spellcheck="false" (keydown)="handleKeydown($event)" [ngModelOptions]="{standalone: true}" readonly></textarea> 
-        </div>
-        <label for="name" *ngIf="Error!=''">Error</label>
-        <div *ngIf="Error!=''" class="name-item">
-           {{Error}}
-        </div>
-        <label for="name" *ngIf="(imgURL!='')&&editable">image</label>
-        <div *ngIf="(imgURL!='')&&editable" class="name-item">
-           <img [src]="getImgUrl()" >
-        </div>
-      </div>
-
-      <div class="btn-block">
-        <button class="redBackGround" (click)="close()" >Cancel</button>
-        <button class="redBackGround" *ngIf="editable" (click)="deleteCode()" >delete</button>
-        <button (click)="SaveCode()" *ngIf="itWorks">Save</button>
-        <button (click)="Compile()" >Compile</button>
-        
-      </div>
-    </form>
-  </div> -->
-
-
+            
+          </div>
+        </form>
+      </div> -->
+    
+    
+    

@@ -1,0 +1,35 @@
+
+<!-- list of causes of the graph-->
+<div class="container">
+<div class="causesContainer">
+
+    <div *ngFor="let cause of causes;let index=index">
+        <span *ngIf="canDelete" (click)="deleteCause(index)" class="material-symbols-outlined deleteIcon">
+            delete
+            </span>
+        <div  class="OneCause" (click)="chooseGraphToAdd(cause)">
+            <h3>{{cause.File_Name}}</h3>
+        </div>
+    </div>
+
+<app-select-reponse *ngIf="selectResponseIsOpen" (validate)="getNewResponseId($event)"></app-select-reponse>
+<div *ngIf="codesToChoose.length!=0">
+    <h6>choose a graph:</h6>
+    <select [(ngModel)]="codeToAddId">
+        <option value="0">choose a graph</option>
+        <option *ngFor="let code of codesToChoose" value="{{code.Code_Id}}">
+            {{code.File_Name}}
+        </option>
+    </select>
+    <button (click)="createCause()">confirm</button>
+</div>
+</div>
+<span *ngIf="!selectResponseIsOpen" class="material-symbols-outlined" 
+(click)="openSelectResponse()"
+>
+    add_circle
+    </span>
+<span class="material-symbols-outlined" [ngClass]="{'selectDelete':canDelete}" (click)="openDelete()">
+    delete
+    </span>
+</div>

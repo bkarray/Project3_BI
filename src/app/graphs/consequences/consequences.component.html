@@ -1,0 +1,34 @@
+
+<!-- list of Consequences of the graph-->
+<div class="container">
+    <div class="ConsequencesContainer">
+        <div *ngFor="let Consequence of consequences;let index=index">
+            <span *ngIf="canDelete" (click)="deleteConsequence(index)"  class="material-symbols-outlined deleteIcon">
+                delete
+                </span>
+            <div *ngFor="let Consequence of consequences" class="OneConsequence" (click)="chooseGraphToAdd(Consequence)">
+                <h3>{{Consequence.File_Name}}</h3>
+            </div>
+        
+        </div>
+    <app-select-reponse *ngIf="selectResponseIsOpen" (validate)="getNewResponseId($event)"></app-select-reponse>
+    <div *ngIf="codesToChoose.length!=0">
+        <h6>choose a graph:</h6>
+        <select [(ngModel)]="codeToAddId">
+            <option value="0">choose a graph</option>
+            <option *ngFor="let code of codesToChoose" value="{{code.Code_Id}}">
+                {{code.File_Name}}
+            </option>
+        </select>
+        <button (click)="createConsequence()">confirm</button>
+    </div>
+    </div>
+    <span *ngIf="!selectResponseIsOpen" class="material-symbols-outlined" 
+    (click)="openSelectResponse()"
+    >
+    add_circle
+</span>
+<span [ngClass]="{'selectDelete':canDelete}" (click)="openDelete()" class="material-symbols-outlined">
+    delete
+    </span>
+    </div>

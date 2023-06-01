@@ -10,7 +10,7 @@
   </div>
   <div class="row">
 
-    <div class="col-3 groupDiv" *ngIf="groups.length==nbGroups">
+    <div class="col-3 groupDiv" *ngIf="(groups?.length==nbGroups)||!(groups)">
       <p-treeTable [value]="groups" [columns]="tagGroups"class="tableGroup">
         <ng-template pTemplate="header" let-columns>
 

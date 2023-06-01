@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/services/auth/authservice';
 import { FormulaireService } from 'src/app/services/formulaire/formulaire.service';
 import { GraphsService } from 'src/app/services/Graphs/graphs.service';
+import {FormControl} from '@angular/forms';
 @Component({
   selector: 'app-data-analysis',
   templateUrl: './data-analysis.component.html',
@@ -14,6 +15,10 @@ export class DataAnalysisComponent implements OnInit {
     private FormulaireService:FormulaireService,
     private GraphsService:GraphsService
   ) { }
+
+
+selected = new FormControl(0);
+lotsOfTabs:any[] = [];
 showCodeIsOpen:boolean=false
 addCodeFormIsOpen:boolean=false
 responseSelected:any=0
@@ -29,15 +34,34 @@ ngOnInit(): void {
   this.getData()
 }
 
-openCode(){
+openCode(event:any){
   this.codeGraph={}
-  
   this.GraphsService.getCodes(this.responseSelected).subscribe((graphs:any)=>{
-    this.showCodeIsOpen=!this.showCodeIsOpen
+    if(this.showCodeIsOpen){
+      const index=this.lotsOfTabs.findIndex((e:any)=>e.Code_Id==event.Code_Id)
+      if(index!=-1)
+      this.lotsOfTabs.splice(index,1)
+      if(this.lotsOfTabs.length==0){
+        this.showCodeIsOpen=false
+      }
+    }
+    else{
+
+      this.showCodeIsOpen=true
+    }
     this.graphs=graphs
   })
 }
-
+openGraphTab(event:any){
+  const test=this.lotsOfTabs.findIndex((e:any)=>e.Code_Id==event.Code_Id)
+  if(test==-1){
+    this.lotsOfTabs.push(event)
+    this.selected.setValue(this.lotsOfTabs.length-1)
+  }
+  else{
+    this.selected.setValue(test)
+  }
+}
 openAddCode(){
   this.GraphsService.getCodes(this.responseSelected).subscribe((graphs:any)=>{
     this.addCodeFormIsOpen=!this.addCodeFormIsOpen
@@ -93,6 +117,18 @@ if(groupSelected.selected){
 
 }
 
+
+closeTabes(){
+  this.lotsOfTabs=[]
+  this.codeGraph={}
+  this.GraphsService.getCodes(this.responseSelected).subscribe((graphs:any)=>{
+  this.showCodeIsOpen=false
+  this.graphs=graphs
+  })
+
+}
+
+
 selectFrom(form:any){
 form.selected=!form.selected
 if(form.selected){
@@ -117,7 +153,8 @@ else{
 }
 getcode(index:any){
   this.codeGraph=this.graphs[index]
-  this.showCodeIsOpen=!this.showCodeIsOpen
+  this.showCodeIsOpen=true
+  this.lotsOfTabs.push(this.codeGraph)
     }
 
 selectResponse(response:any){

@@ -13,6 +13,7 @@ export class PythonCompilerComponent implements OnInit {
     private route:ActivatedRoute,
     private GraphsService:GraphsService) { }
   @Output() closePopUp=new EventEmitter<any>();
+  @Output() GraphTab=new EventEmitter<any>();
   @Input() editable:boolean=false
   @Input() codeGraph:any={}
   @Input() reponse_id:Number=0
@@ -62,9 +63,11 @@ dataSets:any[]=[]
 
 
   }
-
+  openGraphTab(event:any){
+    this.GraphTab.emit(event)
+  }
   close(){
-    this.closePopUp.emit(false)
+    this.closePopUp.emit(this.codeGraph)
   }
 
 verifiesIsOpen(tag:any){
@@ -94,6 +97,10 @@ if(event!=0){
   this.GraphsService.getCodes(event).subscribe((codes:any)=>{
     this.codesToChooseFrom=codes;
   })
+
+}
+else{
+  this.codesToChooseFrom=[]
 }
   }
 
@@ -184,6 +191,7 @@ else{
 
 
   getNewDatasetId(event:any){
+    if(this.editable){
 if((event!=0)&&(event!=this.codeGraph.reponse_id)){
   if(this.codeGraph.Code_Id){
     this.GraphsService.addNewDataset(this.codeGraph.Code_Id,event).subscribe((res:any)=>{
@@ -197,7 +205,14 @@ if((event!=0)&&(event!=this.codeGraph.reponse_id)){
 else{
   this.getNewDataSet()
 }
-
+}
+else{
+  if((event!=0)&&(event!=this.codeGraph.reponse_id))
+  this.FormulaireService.getReponseById(event).subscribe((reponce:any)=>{
+    this.dataSets.push(reponce)
+    this.getNewDataSet()
+  })
+}
   }
 
   deleteCode(){
@@ -261,7 +276,7 @@ if(this.itWorks){
               
       this.Output=result['output']
       this.Error=result['error']
-      alert("saved!!")
+      this.close()
     })
   }
   else if (this.editable){

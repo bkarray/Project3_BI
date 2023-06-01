@@ -333,6 +333,7 @@ updateContent(key:any){
         this.titleSelected=report.report_Name
         this.descriptionSelected=report.Content
         this.reports.push(report)
+        this.codeGraph.Reports.push(report.report_Id)
       })
     }
   }

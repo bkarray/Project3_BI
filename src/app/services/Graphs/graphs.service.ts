@@ -80,4 +80,23 @@ export class GraphsService {
   addNewAction(idDecision:any,val:any){
     return this.http.post(this.APIUrl+'/add_action/'+idDecision,val)
   }
+  getCausesOrConsequences(val:any){
+    return this.http.post(this.APIUrl+'/get_causes_consequences/',val)
+  }
+  addCauseToCode(idCode:any,idCause:any){
+    return this.http.post(this.APIUrl+'/add_cause_to_code/'+idCode+'/'+idCause,{})
+  }
+  addConsequenceToCode(idCode:any,idConsequence:any){
+    return this.http.post(this.APIUrl+'/add_consequence_to_code/'+idCode+'/'+idConsequence,{})
+  }
+
+  deleteCauseFromCode(idCode:any,idCause:any){
+    return this.http.delete(this.APIUrl+'/delete_cause_from_code/'+idCode+'/'+idCause)
+  }
+  deleteConsequenceFromCode(idCode:any,idConsequence:any){
+    return this.http.delete(this.APIUrl+'/delete_consequence_from_code/'+idCode+'/'+idConsequence)
+  }
+  getCodesByDashboardId(id:any){
+    return this.http.get(this.APIUrl+'/codes_by_dashboard_Id/'+id)
+  }
 }

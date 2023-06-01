@@ -54,13 +54,17 @@
 
 
 
-
-
-
-
     <div class="bg" *ngIf="showCodeIsOpen||addCodeFormIsOpen">
-      <app-python-compiler  *ngIf="showCodeIsOpen" [editable]="true" [codeGraph]="codeGraph" (closePopUp)="openCode()" [reponse_id]="responseSelected"></app-python-compiler>
-      <app-python-compiler *ngIf="addCodeFormIsOpen" [reponse_id]="responseSelected" (closePopUp)="openAddCode()"></app-python-compiler>
+      <mat-tab-group  [selectedIndex]="selected.value" *ngIf="showCodeIsOpen">
+        <mat-tab [label]="tab.File_Name" *ngFor="let tab of lotsOfTabs">
+          <app-python-compiler   [editable]="true" [codeGraph]="tab" [reponse_id]="tab.Reponse_Id" (closePopUp)="openCode($event)" (GraphTab)="openGraphTab($event)"></app-python-compiler>
+        </mat-tab>
+      </mat-tab-group>
+      <span *ngIf="showCodeIsOpen" (click)="closeTabes()" class="material-symbols-outlined closeTabs">
+        cancel
+        </span>
+     
+      <app-python-compiler class="addCodeBlock" *ngIf="addCodeFormIsOpen" [reponse_id]="responseSelected" (closePopUp)="openAddCode()"></app-python-compiler>
     </div>
     
 

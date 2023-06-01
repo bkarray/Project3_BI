@@ -1,0 +1,146 @@
+<div class="container">
+  <div class="row">
+
+    <div class="col-3 groupDiv">
+      <p-treeTable [value]="dashboards" [columns]="tagGroups"class="tableGroup">
+            <ng-template pTemplate="header" let-columns>
+            </ng-template>
+            <ng-template pTemplate="body" let-rowNode let-rowData="rowData" let-columns="tagGroups">
+              <tr class="listGroup">
+                <td *ngFor="let element of indentSpace(rowNode['level'])" class="fillIndent">
+                </td>
+                <td class="fillIndent addIcon" *ngIf="canEdit">
+                  <span class="material-symbols-outlined" (click)="openEditForm(rowNode)">
+                    edit
+                  </span>
+                </td>
+                <td class="fillIndent addIcon" *ngIf="canAddRelation">
+                  <span class="material-symbols-outlined" (click)="openNewGroupFormRElation(rowNode)">
+                    bookmark_add
+                  </span>
+                </td>
+                <td class="fillIndent addIcon" *ngIf="canDelete">
+                  <span class="material-symbols-outlined deleteGroupIcon" (click)="deleteGroup(rowNode)">
+                    do_not_disturb_on
+                    </span>
+                    
+                </td>
+                <td *ngFor="let tag of tagGroups" class="itemGroup" [ngClass]="{'selectedGroup': rowNode.node.selected}" (click)="selectGroup(rowNode)">
+                  
+                  <h6 >
+                    <input type="text" *ngIf="rowNode['node']['editForm']" [(ngModel)]="rowNode['node']['Dashboard_Name']">
+                    <p *ngIf="!rowNode['node']['editForm']" >
+                    {{rowNode['node']['Dashboard_Name']}}
+                  </p>
+                  </h6>
+                  <p-treeTableToggler [rowNode]="rowNode"></p-treeTableToggler>
+                </td>
+              </tr>
+    
+    
+    
+              
+    
+              <tr class="listGroup" *ngIf="rowNode['node']['formIsOpened']">
+                <td *ngFor="let element of indentSpace(rowNode['node']['level'])" class="fillIndent">
+                </td>
+                <td class="fillIndent">
+                </td>
+                <td>new group:</td>
+              </tr>
+              <tr class="listGroup" *ngIf="rowNode['node']['formIsOpened']">
+                <td *ngFor="let element of indentSpace(rowNode['node']['level'])" class="fillIndent">
+                </td>
+                <td class="fillIndent">
+                </td>
+                <td><input type="text" [(ngModel)]="newGroupNameSide"></td>
+              </tr>
+              <tr class="listGroup" *ngIf="rowNode['node']['formIsOpened']">
+                <td *ngFor="let element of indentSpace(rowNode['node']['level'])" class="fillIndent">
+                </td>
+                <td class="fillIndent">
+                </td>
+                <td><button (click)="addNewGroupWithRelation(rowNode)">confirm</button></td>
+                <td><button (click)="cancelAddingGroup(rowNode)">cancel</button></td>
+              </tr>
+            </ng-template>
+          </p-treeTable>
+    
+          <table class="tableGroup">
+            <tr class="listGroup">
+              <td style="display: block;" *ngIf="!groupFormIsOpenSide" class="itemGroup" (click)="openSideGroupForm()">+</td>
+              <td *ngIf="groupFormIsOpenSide"><input type="text" [(ngModel)]="newGroupNameSide"></td>
+            </tr>
+            <tr class="listGroup" *ngIf="groupFormIsOpenSide">
+              <td style="display: block;" class="itemGroup" (click)="addGroupSide()">add</td>
+              <td style="display: block;" class="itemGroup" (click)="openSideGroupForm()">cancel</td>
+            </tr>
+          </table>
+          
+    
+    
+          <div class="row">
+            <div class="col-4 functionItem" [ngClass]="{'functionSelected': canEdit}" (click)="functionToDoOnGroup('edit')">
+              <span class="material-symbols-outlined itemFunctionIcon" >
+                edit
+                </span>
+            </div>
+            <div class="col-4 functionItem" [ngClass]="{'functionSelected': canAddRelation}" (click)="functionToDoOnGroup('add')">
+              <span class="material-symbols-outlined itemFunctionIcon">
+                bookmark_add
+                </span>
+            </div>
+            <div class="col-4 functionItem" [ngClass]="{'functionSelected': canDelete}" (click)="functionToDoOnGroup('delete')">
+              <span class="material-symbols-outlined itemFunctionIcon" >
+                do_not_disturb_on
+              </span>
+            </div>
+          </div>
+        </div>
+    <div class="col-9" *ngIf="DashBoardSelected">
+
+      <app-select-reponse (validate)="selectedResponse($event)"></app-select-reponse>
+      <div *ngIf="graphsToAdd.length!=0">
+        <select [(ngModel)]="GraphID">
+          <option value="">choose a Graph</option>
+          <option *ngFor="let graph of graphsToAdd" value="{{graph.Code_Id}}">
+            {{graph.File_Name}}
+          </option>
+        </select>
+        <button (click)="addNEwRElationGraph()">validate</button>
+      </div>
+ 
+      <div class="cards-list">
+        <div *ngFor="let graph of graphs;let index=index">
+
+          <span *ngIf="canDeleteRelation" class="material-symbols-outlined deleteGroupIcon"
+          (click)="deleteRelation(index)">
+            do_not_disturb_on
+          </span>
+          <div class="card"   (click)="getcode(index)">
+            <div class="card_title title-white">
+              <p>{{graph.File_Name}}</p>
+            </div>
+          </div>
+        </div>
+      
+      </div>
+      <span *ngIf="graphs&&(graphs.length!=0)" [ngClass]="{'canDeleteRelation': canDeleteRelation}" class="material-symbols-outlined deleteGroupIcon" (click)="grantPeremptionToDeleteRelation()">
+        do_not_disturb_on
+        </span>
+    </div>
+  </div>
+</div>
+
+
+<div class="bg" *ngIf="showCodeIsOpen">
+      <mat-tab-group  [selectedIndex]="selected.value" *ngIf="showCodeIsOpen">
+        <mat-tab [label]="tab.File_Name" *ngFor="let tab of lotsOfTabs">
+          <app-python-compiler   [editable]="true" [codeGraph]="tab" [reponse_id]="tab.Reponse_Id" (closePopUp)="openCode($event)" (GraphTab)="openGraphTab($event)"></app-python-compiler>
+        </mat-tab>
+      </mat-tab-group>
+      <span *ngIf="showCodeIsOpen" (click)="closeTabes()" class="material-symbols-outlined closeTabs">
+        cancel
+        </span>
+     
+    </div>
