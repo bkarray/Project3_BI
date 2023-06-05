@@ -17,6 +17,19 @@ export class ReportsComponent implements OnInit {
 
 
   @Input() codeGraph:any={}
+  readonly nullAction:any={Action_Id:null,
+    Action_Name:"",
+    Date_Submission_Estimated:"", 
+  Date_Submission_Real:"",
+  Date_Validation_Estimated:"",
+  Date_Validation_Real:"",
+  Description:"",
+  Documents_Submission: [],
+  Documents_Validation: [],
+  Responsible_Realization: "",
+  Responsible_Validation: "",
+  selected: false
+}
   reports:any[]=[]
   decisions:any[]=[]
   actions:any[]=[]
@@ -24,8 +37,19 @@ export class ReportsComponent implements OnInit {
 
   reportSelected:any=null
   decisionSelected:any=null
-  actionSelected:any=null
-
+  actionSelected:any={Action_Id:null,
+    Action_Name:"",
+    Date_Submission_Estimated:"", 
+  Date_Submission_Real:"",
+  Date_Validation_Estimated:"",
+  Date_Validation_Real:"",
+  Description:"",
+  Documents_Submission: [],
+  Documents_Validation: [],
+  Responsible_Realization: "",
+  Responsible_Validation: "",
+  selected: false,
+}
 
   titleSelected:any=''
   descriptionSelected:any=''
@@ -64,7 +88,7 @@ export class ReportsComponent implements OnInit {
     this.decisions=decisions
     this.actions=[]
     this.decisionSelected=null
-    this.actionSelected=null
+    this.actionSelected=this.nullAction
   })
 }
 else{
@@ -72,7 +96,7 @@ else{
   this.decisions=[]
   this.actions=[]
   this.decisionSelected=null
-  this.actionSelected=null
+  this.actionSelected=this.nullAction
 }
 
   }
@@ -94,12 +118,12 @@ else{
 
         })
         this.actions=actions
-        this.actionSelected=null
+        this.actionSelected=this.nullAction
       })
     }
     else{
       this.decisionSelected=null
-      this.actionSelected=null
+      this.actionSelected=this.nullAction
       this.actions=[]
       this.titleSelected=this.reportSelected.report_Name
       this.descriptionSelected=this.reportSelected.Content
@@ -109,7 +133,7 @@ else{
     this.newFormIsOpen=true
     this.messageOfAdding='new Decision'
     this.decisionSelected=null
-    this.actionSelected=null
+    this.actionSelected=this.nullAction
     this.actions=[]
     this.decisions.map((decision:any)=>{
       decision.selected=false
@@ -145,13 +169,13 @@ else{
 
 
 deleteCurrent(){
-  if((this.actionSelected==null)&&(this.decisionSelected==null)&&(this.reportSelected!=null)){
+  if((this.actionSelected.Action_Id==null)&&(this.decisionSelected==null)&&(this.reportSelected!=null)){
     this.deleteReport()
   }
-  else if ((this.actionSelected==null)&&(this.decisionSelected!=null)&&(this.reportSelected!=null)){
+  else if ((this.actionSelected.Action_Id==null)&&(this.decisionSelected!=null)&&(this.reportSelected!=null)){
     this.deleteDecision()
   }
-  else if ((this.actionSelected!=null)&&(this.decisionSelected!=null)&&(this.reportSelected!=null)){
+  else if ((this.actionSelected.Action_Id!=null)&&(this.decisionSelected!=null)&&(this.reportSelected!=null)){
     this.deleteAction()
   }
   }
@@ -169,7 +193,7 @@ deleteCurrent(){
       this.titleSelected=this.decisionSelected.Decision_Name
       this.descriptionSelected=this.decisionSelected.Description
       this.messageOfAdding=''
-      this.actionSelected=null
+      this.actionSelected=this.nullAction
     }
     )
   }
@@ -190,7 +214,7 @@ deleteCurrent(){
       this.decisions=[]
       this.actions=[]
       this.decisionSelected=null
-      this.actionSelected=null
+      this.actionSelected=this.nullAction
     }
     )
   }
@@ -211,7 +235,7 @@ deleteCurrent(){
       this.messageOfAdding=''
       this.actions=[]
       this.decisionSelected=null
-      this.actionSelected=null
+      this.actionSelected=this.nullAction
     }
     )
   }
@@ -220,7 +244,7 @@ deleteCurrent(){
     this.messageOfAdding='new Report'
     this.reportSelected=null
     this.decisionSelected=null
-    this.actionSelected=null
+    this.actionSelected=this.nullAction
     this.decisions=[]
     this.actions=[]
     this.reports.map((report:any)=>{
@@ -278,13 +302,13 @@ this.GraphsService.updateDecision(this.decisionSelected.Decision_Id,val).subscri
 
 
 updateContent(key:any){
-  if((this.actionSelected==null)&&(this.decisionSelected==null)&&(this.reportSelected!==null)){
+  if((this.actionSelected.Action_Id==null)&&(this.decisionSelected==null)&&(this.reportSelected!==null)){
     this.updateReportContent(key)
   }
-  else if((this.decisionSelected!=null)&&(this.actionSelected==null)){
+  else if((this.decisionSelected!=null)&&(this.actionSelected.Action_Id==null)){
     this.updateDecisionContent(key)
   }
-  else if((this.decisionSelected!=null)&&(this.actionSelected!=null)){
+  else if((this.decisionSelected!=null)&&(this.actionSelected.Action_Id!=null)){
     this.updateActionContent(key)
   }
 }
@@ -305,7 +329,7 @@ updateContent(key:any){
 
 
   createReport(){
-    if((this.titleSelected!='')&&(this.descriptionSelected!='')){
+    if((this.titleSelected!='')){
       const newReport={
         report_Name:this.titleSelected,
         Content:this.descriptionSelected,
@@ -320,7 +344,7 @@ updateContent(key:any){
         this.messageOfAdding=''
         this.reportSelected=report
         this.decisionSelected=null
-        this.actionSelected=null
+        this.actionSelected=this.nullAction
         this.reports.map((report:any)=>{
           report.selected=false
         })
@@ -338,7 +362,7 @@ updateContent(key:any){
     }
   }
   createNewDecision(){
-    if((this.titleSelected!='')&&(this.descriptionSelected!='')){
+    if((this.titleSelected!='')){
       const newDecision={
         Decision_Name:this.titleSelected,
         Description:this.descriptionSelected,
@@ -352,7 +376,7 @@ updateContent(key:any){
         this.newFormIsOpen=false
         this.messageOfAdding=''
         this.decisionSelected=decision
-        this.actionSelected=null
+        this.actionSelected=this.nullAction
         this.decisions.map((decision:any)=>{
           decision.selected=false
         })
@@ -366,17 +390,17 @@ updateContent(key:any){
     }
   }
   createNewInstance(){
-    if((this.reportSelected==null)&&(this.decisionSelected==null)&&(this.actionSelected==null))
+    if((this.reportSelected==null)&&(this.decisionSelected==null)&&(this.actionSelected.Action_Id==null))
     this.createReport()
-    else if((this.reportSelected!=null)&&(this.decisionSelected==null)&&(this.actionSelected==null))
+    else if((this.reportSelected!=null)&&(this.decisionSelected==null)&&(this.actionSelected.Action_Id==null))
     this.createNewDecision()
-    else if((this.reportSelected!=null)&&(this.decisionSelected!=null)&&(this.actionSelected!=null))
+    else if((this.reportSelected!=null)&&(this.decisionSelected!=null)&&(this.actionSelected.Action_Id!=null))
     this.createAction()
   }
 
 
   createAction(){
-    if((this.titleSelected!='')&&(this.descriptionSelected!='')){
+    if(this.titleSelected!=''){
     this.actionSelected['Action_Name']=this.titleSelected
     this.actionSelected['Description']=this.descriptionSelected
     
@@ -400,26 +424,33 @@ updateContent(key:any){
     }
   }
 
+
+
   selectAction(index:any){
 
     this.actions.map((action:any,i:any)=>{
       if(index!=i)
       action.selected=false
     })
+    this.actionSelected=this.nullAction
     this.messageOfAdding=''
-    this.actions[index].selected=!this.actionSelected
+    this.actions[index].selected=!this.actions[index].selected
+    console.log('action selected',this.actions[index]);
+    
     if(this.actions[index].selected){
-      this.actionSelected=this.actions[index]
       this.AuthService.getAllUsers().subscribe((users:any)=>{
         this.users=users
-        this.titleSelected=this.actionSelected.Action_Name
-        this.descriptionSelected=this.actionSelected.Description
+        this.actionSelected=this.actions[index]
+        this.titleSelected=this.actions[index].Action_Name
+        this.actionSelected.Responsible_Realization=Number(this.actions[index].Responsible_Realization)
+        this.actionSelected.Responsible_Validation=Number(this.actions[index].Responsible_Validation)
+        this.descriptionSelected=this.actions[index].Description
         
       })
       
     }
     else{
-      this.actionSelected=null
+      this.actionSelected=this.nullAction
         this.users=[]
         this.titleSelected=this.decisionSelected.Decision_Name
         this.descriptionSelected=this.decisionSelected.Description

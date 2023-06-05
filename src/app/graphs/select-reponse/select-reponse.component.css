@@ -167,3 +167,10 @@ padding: 1%;
 border-radius: 30px;
 max-width: 20px;
 }
+
+.expand{
+  cursor: pointer;
+}
+.expand:hover{
+  color:#003865
+}

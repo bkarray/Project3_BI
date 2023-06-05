@@ -626,7 +626,6 @@ upDateOrderLigs(){
     this.socket=new WebSocket(url)
 
 
-
     function keepUpdate(FormulaireServ:FormulaireService,data:any,level:number,change:any){
       console.log(change,level)
       if(change&&(level==change.table_level)){
@@ -665,6 +664,7 @@ upDateOrderLigs(){
       
       console.log(data)
     }
+    
     this.socket.onclose=function(e:any){
       alert('socket disconnected')
     }

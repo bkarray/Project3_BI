@@ -99,4 +99,7 @@ export class GraphsService {
   getCodesByDashboardId(id:any){
     return this.http.get(this.APIUrl+'/codes_by_dashboard_Id/'+id)
   }
+  getAllGraphs(){
+    return this.http.get(this.APIUrl+'/get_all_graphs/')
+  }
 }

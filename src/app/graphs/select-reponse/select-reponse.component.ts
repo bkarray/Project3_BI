@@ -1,4 +1,4 @@
-import { Component, OnInit, Output,EventEmitter } from '@angular/core';
+import { Component, OnInit, Output,EventEmitter,Input } from '@angular/core';
 import { AuthService } from 'src/app/services/auth/authservice';
 import { FormulaireService } from 'src/app/services/formulaire/formulaire.service';
 import { GraphsService } from 'src/app/services/Graphs/graphs.service';
@@ -16,11 +16,22 @@ export class SelectReponseComponent implements OnInit {
   ) { }
 
 @Output() validate=new EventEmitter<any>()
-  groupsMatrix:any[][]=[]
+@Input() extendable:any=false
+
+readonly nullBackUp={
+ groupsMatrix:[],
+  forms:[],
+  responses:[],
+  graphs:[],
+  extended:true,
+}
+groupsMatrix:any[][]=[]
 forms:any=[]
 responses:any=[]
 graphs:any[]=[]
 responseSelected:any=0
+
+backUpData:any=this.nullBackUp
 
 
   ngOnInit(): void {
@@ -106,6 +117,30 @@ restart(){
  this.validate.emit(0)
   }
 
+
+  expandTab(type:any){
+    if((type=='less'&&this.backUpData['extended'])){
+      this.backUpData['extended']=false
+      this.backUpData['groupsMatrix']=this.groupsMatrix
+      this.backUpData['forms']=this.forms
+      this.backUpData['responses']=this.responses
+      this.backUpData['graphs']=this.graphs
+      this.groupsMatrix=[]
+      this.forms=[]
+      this.responses=[]
+      this.graphs=[]
+      this.validate.emit(0)
+    }
+    else if(type=='more'&&!this.backUpData['extended']){
+      this.groupsMatrix=this.backUpData['groupsMatrix']
+      this.forms=this.backUpData['forms']
+      this.responses=this.backUpData['responses']
+      this.graphs=this.backUpData['graphs']
+      this.backUpData=this.nullBackUp
+      this.backUpData['extended']=true
+      this.validate.emit(this.responseSelected)
+    }
+  }
   selectResponse(response:any){
     response.selected=!response.selected
     if(response.selected){

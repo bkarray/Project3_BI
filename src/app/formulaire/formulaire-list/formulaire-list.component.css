@@ -394,9 +394,7 @@ width: 500px;
     border-radius: 15px ;
     height: 50%;
 }
-.card a ,p,h3 {
-    color:#153462;
-}
+
 
 .close{
   position:fixed;
@@ -881,21 +879,26 @@ background-color: #eeeeee;
 }
 
 .itemGroup{
-  background-color: rgba(173, 181, 181, 0.724);
-  color: black;
+  background-color: rgba(247, 249, 249, 0.762);
+  color: rgba(8, 40, 146, 0.959);
   padding: 15px 20px;
   text-align: center;
   max-width: 200px;
+  border: solid rgba(225, 220, 220, 0.501);
   border-radius: 300px;
   cursor: pointer;
   display: flex;
     flex-wrap: nowrap;
     justify-content: right;
     align-items: center;
+    margin: 5px 0;
 }
 .itemGroup:hover{
-  background-color: rgba(27, 66, 194, 0.724);
-  color: rgb(255, 255, 255);
+  background-color: rgba(8, 40, 146, 0.959);
+  color: rgb(247, 243, 243) ;
+}
+.item:hover p {
+  color: rgb(247, 243, 243) !important;
 }
 
 .selectedGroup{

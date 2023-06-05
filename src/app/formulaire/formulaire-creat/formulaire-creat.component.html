@@ -8,7 +8,7 @@
                 arrow_back
                 </span></a></li>
             <li>    <select (change)="fieldsToShow()" [(ngModel)]="shownServNum">
-                <option *ngFor="let serv of servsEtap" value="{{serv.Serv_order}}">serv n°{{serv.Serv_order}}</option>
+                <option *ngFor="let serv of servsEtap;" value="{{serv.Serv_order}}">serv n°{{serv.Serv_order}}</option>
                 <option *ngIf="formulaire.services&&(servsEtap.length!=formulaire.services.length)" value="{{currentsrvOrd}}">new...</option>
             </select></li>
             <li><a><span *ngIf="isGenerated" (click)="nextServ()" class="material-symbols-outlined flechBtnup">
@@ -60,7 +60,7 @@ cdkDropListOrientation="vertical">
         </select>
         <i class="material-icons editIcon" *ngIf="(field.Name!='ID')&&!isGenerated&&field.editType" (click)="openTypeForm(index)" >edit</i>
     </td>
-    <td style="display:flex ;"><a *ngIf="field.Type=='list'" (click)="openChoicesPopUp(field.Field_Id)" class="myButton">Manage Choices</a></td>
+    <td style="display:flex ;"><a *ngIf="(field.Type=='list')&&!isGenerated" (click)="openChoicesPopUp(field.Field_Id)" class="myButton">Manage Choices</a></td>
     <td *ngIf="field.Name!='ID'"><p *ngIf="!field.editDesc">{{field.Serv_description}} 
         <i *ngIf="!isGenerated"  class="material-icons editIcon" (click)="editDesc(index)" >edit</i></p>
         <input *ngIf="field.editDesc" type="text" [(ngModel)]="field.Serv_description">

@@ -58,7 +58,9 @@ input ,textarea{
     color: #bf0808;
   }
   .btnBloc{
-    text-align: left;
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: flex-end;
   }
 
 
@@ -68,3 +70,17 @@ input ,textarea{
     margin: 10px 0;
   }
   
+  button {
+    width: 150px;
+    padding: 10px;
+    border: none;
+    border-radius: 5px; 
+    background: #003865;
+    font-size: 16px;
+    color: #fff;
+    cursor: pointer;
+    margin: 10px;
+    }
+    button:hover {
+    background: #607EAA;
+    }

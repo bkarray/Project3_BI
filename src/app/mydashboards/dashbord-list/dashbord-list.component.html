@@ -99,7 +99,7 @@
         </div>
     <div class="col-9" *ngIf="DashBoardSelected">
 
-      <app-select-reponse (validate)="selectedResponse($event)"></app-select-reponse>
+      <app-select-reponse (validate)="selectedResponse($event)" [extendable]="true"></app-select-reponse>
       <div *ngIf="graphsToAdd.length!=0">
         <select [(ngModel)]="GraphID">
           <option value="">choose a Graph</option>
@@ -111,17 +111,16 @@
       </div>
  
       <div class="cards-list">
-        <div *ngFor="let graph of graphs;let index=index">
+        <div *ngFor="let graph of graphs;let index=index" class="graph-card">
 
           <span *ngIf="canDeleteRelation" class="material-symbols-outlined deleteGroupIcon"
           (click)="deleteRelation(index)">
             do_not_disturb_on
           </span>
           <div class="card"   (click)="getcode(index)">
-            <div class="card_title title-white">
-              <p>{{graph.File_Name}}</p>
-            </div>
+            <img src="{{getImgUrl(graph)}}" class="card_title title-white"/>
           </div>
+          <p>{{graph.File_Name}}</p>
         </div>
       
       </div>
@@ -134,13 +133,15 @@
 
 
 <div class="bg" *ngIf="showCodeIsOpen">
-      <mat-tab-group  [selectedIndex]="selected.value" *ngIf="showCodeIsOpen">
-        <mat-tab [label]="tab.File_Name" *ngFor="let tab of lotsOfTabs">
-          <app-python-compiler   [editable]="true" [codeGraph]="tab" [reponse_id]="tab.Reponse_Id" (closePopUp)="openCode($event)" (GraphTab)="openGraphTab($event)"></app-python-compiler>
-        </mat-tab>
-      </mat-tab-group>
-      <span *ngIf="showCodeIsOpen" (click)="closeTabes()" class="material-symbols-outlined closeTabs">
-        cancel
-        </span>
+  <div class="testbox">
+    <mat-tab-group  [selectedIndex]="selected.value" *ngIf="showCodeIsOpen" class="tabsHeading">
+      <mat-tab [label]="tab.File_Name" *ngFor="let tab of lotsOfTabs">
+        <app-python-compiler   [editable]="true" [codeGraph]="tab" [reponse_id]="tab.Reponse_Id" (closePopUp)="openCode($event)" (GraphTab)="openGraphTab($event)"></app-python-compiler>
+      </mat-tab>
+    </mat-tab-group>
+    <span *ngIf="showCodeIsOpen" (click)="closeTabes()" class="material-symbols-outlined closeTabs">
+      cancel
+      </span>
+  </div>
      
     </div>

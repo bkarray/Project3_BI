@@ -60,6 +60,9 @@ export class DashbordListComponent implements OnInit {
         if(this.lotsOfTabs.length==0){
           this.showCodeIsOpen=false
         }
+        const indexG=this.graphs.findIndex((e:any)=>e.Code_Id==event.Code_Id)
+        if(indexG!=-1)
+        this.graphs[indexG]=event
       }
       else{
   
@@ -88,7 +91,15 @@ closeTabes(){
   this.showCodeIsOpen=false
 
 }
-
+getImgUrl(graph:any){
+  if((graph.img_url)&&(graph.img_url!=""))
+  {
+    return this.GraphsService.PhotoUrl+graph.img_url+'.png'
+  }
+  else{
+    return '../assets/no-graph.jpg'
+  }
+}
 deleteRelation(index:any){
   this.DashboardService.deleteGraphFromDashboard(this.DashBoardSelected.Dashboard_Id,this.graphs[index].Code_Id).subscribe((res:any)=>{
     console.log(res);

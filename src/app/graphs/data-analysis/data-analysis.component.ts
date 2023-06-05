@@ -30,6 +30,7 @@ forms:any=[]
 responses:any=[]
 graphs:any[]=[]
 canAdd:boolean=false
+allIsSelected:boolean=false
 ngOnInit(): void {
   this.getData()
 }
@@ -73,11 +74,24 @@ addCode(){
   this.addCodeFormIsOpen=!this.addCodeFormIsOpen
 }
 
+getImgUrl(graph:any){
+  if((graph.img_url)&&(graph.img_url!=""))
+  {
+    return this.FormulaireService.PhotoUrl+graph.img_url+'.png'
+  }
+  else{
+    return '../assets/no-graph.jpg'
+  }
+}
+
+
 selectGroup(groupSelected:any,index:any){
-  groupSelected.selected=!groupSelected.selected
+
+    groupSelected.selected=!groupSelected.selected
   
 
 if(groupSelected.selected){
+  this.allIsSelected=false
     this.groupsMatrix[index].map((group:any)=>{
     if(group.Group_Id!=groupSelected.Group_Id)
     group.selected=false
@@ -112,11 +126,43 @@ if(groupSelected.selected){
     for(let i=index+1;i<this.groupsMatrix.length;i++){
       this.groupsMatrix[i]=[]
     }
-  }
-
+  
 
 }
+}
 
+
+selectAllOption(){
+ if(!this.allIsSelected){
+   this.GraphsService.getAllGraphs().subscribe((graphs:any)=>{
+    this.allIsSelected=!this.allIsSelected
+    for(let i=0;i<this.groupsMatrix.length;i++)
+     { 
+      if(i==0){
+      this.groupsMatrix[i].map((group:any)=>{
+        group.selected=false
+      })
+    }
+    else{
+      this.groupsMatrix[i]=[]
+    }
+    }
+    
+    
+    this.responses=[]
+    this.forms=[]
+    this.graphs=graphs
+    this.responseSelected=0
+    this.canAdd=false
+  }
+  )}
+  else{
+    this.allIsSelected=!this.allIsSelected
+    this.responseSelected=0
+    this.graphs=[]
+    this.canAdd=false
+  }
+}
 
 closeTabes(){
   this.lotsOfTabs=[]

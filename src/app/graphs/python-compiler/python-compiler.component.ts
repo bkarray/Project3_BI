@@ -38,7 +38,7 @@ export class PythonCompilerComponent implements OnInit {
     name:'Consequences',
     isOpen:false
   },{
-    name:'Reports',
+    name:'management',
     isOpen:false
   }
   
@@ -52,6 +52,7 @@ dataSets:any[]=[]
     console.log(this.reponse_id);
     this.getData()
     if(this.editable){
+      console.log("8",this.codeGraph);
       if(this.codeGraph.img_url!=''){
         this.imgURL=this.FormulaireService.PhotoUrl+this.codeGraph.img_url+".png"
       }

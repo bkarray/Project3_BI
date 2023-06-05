@@ -1,6 +1,6 @@
 <div class="container">
     <div class="row blocDataHeader">
-        <div class="col-4">Report</div>
+        <div class="col-4">constat</div>
         <div class="col-4">Decisions</div>
         <div class="col-4">Actions</div>
     </div>
@@ -52,7 +52,7 @@
         description:
         <textarea [(ngModel)]="descriptionSelected" cols="30" rows="10" (change)="updateContent('Content')"></textarea>
     </div>
-    <div class="tableAction" *ngIf="actionSelected!=null">
+    <div class="tableAction" *ngIf="actionSelected.Action_Id!=null">
         <div class="row">
             
 
@@ -123,12 +123,12 @@
     </div>
 </div>
 <div class="row btnBloc">
-    <span class="material-symbols-outlined deleteBtn" *ngIf="!newFormIsOpen" (click)="deleteCurrent()">
-        do_not_disturb_on
-        </span>
-        <span class="material-symbols-outlined addBtn" *ngIf="newFormIsOpen" (click)="createNewInstance()">
-            add_circle
-            </span>
+        <button class="deleteBtn" *ngIf="!newFormIsOpen" (click)="deleteCurrent()">
+            delete instance
+        </button>
+        <button class="addBtn" *ngIf="newFormIsOpen" (click)="createNewInstance()">
+            add
+        </button>
 </div>
 </div>
 </div>

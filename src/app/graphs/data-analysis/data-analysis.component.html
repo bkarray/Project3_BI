@@ -6,6 +6,11 @@
 <div class="groupSelection">
   <h6>Groups:</h6>
   <table>
+    <tr>
+      <td [ngClass]="{'groupSelected':allIsSelected}" (click)="selectAllOption()">
+        all
+      </td>
+    </tr>
     <tr *ngFor="let groups of groupsMatrix;let index=index">
       <td *ngFor="let group of groups" [ngClass]="{'groupSelected':group.selected}" (click)="selectGroup(group,index)">
         {{group.Group_Name}}
@@ -33,20 +38,22 @@
     
 
 <div class="cards-list">
-  
-  <div class="card" *ngFor="let graph of graphs;let index=index"  (click)="getcode(index)">
-  
-    <div class="card_title title-white">
-      <p>{{graph.File_Name}}</p>
+  <div *ngFor="let graph of graphs;let index=index" class="graph-card" >
+
+    <div class="card"  (click)="getcode(index)">
+    
+      <img src="{{getImgUrl(graph)}}" class="card_title title-white graph-img" />
+    
     </div>
+    <p>{{graph.File_Name}}</p>
   </div>
 
+  
+  <div *ngIf="canAdd" (click)="addCode()">
 
-  <div class="card" *ngIf="canAdd" (click)="addCode()">
-
-    <div class="card_title title-white">
-      <p>+</p>
-    </div>
+    <span class="material-symbols-outlined">
+      add_circle
+      </span>
   </div>
 
 </div>
@@ -55,7 +62,8 @@
 
 
     <div class="bg" *ngIf="showCodeIsOpen||addCodeFormIsOpen">
-      <mat-tab-group  [selectedIndex]="selected.value" *ngIf="showCodeIsOpen">
+      <div class="testbox">
+      <mat-tab-group  [selectedIndex]="selected.value" *ngIf="showCodeIsOpen" class="tabsHeading">
         <mat-tab [label]="tab.File_Name" *ngFor="let tab of lotsOfTabs">
           <app-python-compiler   [editable]="true" [codeGraph]="tab" [reponse_id]="tab.Reponse_Id" (closePopUp)="openCode($event)" (GraphTab)="openGraphTab($event)"></app-python-compiler>
         </mat-tab>
@@ -63,7 +71,7 @@
       <span *ngIf="showCodeIsOpen" (click)="closeTabes()" class="material-symbols-outlined closeTabs">
         cancel
         </span>
-     
+      </div>
       <app-python-compiler class="addCodeBlock" *ngIf="addCodeFormIsOpen" [reponse_id]="responseSelected" (closePopUp)="openAddCode()"></app-python-compiler>
     </div>
     
