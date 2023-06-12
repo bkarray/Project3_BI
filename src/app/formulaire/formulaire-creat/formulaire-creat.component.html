@@ -53,14 +53,18 @@ cdkDropListOrientation="vertical">
     <td> <p *ngIf="!field.editName">{{field.Name}}<i class="material-icons editIcon" *ngIf="(field.Name!='ID')&&!isGenerated" (click)="openNameForm(index)" >edit</i></p>
         <input style="width: 100px ;" type="text" *ngIf="field.editName" [(ngModel)]="field.Name" placeholder="field Name...">
         <i class="material-icons editIcon" *ngIf="field.editName&&(field.Name!='ID')" (click)="closeNameForm(index)">edit</i></td>
-    <td> <p *ngIf="!field.editType">{{field.Type}}<i class="material-icons editIcon" *ngIf="(field.Name!='ID')&&!isGenerated" (click)="openTypeForm(index)" >edit</i></p>
-        <select *ngIf="field.editType" [(ngModel)]="field.Type" (change)="openTypeForm(index)" >
+    <td> <p *ngIf="!field.editType">{{field.Type}}<i class="material-icons editIcon" *ngIf="((field.Name!='ID')&&!isGenerated)||canEditString(field.Type)" (click)="openTypeForm(index)" >edit</i></p>
+        <select *ngIf="(field.editType)&&(!isGenerated)" [(ngModel)]="field.Type" (change)="openTypeForm(index)" >
             <option *ngIf="field.Type==''" value="" >choose Type</option>
             <option *ngFor="let type of Types" value="{{type.value}}">{{type.Name}}</option>
         </select>
+        <select *ngIf="(field.editType)&&(isGenerated)" [(ngModel)]="field.Type" (change)="editListString(index)">
+            <option value="list">list</option>
+            <option value="character varying(255)">String</option>
+        </select>
         <i class="material-icons editIcon" *ngIf="(field.Name!='ID')&&!isGenerated&&field.editType" (click)="openTypeForm(index)" >edit</i>
     </td>
-    <td style="display:flex ;"><a *ngIf="(field.Type=='list')&&!isGenerated" (click)="openChoicesPopUp(field.Field_Id)" class="myButton">Manage Choices</a></td>
+    <td style="display:flex ;"><a *ngIf="(field.Type=='list')&&isGenerated" (click)="openChoicesPopUp(field.Field_Id)" class="myButton">Manage Choices</a></td>
     <td *ngIf="field.Name!='ID'"><p *ngIf="!field.editDesc">{{field.Serv_description}} 
         <i *ngIf="!isGenerated"  class="material-icons editIcon" (click)="editDesc(index)" >edit</i></p>
         <input *ngIf="field.editDesc" type="text" [(ngModel)]="field.Serv_description">

@@ -10,6 +10,7 @@ import {
   moveItemInArray,
   transferArrayItem
 } from '@angular/cdk/drag-drop';
+import { data } from 'jquery';
 
 
 
@@ -118,6 +119,14 @@ this.getNewFormulaire()
       })
     }
   }
+
+canEditString(type:any){
+  if((type=='list')||(type=='character varying(255)')){
+    return true
+  }
+  return false
+}
+
 
   openChoicesPopUp(FieldId:any){
     this.ChoicesPopUp=true;
@@ -299,6 +308,26 @@ this.FormulaireService.getFunctions(Serv_Id).subscribe((functions:any)=>{
 })
 }
 
+
+editListString(index:any){
+  const field=this.fields[index]
+  const val={
+    Table_Id:field.Table_Id,
+    Name:field.Name,
+    Type:field.Type
+  }
+  this.FormulaireService.alterFieldStringList(val).subscribe((res:any)=>{
+    this.fields[index].editType=!this.fields[index].editType
+    this.formulaire.tables.forEach((tab:any)=>{
+      let indexF=tab.fields.findIndex((e:any)=> e.Name==this.fields[index].Name)
+      if(indexF!=-1) tab.fields[indexF].Type=this.fields[index].Type
+    })
+    this.servsEtap.map((serv:any)=>{
+      const indexF=serv.fields.findIndex((e:any)=>e.Name==field.Name)
+      serv.fields[indexF].Type=field.Type
+    })
+  })
+}
 
 createFunctions(Serv_Id:any){
   let funcs:any[]=[]

@@ -181,7 +181,7 @@ max-width: 20px;
   position: absolute;
   top: 50px;
   right: 10px;
-  z-index: 100;
+  z-index: 0;
   cursor: pointer;
 }
 .closeTabs:hover{

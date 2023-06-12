@@ -102,4 +102,20 @@ export class GraphsService {
   getAllGraphs(){
     return this.http.get(this.APIUrl+'/get_all_graphs/')
   }
+  getDocumentsSubmittedByAction(id:any){
+    return this.http.get(this.APIUrl+'/get_documents_submitted/'+id)
+  }
+  getDocumentsValidatedByAction(id:any){
+    return this.http.get(this.APIUrl+'/get_documents_validated/'+id)
+
+  }
+  createDocumentSubmittedByAction(id:any,val:any){
+    return this.http.post(this.APIUrl+'/create_document_submitted/'+id,val)
+  }
+  createDocumentValidatedByAction(id:any,val:any){
+    return this.http.post(this.APIUrl+'/create_document_validated/'+id,val)
+  }
+  deleteDocument(id:any){
+    return this.http.delete(this.APIUrl+'/delete_document/'+id)
+  }
 }

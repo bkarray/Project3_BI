@@ -64,7 +64,7 @@
                {{Error}}
             </div>
             </div>
-            <div class="btn-block-compile">
+            <div class="btn-block-compile" *ngIf="editable">
                 <button (click)="SaveCode()" *ngIf="itWorks">Save</button>
                 <button (click)="Compile()" >Compile</button>
             </div>

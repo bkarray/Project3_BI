@@ -61,6 +61,9 @@ export class ReportsComponent implements OnInit {
   newActionParam:any={}
 
 
+  documentPopupIsOpen:boolean=false
+  validationDocumentsIsOpen:boolean=false
+
   ngOnInit(): void {
     this.getData()
   }
@@ -142,6 +145,20 @@ else{
     this.descriptionSelected=''
     
 
+  }
+
+  openDocumentPopup(type:any){
+    if(type=='Validation')
+    this.validationDocumentsIsOpen=true
+    else if (type=='production')
+    this.validationDocumentsIsOpen=false
+    console.log('openDocumentPopup',this.validationDocumentsIsOpen);
+    
+   this.validateDocument()
+  }
+
+  validateDocument(){
+    this.documentPopupIsOpen=!this.documentPopupIsOpen
   }
 
   openActionForm(){

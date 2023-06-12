@@ -80,6 +80,9 @@ getInfer:boolean=false
     this.getData()
     this.selectGroup(-1);
   }
+
+
+  
   @Output() emitter: EventEmitter<string> = new EventEmitter<string>();
   openExcelForm(event:any){
     this.ExcelFormIsOpen=!this.ExcelFormIsOpen;

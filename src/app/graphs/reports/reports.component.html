@@ -78,7 +78,7 @@
                             <input [(ngModel)]="actionSelected.Date_Submission_Estimated" (change)="changeValueActionParm('Date_Submission_Estimated')" type="date" placeholder="yyyy-mm-dd" min="1999-01-31" max="2999-01-31">
                         </td>
                         <td><input [(ngModel)]="actionSelected.Date_Submission_Real" type="date" placeholder="yyyy-mm-dd" min="1999-01-31" max="2999-01-31" (change)="changeValueActionParm('changeValueActionParm')"></td>
-                        <td><span class="material-symbols-outlined">
+                        <td><span (click)="openDocumentPopup('production')" class="material-symbols-outlined">
                             more_horiz
                         </span></td>
                     </tr>
@@ -112,7 +112,7 @@
                     </td>
                     <td><input [(ngModel)]="actionSelected.Date_Validation_Real" type="date" placeholder="yyyy-mm-dd" min="1999-01-31" max="2999-01-31" name="" id=""
                         (change)="changeValueActionParm('Date_Validation_Real')"></td>
-                        <td><span class="material-symbols-outlined">
+                        <td><span (click)="openDocumentPopup('Validation')" class="material-symbols-outlined">
                             more_horiz
                         </span></td>
                     </tr>
@@ -132,3 +132,9 @@
 </div>
 </div>
 </div>
+
+
+
+
+<app-documents *ngIf="documentPopupIsOpen" [isValidation]="validationDocumentsIsOpen" [action]="actionSelected" (close)="validateDocument()"></app-documents>
+

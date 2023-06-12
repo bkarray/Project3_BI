@@ -316,4 +316,7 @@ export class FormulaireService {
   getInformationOnForm(id:any){
     return this.http.get(this.APIUrl+'/get_information_on_form/'+id)
   }
+  alterFieldStringList(val:any){
+    return this.http.put(this.APIUrl+'/alter_field_string_list/',val)
+  }
 }

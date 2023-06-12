@@ -287,6 +287,13 @@ deselctAll(dashboards:any,id:any){
       })
     }
   }
+
+
+
+
+
+
+  
   openSideGroupForm(){
     this.newGroupNameSide=""
     this.groupFormIsOpenSide=!this.groupFormIsOpenSide

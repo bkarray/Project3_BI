@@ -69,7 +69,8 @@
           <table class="tableGroup">
             <tr class="listGroup">
               <td style="display: block;" *ngIf="!groupFormIsOpenSide" class="itemGroup" (click)="openSideGroupForm()">+</td>
-              <td *ngIf="groupFormIsOpenSide"><input type="text" [(ngModel)]="newGroupNameSide"></td>
+              <td *ngIf="groupFormIsOpenSide">
+                <input type="text" [(ngModel)]="newGroupNameSide"></td>
             </tr>
             <tr class="listGroup" *ngIf="groupFormIsOpenSide">
               <td style="display: block;" class="itemGroup" (click)="addGroupSide()">add</td>

@@ -13,6 +13,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { DocumentsComponent } from './documents/documents.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     ReportsComponent,
     CausesComponent,
     ConsequencesComponent,
-    TabsGraphsComponent
+    TabsGraphsComponent,
+    DocumentsComponent
   ],
   imports: [
     CommonModule,
