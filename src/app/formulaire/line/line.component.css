@@ -16,6 +16,13 @@ table{
     
    
    }
+
+   .arrowsCell{
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: center;
+   }
    tr{
     box-shadow: 0 0 1px rgba(64,64,64,.7);
    }

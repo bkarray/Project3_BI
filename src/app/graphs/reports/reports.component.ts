@@ -57,6 +57,12 @@ export class ReportsComponent implements OnInit {
 
   newFormIsOpen:boolean=false
   messageOfAdding:any=''
+  messages:any={
+    noAdd:"",
+    addAction:"new Action",
+    addDecision:"new Decision",
+    addReport:"new Report"
+  }
 
   newActionParam:any={}
 
@@ -87,7 +93,7 @@ export class ReportsComponent implements OnInit {
       decision['selected']=false
     })
     console.log(decisions);
-    this.messageOfAdding=''
+    this.messageOfAdding=this.messages.noAdd
     this.decisions=decisions
     this.actions=[]
     this.decisionSelected=null
@@ -110,7 +116,7 @@ else{
       if(i!=index)
       decision.selected=false
     })
-    this.messageOfAdding=''
+    this.messageOfAdding=this.messages.noAdd
     if(this.decisions[index].selected){
       this.decisionSelected=this.decisions[index]
       this.GraphsService.getActions(this.decisionSelected.Actions).subscribe((actions:any)=>{
@@ -134,7 +140,7 @@ else{
   }
   openDecisionForm(){
     this.newFormIsOpen=true
-    this.messageOfAdding='new Decision'
+    this.messageOfAdding=this.messages.addDecision
     this.decisionSelected=null
     this.actionSelected=this.nullAction
     this.actions=[]
@@ -164,7 +170,7 @@ else{
   openActionForm(){
     this.AuthService.getAllUsers().subscribe((users:any)=>{
       this.newFormIsOpen=true
-      this.messageOfAdding='new Action'
+      this.messageOfAdding=this.messages.addAction
       this.actionSelected={
         Responsible_Realization:null,
         Responsible_Validation:null,
@@ -209,7 +215,7 @@ deleteCurrent(){
         this.newFormIsOpen=false
       this.titleSelected=this.decisionSelected.Decision_Name
       this.descriptionSelected=this.decisionSelected.Description
-      this.messageOfAdding=''
+      this.messageOfAdding=this.messages.noAdd
       this.actionSelected=this.nullAction
     }
     )
@@ -227,7 +233,7 @@ deleteCurrent(){
       this.reportSelected=null
       this.titleSelected=null
       this.descriptionSelected=null
-      this.messageOfAdding=''
+      this.messageOfAdding=this.messages.noAdd
       this.decisions=[]
       this.actions=[]
       this.decisionSelected=null
@@ -249,7 +255,7 @@ deleteCurrent(){
         this.newFormIsOpen=false
       this.titleSelected=this.reportSelected.report_Name
       this.descriptionSelected=this.reportSelected.Content
-      this.messageOfAdding=''
+      this.messageOfAdding=this.messages.noAdd
       this.actions=[]
       this.decisionSelected=null
       this.actionSelected=this.nullAction
@@ -258,7 +264,7 @@ deleteCurrent(){
   }
   openReportForm(){
     this.newFormIsOpen=true
-    this.messageOfAdding='new Report'
+    this.messageOfAdding=this.messages.addReport
     this.reportSelected=null
     this.decisionSelected=null
     this.actionSelected=this.nullAction
@@ -347,18 +353,22 @@ updateContent(key:any){
 
   createReport(){
     if((this.titleSelected!='')){
+
       const newReport={
         report_Name:this.titleSelected,
         Content:this.descriptionSelected,
         Decisions:[]
       }
+      if(this.decisionSelected){
+        newReport['Content']=this.descriptionSelected}
+
       
       this.GraphsService.addNewReport(this.codeGraph.Code_Id,newReport).subscribe((report:any)=>{
         console.log(report);
         
         report['selected']=true
         this.newFormIsOpen=false
-        this.messageOfAdding=''
+        this.messageOfAdding=this.messages.noAdd
         this.reportSelected=report
         this.decisionSelected=null
         this.actionSelected=this.nullAction
@@ -380,10 +390,13 @@ updateContent(key:any){
   }
   createNewDecision(){
     if((this.titleSelected!='')){
-      const newDecision={
+      const newDecision:any={
         Decision_Name:this.titleSelected,
-        Description:this.descriptionSelected,
         Actions:[]
+      }
+
+      if(this.decisionSelected){
+        newDecision['Description']=this.descriptionSelected
       }
       
       this.GraphsService.addNewDecision(this.reportSelected.report_Id,newDecision).subscribe((decision:any)=>{
@@ -391,7 +404,7 @@ updateContent(key:any){
         
         decision['selected']=true
         this.newFormIsOpen=false
-        this.messageOfAdding=''
+        this.messageOfAdding=this.messages.noAdd
         this.decisionSelected=decision
         this.actionSelected=this.nullAction
         this.decisions.map((decision:any)=>{
@@ -426,7 +439,7 @@ updateContent(key:any){
         
         action['selected']=true
         this.newFormIsOpen=false
-        this.messageOfAdding=''
+        this.messageOfAdding=this.messages.noAdd
         this.actionSelected=action
         this.actions.map((action:any)=>{
           action.selected=false
@@ -450,7 +463,7 @@ updateContent(key:any){
       action.selected=false
     })
     this.actionSelected=this.nullAction
-    this.messageOfAdding=''
+    this.messageOfAdding=this.messages.noAdd
     this.actions[index].selected=!this.actions[index].selected
     console.log('action selected',this.actions[index]);
     

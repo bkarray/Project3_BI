@@ -4,6 +4,7 @@
         <thead>
             <tr>
                 <th *ngFor="let field of reponse.tables[0].fields">{{field.Name}}</th>
+                <th *ngIf="reponse.tables.length==1" ></th>
             </tr>
             
         </thead>
@@ -44,9 +45,13 @@
                  <p *ngSwitchDefault>undetermined</p>
              </div>
                 </td>
+
+                <td *ngIf="reponse.tables.length==1" (click)="moreDisplay(toShow[0])"><span  class="material-symbols-outlined">
+                    dvr
+                    </span></td>
             </tr>
             <tr>
-                <td *ngFor="let field of reponse.tables[0].fields;let first=first">
+                <td *ngFor="let field of reponse.tables[0].fields;let first=first" [ngClass]="{'arrowsCell':first}">
                     <span *ngIf="first" class="material-symbols-outlined" (click)="nextLig(0)">
                         arrow_back
                         </span>
@@ -54,6 +59,7 @@
                             arrow_forward
                             </span>
                 </td>
+                <td *ngIf="reponse.tables.length==1" ></td>
             </tr>
         </tbody>
     </table>

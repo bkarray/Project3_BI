@@ -67,10 +67,14 @@ openAddCode(){
   this.GraphsService.getCodes(this.responseSelected).subscribe((graphs:any)=>{
     this.addCodeFormIsOpen=!this.addCodeFormIsOpen
     this.graphs=graphs
+    this.lotsOfTabs=[]
   })
 }
 
 addCode(){
+  this.lotsOfTabs.push({
+    File_Name:'new code',
+  })
   this.addCodeFormIsOpen=!this.addCodeFormIsOpen
 }
 
@@ -176,6 +180,9 @@ closeTabes(){
 
 
 selectFrom(form:any){
+  this.forms.map((form:any)=>{
+    form.selected=false
+  })
 form.selected=!form.selected
 if(form.selected){
   console.log('heeeeee');
@@ -204,6 +211,10 @@ getcode(index:any){
     }
 
 selectResponse(response:any){
+
+  this.responses.map((response:any)=>{
+    response.selected=false
+  })
 response.selected=!response.selected
 if(response.selected){
   this.GraphsService.getCodes(response.Reponse_Id).subscribe((graphs:any)=>{

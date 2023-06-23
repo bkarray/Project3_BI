@@ -16,6 +16,9 @@ export class FormulaireListComponent implements OnInit {
     private service:SharedService,
     private router: Router,
     private FormulaireService:FormulaireService ) { }
+
+
+  stopAll:boolean=false
   formulaires:any=[]
   newFormulaireName:any=''
   newFormulaireStatus:any=''
@@ -124,6 +127,7 @@ getInfer:boolean=false
     console.log(this.newGroupNameSide);
     
     if(this.newGroupNameSide!=""){
+      this.stopAll=true
       const group={
         Superior_Group:node.node.Group_Id,
         Group_Name:this.newGroupNameSide
@@ -144,6 +148,7 @@ getInfer:boolean=false
           this.groups=[]
           setTimeout(()=>{
             this.groups=groupsCopied
+            this.stopAll=false
           },1)
         }
         this.cancelAddingGroup(node)
@@ -263,6 +268,7 @@ deleteGroupFromTree(groups:any,Group_Id:any,level:any){
 
   addGroupSide(){
     if(this.newGroupNameSide!=""){
+      this.stopAll=true
       const group={
         Group_Name:this.newGroupNameSide
 
@@ -284,6 +290,7 @@ deleteGroupFromTree(groups:any,Group_Id:any,level:any){
           setTimeout(()=>{
             this.groups=groupsCopied
             this.nbGroups=this.nbGroups+1
+            this.stopAll=false
           },1)
         }
         this.openSideGroupForm()

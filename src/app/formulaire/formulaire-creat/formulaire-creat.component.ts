@@ -1,4 +1,4 @@
-import { Component, DoCheck, Input, OnInit } from '@angular/core';
+import { Component, DoCheck, Input, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { SharedService } from 'src/app/services/shared.service';
 import { switchMap } from 'rxjs/operators';
@@ -11,6 +11,7 @@ import {
   transferArrayItem
 } from '@angular/cdk/drag-drop';
 import { data } from 'jquery';
+import { MatMenuTrigger } from '@angular/material/menu';
 
 
 
@@ -19,6 +20,9 @@ import { data } from 'jquery';
   templateUrl: './formulaire-creat.component.html',
   styleUrls: ['./formulaire-creat.component.css']
 })
+
+
+
 export class FormulaireCreatComponent implements OnInit {
 
   
@@ -102,10 +106,38 @@ export class FormulaireCreatComponent implements OnInit {
     }
 
   ]
+  menuTopLeftPosition =  {x: '0', y: '0'} 
+  @ViewChild(MatMenuTrigger, {static: false}) matMenuTrigger: MatMenuTrigger | undefined; 
   ngOnInit(): void { 
    
 this.getNewFormulaire()
   }
+
+  onRightClick(event:any,type:any){
+    event.preventDefault()
+    console.log(event);
+    this.menuTopLeftPosition.x = event.clientX + 'px'; 
+    this.menuTopLeftPosition.y = event.clientY + 'px'; 
+
+    if (this.matMenuTrigger) {
+      this.matMenuTrigger.menuData = { 'item': type };
+    }
+    this.matMenuTrigger?.openMenu();
+    // we open the menu 
+    // we pass to the menu the information about our object 
+   
+
+    
+  }
+
+
+  allSameType(type:any){
+  
+  for(let i=0;i<this.fields.length;i++){
+    this.correctionField(i,type)
+  }
+}
+
 
   correctionFunction(index:any){
     this.functions[index].Is_Visible=!this.functions[index].Is_Visible
@@ -195,7 +227,8 @@ getOutOfArchive(index:any){
   console.log(fieldToSave);
   
   this.FormulaireService.getFieldOutOfArchive(fieldToSave).subscribe((res:any)=>{
-
+    console.log('res',res);
+    
     window.location.reload();
   })
 
@@ -466,6 +499,10 @@ confirmAdd(){
 fieldExistInArchiveTabOpen(index:any){
 this.fieldExistInArchiveTab=!this.fieldExistInArchiveTab
 this.indexToExtract=index
+if(index==-1){
+  
+  this.addnewfield()
+}
 }
 
   addnewfield(){

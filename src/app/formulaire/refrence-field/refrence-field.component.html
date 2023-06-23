@@ -81,7 +81,7 @@
 
     <div class="btnBlock">
         <button class="btn-delete" *ngIf="choiceId" (click)="deleteReference()">Delete Reference</button>
-        <button (click)="close()">validate</button>
+        <button class="btn-return" (click)="close()">return</button>
         <button *ngIf="canUpDateField" (click)="createGenerateRelation()">create relation</button>
     </div>
 </div>

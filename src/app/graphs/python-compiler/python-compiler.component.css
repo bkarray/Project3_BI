@@ -29,6 +29,12 @@ body {
   padding: 1.5rem 1.5rem;
   
 }
+
+.deactivate{
+  background-color: rgb(100, 111, 117) !important;
+  color: #fff !important;
+  pointer-events: none;
+}
 body {
   background-color: #eeeeee;
   font-family: "Open Sans", serif;

@@ -187,7 +187,9 @@
 
 
 
-<div class="bg" *ngIf="creatFormIsOpen||todelete||servFormIsOpen||servShowIsOpen||servList||todeleteRep||ExcelFormIsOpen">
+<div class="bg" *ngIf="creatFormIsOpen||todelete||servFormIsOpen||servShowIsOpen||servList||todeleteRep||ExcelFormIsOpen||stopAll">
+  <div *ngIf="stopAll" class="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+
 <!--_créer_formulaire-->
 <div class="testbox" *ngIf="creatFormIsOpen">
   <form >

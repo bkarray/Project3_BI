@@ -5,8 +5,8 @@
             <input *ngIf="!editable" [(ngModel)]="FileName" spellcheck="false"  [ngModelOptions]="{standalone: true}">
         </div>
     </div>
-    <div class="row iconManagement" *ngIf="editable">
-        <div *ngFor="let tag of dataManagement;let index=index" [ngClass]="{'selected':tag.isOpen}" (click)="openManagementDataTab(index)">
+    <div class="row iconManagement" >
+        <div *ngFor="let tag of dataManagement;let index=index" [ngClass]="{'selected':tag.isOpen,'deactivate':!editable&&(tag.name!='Code')}" (click)="openManagementDataTab(index)">
             <h6>
                 {{tag.name}}
             </h6>
@@ -25,7 +25,7 @@
     <div class="row" *ngIf="codeGraph.Related_Code&&!codeIsNew">
         <h3>graph: {{refrencedCode.File_Name}}</h3>
     </div>
-    <div class="row">
+    <div class="row" *ngIf="editable" >
     
     
         <div class="col-1">
@@ -64,7 +64,7 @@
                {{Error}}
             </div>
             </div>
-            <div class="btn-block-compile" *ngIf="editable">
+            <div class="btn-block-compile">
                 <button (click)="SaveCode()" *ngIf="itWorks">Save</button>
                 <button (click)="Compile()" >Compile</button>
             </div>

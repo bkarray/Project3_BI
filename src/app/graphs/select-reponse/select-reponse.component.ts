@@ -95,6 +95,9 @@ restart(){
   }
   
   selectFrom(form:any){
+    this.forms.map((form:any)=>{
+      form.selected=false
+    })
   form.selected=!form.selected
   if(form.selected){
     console.log('heeeeee');
@@ -142,6 +145,9 @@ restart(){
     }
   }
   selectResponse(response:any){
+    this.responses.map((response:any)=>{
+      response.selected=false
+    })
     response.selected=!response.selected
     if(response.selected){
       this.GraphsService.getCodes(response.Reponse_Id).subscribe((graphs:any)=>{

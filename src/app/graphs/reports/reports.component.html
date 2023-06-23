@@ -52,7 +52,7 @@
         description:
         <textarea [(ngModel)]="descriptionSelected" cols="30" rows="10" (change)="updateContent('Content')"></textarea>
     </div>
-    <div class="tableAction" *ngIf="actionSelected.Action_Id!=null">
+    <div class="tableAction" *ngIf="(actionSelected.Action_Id!=null)||(messageOfAdding==messages.addAction)">
         <div class="row">
             
 

@@ -121,6 +121,7 @@ import { GraphsModule } from '../graphs/graphs.module';
     MatPaginatorModule,
     GraphsModule,
     MatTabsModule,
+    MatMenuModule,
     
     CodeEditorModule.forRoot()
     

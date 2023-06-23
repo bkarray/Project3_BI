@@ -79,11 +79,24 @@ cdkDropListOrientation="vertical">
         </select> -->
         <table *ngIf="field.Name!='ID'" class="statusChoses">
             <tr>
-                <td class="choise" [ngStyle]=" field.Status=='modifié' ? {'background-color':'#B1D0E0'}:{}" (click)="correctionField(index,'modifié')">modifié</td>
-                <td class="choise" [ngStyle]=" field.Status=='consulté' ? {'background-color':'#B1D0E0'}:{}" (click)="correctionField(index,'consulté')">consulté</td>
-                <td class="choise" [ngStyle]=" field.Status=='invisible' ? {'background-color':'#B1D0E0'}:{}" (click)="correctionField(index,'invisible')">invisible</td>
+                <td  (contextmenu)="onRightClick($event,'modifié')" class="choise" [ngStyle]=" field.Status=='modifié' ? {'background-color':'#B1D0E0'}:{}" (click)="correctionField(index,'modifié')">modifié</td>
+                <td  (contextmenu)="onRightClick($event,'consulté')" class="choise" [ngStyle]=" field.Status=='consulté' ? {'background-color':'#B1D0E0'}:{}" (click)="correctionField(index,'consulté')">consulté</td>
+                <td  (contextmenu)="onRightClick($event,'invisible')" class="choise" [ngStyle]=" field.Status=='invisible' ? {'background-color':'#B1D0E0'}:{}" (click)="correctionField(index,'invisible')">invisible</td>
             </tr>
         </table>
+
+<div style="visibility: hidden; position: fixed;" 
+[style.left]="menuTopLeftPosition.x" 
+[style.top]="menuTopLeftPosition.y" 
+[matMenuTriggerFor]="rightMenu"></div> 
+
+    <mat-menu #rightMenu="matMenu"> 
+      <ng-template matMenuContent let-item="item"> 
+        <button mat-menu-item (click)="allSameType(item)">all {{item}}</button> 
+      </ng-template> 
+    </mat-menu> 
+         
+        <!-- standard material menu --> 
         <!-- <i *ngIf="field.editSataus||(field.Status==null)" class="material-icons editIcon" (click)="editSatus(index)">edit</i> -->
      </td>
      <td *ngIf="!isGenerated"></td>
