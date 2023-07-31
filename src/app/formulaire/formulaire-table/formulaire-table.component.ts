@@ -112,6 +112,10 @@ export class FormulaireTableComponent implements OnInit {
   console.log(this.data,this.formulair)
   }
 
+  moreView(){
+    this.router.navigate(['/formulaire/dashboard/',this.reponse.Response_Id])
+  }
+
   openPythonCompiler(){
 this.route.params.subscribe((params:any)=>{
   this.selectedResponse=params.idR

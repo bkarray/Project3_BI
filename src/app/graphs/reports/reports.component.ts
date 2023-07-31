@@ -420,12 +420,14 @@ updateContent(key:any){
     }
   }
   createNewInstance(){
+    console.log(this.reportSelected,this.decisionSelected,this.actionSelected);
     if((this.reportSelected==null)&&(this.decisionSelected==null)&&(this.actionSelected.Action_Id==null))
     this.createReport()
     else if((this.reportSelected!=null)&&(this.decisionSelected==null)&&(this.actionSelected.Action_Id==null))
     this.createNewDecision()
-    else if((this.reportSelected!=null)&&(this.decisionSelected!=null)&&(this.actionSelected.Action_Id!=null))
-    this.createAction()
+    else if((this.reportSelected!=null)&&(this.decisionSelected!=null))
+    { console.log('create action');
+      this.createAction()}
   }
 
 

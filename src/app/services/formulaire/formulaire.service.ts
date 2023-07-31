@@ -319,4 +319,8 @@ export class FormulaireService {
   alterFieldStringList(val:any){
     return this.http.put(this.APIUrl+'/alter_field_string_list/',val)
   }
+
+  getDataByIdReponse(id:any,sup:any,inf:any){
+    return this.http.get(this.APIUrl+'/get_data/'+id+'?sup='+sup+'&inf='+inf)
+  }
 }

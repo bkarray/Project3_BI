@@ -1,0 +1,136 @@
+
+
+<div class="infoRponse">
+    <h3>Reponse:{{reponse.reponse_Name}}</h3>
+    <table *ngIf="listIsOpen">
+     
+           <tr *ngFor="let serv of servs">
+           <td><p *ngIf="!reponse.allIn">etape n°{{serv.Serv_order}}</p> <p *ngIf="reponse.allIn">access n°{{serv.Serv_order}}</p></td>
+           <td>{{serv.Serv_Name}}</td>
+           <td>{{serv.userName}}</td>
+           </tr>
+    </table>
+    
+    
+       
+
+
+
+   <h3  *ngIf="reponseIsOnWork&&!reponse.allIn">etape n°{{etapNum}}</h3>
+   <h3  *ngIf="reponseIsOnWork&&reponse.allIn">All In Work</h3>
+   <h3 *ngIf="!reponseIsOnWork">reponse est executé </h3>
+
+
+
+</div>
+
+<div>
+    <p-treeTable class="table" *ngIf="data.length!=0" [value]="data"  [scrollable]="true"  [columns]="fields" >
+
+<!-- 
+        <ng-template pTemplate="header" let-columns>
+            <tr style="background-color: rgba(136,136,136,0.33)">
+                <th *ngFor="let col of fields">
+                    {{col.Name}}
+                </th>
+            </tr>
+        </ng-template> 
+    
+    -->
+            <ng-template pTemplate="body" let-rowNode let-rowData="rowData" let-columns="fields"
+
+            >
+                <tr style="background-color: rgba(136,136,136,0.33)">
+                    <th *ngFor="let col of fields">
+                     <p *ngIf="verifiesFieldLevel(rowNode,col)">
+                        {{col.Name}}
+                     </p> 
+                     <div class="btn-add-delete">
+
+                         <button *ngIf="col.Name.substring(0, 4)=='ID_'+rowNode.level" class="btnAdd" (click)="onClick($event,rowNode)">
+                            add
+                         </button>
+                         <span *ngIf="col.Name.substring(0, 4)=='ID_'+rowNode.level"  (click)="deleteRow(rowNode)" class="material-symbols-outlined deleteAndDisplay">
+                            delete
+                            </span>
+                     </div>
+                    </th>
+
+<div style="visibility: hidden; position: fixed;" 
+[style.left]="menuTopLeftPosition.x" 
+[style.top]="menuTopLeftPosition.y" 
+[matMenuTriggerFor]="rightMenu">
+</div> 
+
+    <mat-menu #rightMenu="matMenu"> 
+      <ng-template matMenuContent let-item="item"> 
+          <button mat-menu-item (click)="addNewRowPopUp(item,false)">add on same level </button>  
+        <button mat-menu-item *ngIf="canAddSubRow(item)" (click)="addNewRowPopUp(item,true)" >add sub row </button>
+      </ng-template> 
+
+
+    </mat-menu> 
+
+</tr>
+<tr
+
+>
+                    
+    <td *ngFor="let field of fields;let first=first;let i=index">
+        <p-treeTableToggler *ngIf="togglePlacement(field,rowNode)" [rowNode]="rowNode"></p-treeTableToggler>
+                        <div  *ngIf="(field.Status=='modifié')&&inRow(field.Name,rowNode.level)" [ngClass]="{resize:(field.Type!='character varying(255)')}"  [ngSwitch]="field.Type" >
+                            <input (change)="changeInField(rowNode,field.Table_Id,field.Name,rowNode['node'][field.Name],rowNode['node']['id'])" 
+                            type="date" 
+                            *ngSwitchCase="'date'"   [(ngModel)]="rowNode['node'][field.Name]">
+                            <input (change)="changeInField(rowNode,field.Table_Id,field.Name,rowNode['node'][field.Name],rowNode['node']['id'])" 
+                            type="number" 
+                            *ngSwitchCase="'integer'"  [(ngModel)]="rowNode['node'][field.Name]">
+                            <input (change)="changeInField(rowNode,field.Table_Id,field.Name,rowNode['node'][field.Name],rowNode['node']['id'])" 
+                            type="checkbox" 
+                            *ngSwitchCase="'boolean'"  [(ngModel)]="rowNode['node'][field.Name]">
+                            <input (change)="changeInField(rowNode,field.Table_Id,field.Name,rowNode['node'][field.Name],rowNode['node']['id'])" 
+                            type="number" step="0.01"
+                            *ngSwitchCase="'real'"  [(ngModel)]="rowNode['node'][field.Name]">
+                            
+                            <textarea (change)="changeInField(rowNode,field.Table_Id,field.Name,rowNode['node'][field.Name],rowNode['node']['id'])" 
+                            *ngSwitchCase="'character varying(255)'" [(ngModel)]="rowNode['node'][field.Name]"></textarea>
+                            <select  (change)="changeInField(rowNode,field.Table_Id,field.Name,rowNode['node'][field.Name],rowNode['node']['id'])" 
+                            *ngSwitchCase="'list'" [(ngModel)]="rowNode['node'][field.Name]"
+                            (click)="getChoices(i)"
+                            >
+                            <option value="">choose</option>
+                            <option *ngFor="let choix of field.choisesList" value="{{choix}}">{{choix}}</option>
+                        </select>
+                        
+                        <p *ngSwitchDefault>undetermined</p>
+                    </div>
+                    <p *ngIf="field.Status=='consulté'"  [ngClass]="{resize:((field.Type!='character varying(255)'))&&(field.Name!='ID_'+rowNode['level'])}"  style="margin:0 ;">{{rowNode['node'][field.Name]}}</p>
+                </td>
+            </tr>
+
+        </ng-template>
+    </p-treeTable>
+    
+    <div class="btns">
+        <mat-paginator 
+                      [length]="count"
+                      [pageSize]="pageSize"
+                      [pageSizeOptions]="pageSizeOptions"
+                      aria-label="Select page"
+                      (page)="onPaginateChange($event)">
+        </mat-paginator>
+        </div>
+    
+    <app-add-ligne 
+    *ngIf="addRowPopUpIsOpen" 
+    [fields]="fieldsOnAdd" 
+    [level]="levelToAdd" 
+    [isSubLine]="isSubRow"
+    [Reponse_Id]="reponse.Reponse_Id"
+    [parentId]="parentToAdd"
+    (close)="closeAddRowPopUp($event)"
+    ></app-add-ligne>
+    
+    
+</div>
+

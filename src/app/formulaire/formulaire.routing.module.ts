@@ -7,6 +7,7 @@ import { FormulaireReponseComponent } from './formulaire-reponse/formulaire-repo
 import { FormulaireTableComponent } from './formulaire-table/formulaire-table.component';
 import { LineComponent } from './line/line.component';
 import { OneLineComponent } from './one-line/one-line.component';
+import { DashbordComponent } from './dashbord/dashbord.component';
 export const routes: Routes = [
  {
  path: '',
@@ -17,6 +18,7 @@ export const routes: Routes = [
   {path:'table/:idF/:idR',component:FormulaireTableComponent},
   {path:'line/:idF/:idR/:lineId',component:LineComponent},
   {path:'oneLine/:idF/:idR/:address',component:OneLineComponent},
+  {path:'dashboard/:idR',component:DashbordComponent}
   
  ] ,
  }

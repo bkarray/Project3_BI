@@ -1,0 +1,47 @@
+<div class="box">
+<div *ngFor="let field of fields">
+<div *ngIf="field.Status=='modifié'">
+<div>
+<label>{{field.Name}}</label>
+</div>
+
+<div [ngSwitch]="field.Type" >
+    <input 
+    type="date" 
+    *ngSwitchCase="'date'"   [(ngModel)]="newRow[field.Name]">
+    <input 
+    type="number" 
+    *ngSwitchCase="'integer'"  [(ngModel)]="newRow[field.Name]">
+    <input 
+    type="checkbox" 
+    *ngSwitchCase="'boolean'"  [(ngModel)]="newRow[field.Name]">
+    <input 
+    type="number" step="0.01"
+    *ngSwitchCase="'real'"  [(ngModel)]="newRow[field.Name]">
+    
+        <textarea *ngSwitchCase="'character varying(255)'" [(ngModel)]="newRow[field.Name]"></textarea>
+        <select *ngSwitchCase="'list'" [(ngModel)]="newRow[field.Name]">
+            <option value="">choose</option>
+            <option *ngFor="let choix of field.choisesList" value="{{choix}}">{{choix}}</option>
+        </select>
+   
+    <p *ngSwitchDefault>undetermined</p>
+</div>
+
+
+
+</div>
+</div>
+<div class="btn-block">
+
+    <button 
+    class="myButton"
+    (click)="addNewRow()"
+    >
+        add
+    </button>
+    <button class="myButton cancelBtn" (click)="closePopUp()">
+        cancel
+    </button>
+</div>
+</div>

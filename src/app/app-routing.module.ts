@@ -8,7 +8,6 @@ import { FormulaireModule } from './formulaire/formulaire.module';
 const routes: Routes = [
   { path: 'P_Home', component: HomeComponent },
   { path: '', component: HomeComponent },
-  { path: 'userMenu', component: UserMenuComponent },
 
   {
     path: 'auth',

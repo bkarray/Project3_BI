@@ -210,6 +210,7 @@ deselctAll(dashboards:any,id:any){
     if(node.node.selected){
     this.DashBoardSelected=node.node
     this.graphs=[]
+    this.graphsToAdd=[]
     this.getGraphsByDashboard(node.node.Dashboard_Id)
     }
     else{

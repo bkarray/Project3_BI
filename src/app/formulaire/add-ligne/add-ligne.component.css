@@ -1,0 +1,61 @@
+.box{
+    display: flex;
+    align-content: center;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    background-color: white;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    min-width: 400px;
+    min-height: 400px;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+    overflow: hidden;
+    overflow-y: auto;
+    flex-direction: column;
+    flex-wrap: nowrap;
+}
+
+
+.myButton {
+    padding: 0.5em 0.7em;
+    background: #153462;
+    border: none;
+    border-radius: 1000px;
+    color: #fff !important;
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: .2rem;
+    text-align: center;
+    outline: none;
+    cursor: pointer;
+    transition: .2s ease-in-out;
+    margin: 10px;
+    
+  }
+  .myButton:hover{
+    background:#6E85B7
+  }
+
+
+  .cancelBtn{
+    background-color: #6f0e0e;
+  }
+  .myButton:hover{
+    background:#6E85B7
+  }
+  .myButton:hover{
+    background:#6E85B7
+  }
+  
+  .btn-block{
+  display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      align-items: center;
+      justify-content: center;
+  }
+  

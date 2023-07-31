@@ -83,6 +83,8 @@ import { ExcelChoiceComponent } from './excel-choice/excel-choice.component';
 import { SelectReponseComponent } from '../graphs/select-reponse/select-reponse.component';
 
 import { GraphsModule } from '../graphs/graphs.module';
+import { DashbordComponent } from './dashbord/dashbord.component';
+import { AddLigneComponent } from './add-ligne/add-ligne.component';
 
 @NgModule({
 
@@ -103,6 +105,8 @@ import { GraphsModule } from '../graphs/graphs.module';
    RestFormsComponent,
    ManuelChoiceComponent,
    ExcelChoiceComponent,
+   DashbordComponent,
+   AddLigneComponent,
    
   ],
   imports: [

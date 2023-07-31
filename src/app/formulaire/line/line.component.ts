@@ -38,7 +38,6 @@ export class LineComponent implements OnInit {
 
   ngOnInit(): void {
     this.getData()
-    console.log("show",this.toShow);
     
   }
 
@@ -74,13 +73,10 @@ addNewRowForm(index:any){
   }
   moreDisplay(lig:any){
     
-      let address=""
-      for(let i=0;i<this.toShow.length;i++){
+      let address=this.toShow[0].id+":"
+      for(let i=1;i<this.toShow.length;i++){
         console.log(address);
-        if(i==0){
-          address=this.toShow[0].id+":"
-        }
-        else if(i<this.toShow.length-2){
+       if(i<=this.toShow.length-2){
         let line=this.toShow[i].find((e:any)=>e.isClicked)
           address=address+line.id+":"
         }
@@ -244,7 +240,6 @@ addNewRowForm(index:any){
   }
 
   getInferData(table:any,data:any,level:any){
-console.log('getInfer',data.length);
 
     if (data.length!=0) { 
       data.forEach((lig:any,index:number)=>{
@@ -554,8 +549,6 @@ if(test||(index==1)){
      this.userId = this.authService.authenticatedUser.U_Id;
   this.route.params.subscribe((res:any)=>{
   
-   
-    console.log(res)
   this.FormulaireService.getReponseById(res.idR).subscribe((reponse:any)=>{
      this.idLine=res.lineId
     if(!reponse.allIn) this.configurationStepByStep(reponse,res)
