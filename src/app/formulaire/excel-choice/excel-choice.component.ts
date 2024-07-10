@@ -18,6 +18,8 @@ export class ExcelChoiceComponent implements OnInit {
   ChoicesItems:any[]=[]
   fileData:any=null
   fileColChosen:any=""
+
+  
   ngOnInit(): void {
     this.getData()
   }

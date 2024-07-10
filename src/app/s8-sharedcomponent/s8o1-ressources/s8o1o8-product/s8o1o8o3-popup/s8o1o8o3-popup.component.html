@@ -1,0 +1,79 @@
+
+
+
+<div *ngIf="VarXY_ShowPopup" 
+        class="Css_Popup_content"
+        (contextmenu)="TS_OnRightClick($event)"
+        [ngStyle]="{
+            'color': VarS_InputButtonColor,
+            'background-color': VarS_InputButtonBgColor,
+            'border': VarS_InputButtonBorder,
+            'position': 'absolute',
+            'z-index': '1000',
+            'left.px': VarXY_Position.x,
+            'top.px': VarXY_Position.y,
+            'width.px': VarXY_Size.width,
+            'height.px': VarXY_Size.height
+        }">
+
+        <!-- Bouton Fermer de la popup--> 
+        <div class="Css_Popup_Header">
+            <span class="Css_CloseIcon" (click)="TS_ClosePopup()">&#x2715;</span> 
+        </div>
+        
+        <!-- Corps de la popup -->
+        <div class="Css_Popup_body">
+        <!-- Insérez le contenu personnalisé ici -->
+        </div>
+
+        
+        <!-- Poignées pour le redimensionnement de la popup -->
+        <div class="Css_Resize_Handle Css_Resize-top"
+            draggable="true"
+            (dragstart)="TS_OnResizeStart($event, 'top')"
+            (dragend)="TS_OnResizeEnd($event, 'top')">
+        </div>
+        <div class="Css_Resize_Handle Css_Resize-right"
+            draggable="true"
+            (dragstart)="TS_OnResizeStart($event, 'right')"
+            (dragend)="TS_OnResizeEnd($event, 'right')">
+        </div>
+        <div class="Css_Resize_Handle Css_Resize-bottom"
+            draggable="true"
+            (dragstart)="TS_OnResizeStart($event, 'bottom')"
+            (dragend)="TS_OnResizeEnd($event, 'bottom')">
+        </div>
+        <div class="Css_Resize_Handle Css_Resize-left"
+            draggable="true"
+            (dragstart)="TS_OnResizeStart($event, 'left')"
+            (dragend)="TS_OnResizeEnd($event, 'left')">
+        </div>
+
+        <!-- Poignée pour ajuster la bordure arrondie
+            <div class="Css_Resize_Handle Css_Resize-radius"
+                draggable="true"
+                (dragstart)="TS_OnRadiusStart($event)"
+                (dragend)="TS_OnRadiusEnd($event)">
+            </div>
+        -->
+
+
+</div>
+
+
+ <!-- Ajoutez cette partie pour le menu contextuel -->
+ <div 
+    *ngIf="VarB_ShowContextMenu" 
+    [style.top.px]="VarXY_ContextMenuPosition.y"
+    [style.left.px]="VarXY_ContextMenuPosition.x" 
+    class="Css_Context_Menu">
+
+    <ul>
+        <li (click)="TS_EditItem()">Edit</li>
+        <li (click)="TS_DeleteItem()">Delete</li>
+        <li (click)="TS_GroupItems()">Group</li>
+        <li>Lock</li>
+    </ul>
+    
+</div>
+ 

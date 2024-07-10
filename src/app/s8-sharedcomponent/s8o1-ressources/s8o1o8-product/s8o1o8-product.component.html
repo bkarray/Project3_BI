@@ -1,0 +1,26 @@
+
+
+
+
+<!-- Ajoutez cette partie pour le menu contextuel 
+    
+    
+    [style.top.px]="VarXY_ContextMenuPosition.y"
+    [style.left.px]="VarXY_ContextMenuPosition.x" 
+    class="Css_Context_Menu"
+
+
+
+<div
+    *ngIf="VarB_ShowContextMenu"  
+    >
+
+    <ul>
+        <li (click)="TS_SettingsItem()">Settings</li>
+        <li (click)="TS_DeleteItem()">Delete</li>
+        <li (click)="TS_GroupItems()">Group</li>
+        <li>Lock</li>
+    </ul>
+    
+</div>
+-->

@@ -1,0 +1,66 @@
+
+
+
+
+
+
+<!-- Si je clique sur 'Data' -->
+<div *ngIf="InputVarN_Selected === 2">
+
+    <!-- Pop up Form se crée -->
+    <form class="Css_MyForm">
+
+        <!-- Button 'Treatment' -->
+        <button 
+            type="Css_Submit" 
+            (click)="TS_ShowInputDataOptions()" 
+            [class.selected]="Var_Selected === 1"
+            [class.not-selected]="Var_Selected !== 1">
+            
+            Input
+        
+        </button>
+
+         <!-- Button 'Treatment' -->
+        <button 
+            type="Css_Submit" 
+            (click)="TS_ShowTreatmentDataOptions()" 
+            [class.selected]="Var_Selected === 2"
+            [class.not-selected]="Var_Selected !== 2">
+            
+            Treatment
+        
+        </button>
+
+      <!-- Button 'Treatment' -->
+        <button 
+            type="Css_Submit" 
+            (click)="TS_ShowOutputDataOptions()" 
+            [class.selected]="Var_Selected === 3"
+            [class.not-selected]="Var_Selected !== 3">
+            
+            Output
+        
+        </button>
+
+
+        <!-- Si je clique sur 'Treatment' -->
+        <div *ngIf="Var_Selected === 1">
+            <app-s8o1o9o2o1-inputdata>
+            </app-s8o1o9o2o1-inputdata>
+        </div>
+
+        <div *ngIf="Var_Selected === 2">
+            <app-s8o1o9o2o3-treatmentdata>
+            </app-s8o1o9o2o3-treatmentdata>
+        </div>
+
+        <div *ngIf="Var_Selected === 3">
+            <app-s8o1o9o2o2-outputdata>
+            </app-s8o1o9o2o2-outputdata>
+        </div>
+
+
+    </form>
+
+</div>

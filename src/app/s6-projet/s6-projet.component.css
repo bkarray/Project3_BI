@@ -1,0 +1,55 @@
+
+
+
+.CSS_Input_URL {
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Pour centrer horizontalement */
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-bottom: 20px;
+}
+.CSS_Input_URL label {
+    margin-right: 10px;
+}
+.CSS_Input_URL input {
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 1000px;
+}
+
+.CSS_Vue {
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Pour centrer horizontalement */
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-bottom: 20px;
+}
+
+.CSS_Conteneur {
+    display: flex;
+    width: 95%;
+    margin: auto; /* Centrer le conteneur */
+    align-items: flex-start; /* Aligner les éléments en haut */
+    justify-content: space-between; /* Espacer uniformément les éléments */
+    height: 1000px;
+    /*border: 2px solid black;*/
+}
+.CSS_Gauche_Conteneur {
+    width: 15%;
+    height: 1000px;
+}
+.CSS_Milieu_Conteneur {
+    width: 76%;
+    height: 1000px;
+    
+}
+.CSS_Droite_Conteneur {
+    width: 5%;
+    height: 1000px;
+    /*border: 2px solid black;*/
+}

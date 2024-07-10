@@ -1,0 +1,49 @@
+<div class="CSS_BD">
+    <div>
+        <button class="CSS_Button" (click)="TS_AjouterBouton()">Ajouter BD</button>
+        <ng-container *ngTemplateOutlet="Template_Bouton; context:{ Tab_Bouton_2: Tab_Bouton_1, TabIB_Parent_Line: null }"></ng-container>
+    </div>
+    
+    <ng-template #Template_Bouton let-Tab_Bouton_2="Tab_Bouton_2" let-TabIB_Parent_Line="TabIB_Parent_Line">
+        <div cdkDropList [cdkDropListData]="Tab_Bouton_2" (cdkDropListDropped)="TS_Drop_BD($event, TabIB_Parent_Line)">
+            <ng-container *ngFor="let Tab_Bouton_Line of Tab_Bouton_2; let i = index">
+                <div class="CSS_BoutonContainer" cdkDrag id="{{ Tab_Bouton_Line.InterfIB_Id }}">
+                    <div *ngIf="!Tab_Bouton_Line.InterfIB_EnEdition">
+                        <!-- Modification ici: gestionnaire d'événements pour clic droit -->
+                        <div (contextmenu)="TS_GererClicDroite(Tab_Bouton_Line, $event)">
+                            <button class="CSS_ButtonBasculer" *ngIf="Tab_Bouton_Line.InterfIB_SousBoutons && Tab_Bouton_Line.InterfIB_SousBoutons.length > 0" (click)="TS_Basculer_SousBoutons(Tab_Bouton_Line)">{{ Tab_Bouton_Line.InterfIB_SousBoutonsVisible ? '-' : '+' }}</button>
+                            <button [ngClass]="{'CSS_Button': Tab_Bouton_Line.InterfIB_Type === 'Sous_Bouton', 
+                                                'CSS_TableBD': Tab_Bouton_Line.InterfIB_Type === 'Table_BD'}" 
+                                    (click)="TS_GererClicGauche(Tab_Bouton_Line, $event)">
+                                {{ Tab_Bouton_Line.InterfIB_Nom }}
+                            </button>
+                        </div>
+                        <!-- Rectangle avec les options -->
+                        <ul *ngIf="Tab_Bouton_Line.InterfIB_ListeVisible" class="CSS_Options">
+                            <li *ngIf="!Tab_Bouton_Line.InterfIB_EstTableBD" (click)="TS_AjouterBouton(Tab_Bouton_Line, 'Sous_Bouton')">Ajouter Sous_Bouton</li>
+                            <li *ngIf="!Tab_Bouton_Line.InterfIB_EstTableBD" (click)="TS_AjouterTableBD(Tab_Bouton_Line)">Ajouter Table_BD</li>
+                            <li *ngIf="Tab_Bouton_Line.InterfIB_Type === 'Table_BD'" (click)="TS_CreerTableDansBD(Tab_Bouton_Line)">Ajouter dans la Base de Données</li>
+                            <li *ngIf="Tab_Bouton_Line.InterfIB_Type === 'Table_BD'" (click)="TS_DeleteTableDansBD(Tab_Bouton_Line)">Supprimer de la base de Données</li>
+                            <li *ngIf="Tab_Bouton_Line.InterfIB_Type === 'Table_BD'" (click)="TS_GetFieldFromTableBD(Tab_Bouton_Line.InterfIB_Nom)">Afficher Field</li>
+                            <li (click)="TS_ItemAdded(Tab_Bouton_Line)">Ouvrir</li>
+                            <li (click)="TS_DebutEdition(Tab_Bouton_Line)">Éditer</li>
+                            <li (click)="TS_SupprimerBouton(Tab_Bouton_Line, TabIB_Parent_Line, i)">Supprimer</li>
+                        </ul>
+                    </div>
+                    <div *ngIf="Tab_Bouton_Line.InterfIB_EnEdition">
+                        <input type="text" [(ngModel)]="Tab_Bouton_Line.InterfIB_Nom" (blur)="TS_FinEdition(Tab_Bouton_Line, false)" (keyup.enter)="TS_FinEdition(Tab_Bouton_Line)">
+                    </div>
+                    <!-- CSS_SousBoutons -->
+                    <div class="CSS_SousBoutons" *ngIf="Tab_Bouton_Line.InterfIB_SousBoutons.length > 0 && Tab_Bouton_Line.InterfIB_SousBoutonsVisible">
+                        <ng-container *ngTemplateOutlet="Template_Bouton; context:{ Tab_Bouton_2: Tab_Bouton_Line.InterfIB_SousBoutons, TabIB_Parent_Line: Tab_Bouton_Line}"></ng-container>
+                    </div>
+                <!--
+                    <app-s6o5o5o2-table *ngIf="Tab_Bouton_Line.InterfIB_RectangleVisible"></app-s6o5o5o2-table>
+                -->
+                </div>
+            </ng-container>
+        </div>
+    </ng-template>
+
+</div>
+

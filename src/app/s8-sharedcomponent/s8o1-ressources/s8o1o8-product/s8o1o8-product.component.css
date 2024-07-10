@@ -1,0 +1,226 @@
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f7f9fc;
+    margin: 0;
+    padding: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+    color: #555;
+    font-size: 0.8rem;
+}
+
+/* 1.1. Styles Boutons */
+
+    /* Styles généraux pour les boutons */
+    button[type="Css_Submit"] {
+        padding: 8px 20px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        font-size: 1rem;
+        font-weight: 500; /* Style pour rendre le texte un peu plus audacieux */
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease; /* Précision des propriétés à animer */
+        margin-right: 15px;
+        margin-bottom: 10px; 
+        display: inline-block;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    /* Éliminer la marge du dernier bouton pour éviter les espaces inutiles */
+    button[type="Css_Submit"]:last-child {
+        margin-right: 0;
+    }
+
+    /* Pour un bouton sélectionné */
+    button[type="Css_Submit"].selected {
+        background-color: #002060;  
+    }
+
+    /* Pour un bouton non sélectionné */
+    button[type="Css_Submit"].not-selected {
+        background-color: #E7E6E6;  
+        color: #333;
+    }
+
+    /* Styles pour le survol des boutons */
+    button[type="Css_Submit"]:hover {
+        background-color: #0056b3;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    }
+
+    /* Styles pour les boutons actifs (clic) */
+    button[type="Css_Submit"]:active {
+        background-color: #004392;
+        transform: translateY(0); /* Réinitialisation du déplacement vertical */
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+/* 1.2. Styles Centrer un bouton */
+.CSS_ButtonContainer {
+    text-align: center;
+    margin-top: 10px;
+}
+
+
+/* 1.3. Styles Forms */
+
+.Css_MyForm {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 15px;
+    box-sizing: border-box;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    margin-bottom: 10px;
+}
+
+
+/* 1.4. Styles Liste Deroulante */
+.Css_InputGroup {
+    margin-bottom: 12px;
+    display: flex;
+    gap: 20px;
+}
+
+.Css_InputField {
+    display: flex;
+    flex-direction: column;
+}
+
+/* 1.5. Styles Contenu Liste Deroulante */
+
+.Css_SmallInput, select.Css_SmallInput {
+    width: 100%;
+    padding: 5px 8px;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    font-size: 0.8rem;
+    color: #333;
+    transition: border-color 0.3s ease;
+}
+
+.Css_SmallInput:focus, select.Css_SmallInput:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+
+/* Styles pour la popup */
+.Css_Popup {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: transparent; /* Assurez-vous que l'arrière-plan est transparent */
+}
+
+/* Contenu principal de la popup */
+.Css_Popup_content {
+    position: fixed;
+    z-index: 1000;
+    background-color: #ffffff;
+    padding: 20px;
+    border: 1px solid #333;
+    border-radius: 15px;
+    width: auto;
+    transition: all 0.3s ease;
+}
+
+/* En-tête et corps de la popup */
+.Css_Popup_Header, .Css_Popup_body {
+    padding: 10px 0;
+}
+
+
+
+
+/* Bouton dans la popup */
+button {
+    display: block;
+    margin: 20px auto 0;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+/* Effet de survol pour le bouton */
+button:hover {
+    background-color: #0056b3;
+}
+
+/* Poignées pour le redimensionnement de la popup */
+.Css_Resize_Handle {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    cursor: se-resize;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 50%;
+}
+
+/* Poignées pour redimensionner depuis chaque direction
+.Css_Resize-top, .Css_Resize-right, .resize-bottom, .Css_Resize-left {
+    Styles communs pour toutes les poignées ici 
+} */
+
+.Css_Resize-top {
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    cursor: ns-resize;
+}
+
+.Css_Resize-right {
+    top: 50%;
+    right: -10px;
+    transform: translateY(-50%);
+    cursor: ew-resize;
+}
+
+.Css_Resize-bottom {
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    cursor: ns-resize;
+}
+
+.Css_Resize-left {
+    top: 50%;
+    left: -10px;
+    transform: translateY(-50%);
+    cursor: ew-resize;
+}
+
+/* Poignée pour ajuster la bordure arrondie */
+.Css_Resize-radius {
+    top: -10px; 
+    left: -10px;
+    background-color: yellow;
+}
+
+
+.Css_CloseIcon {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 24px; 
+    cursor: pointer;
+    color: #333;
+    transition: color 0.2s ease;
+}
+
+.Css_CloseIcon:hover {
+    color: #ff0000;  /* Changez la couleur au survol si vous le souhaitez */
+}

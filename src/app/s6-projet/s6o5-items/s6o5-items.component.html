@@ -1,0 +1,69 @@
+
+
+  
+<div 
+  *ngIf="Input_Tab_Object_Added.length > 0 && Input_Tab_Object_Added[0].Interf_TabObj_Name === 'Tableau'">
+  <app-s6o5o2-ui></app-s6o5o2-ui>
+</div>
+
+<div 
+  *ngIf="Input_Tab_Object_Added.length > 0 && Input_Tab_Object_Added[0].Interf_TabObj_Name === 'Category'">
+  <app-s6o5o5o4-category>
+  </app-s6o5o5o4-category>
+</div>
+
+<div 
+  *ngIf="Input_Tab_Object_Added.length > 0 && Input_Tab_Object_Added[0].Interf_TabObj_Name === 'AllTable'">
+  <app-s6o5o5o3-alltable>
+  </app-s6o5o5o3-alltable>
+</div>
+
+<div 
+  *ngIf="Input_Tab_Object_Added.length > 0 && Input_Tab_Object_Added[0].Interf_TabObj_Name === 'GestionBD'">
+  <app-s6o5o5o1-gestionbd>
+  </app-s6o5o5o1-gestionbd>
+</div>
+
+<div 
+  *ngIf="Input_Tab_Object_Added.length > 0 && Input_Tab_Object_Added[0].Interf_TabObj_Name === 'Table'">
+  <app-s6o5o5o2-table>
+  </app-s6o5o5o2-table>
+</div>
+
+
+<!--
+
+
+
+
+
+
+
+ 
+<div *ngIf="Input_TabLine_DraggableItem.length > 0 && Input_TabLine_DraggableItem[0].InterfDI_Name === 'Gestion_BD'">
+  <app-s6o5o5o1-gestionbd
+    (Output_TabLine_ItemAdded)="TS_ItemAdded($event)">
+  </app-s6o5o5o1-gestionbd>
+</div>
+
+<div *ngIf="Input_TabLine_DraggableItem.length > 0 && Input_TabLine_DraggableItem[0].InterfDI_Name === 'Table'">
+  <app-s6o5o5o2-table
+    [Input_TabList_DraggableItem]="Input_TabLine_DraggableItem">
+  </app-s6o5o5o2-table>
+</div>
+
+
+-->
+
+
+
+<!--
+  (contextmenu)="TS_OpenContextMenu($event, item)"
+
+  <div *ngIf="Input_TabLine_DraggableItem[0].InterfDI_Name === 'Tableau'">
+  <app-s6o5o2-ui>
+  </app-s6o5o2-ui>
+</div>
+
+-->
+

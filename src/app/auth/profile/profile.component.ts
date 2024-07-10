@@ -65,9 +65,12 @@ export class ProfileComponent implements OnInit {
       pwd: ['', [Validators.maxLength(50)]],
     });
   }
+
+  
   get f() {
     return this.edit.controls;
   }
+
   onSubmit() {
     this.submitted = true;
     // stop here if form is invalid
@@ -104,6 +107,7 @@ export class ProfileComponent implements OnInit {
     document.getElementById('exampleModal')?.click();
     window.location.reload();
   }
+
   Demande(req: any) {
     console.log(req);
     console.log(this.hideFnx);
@@ -115,6 +119,7 @@ export class ProfileComponent implements OnInit {
     this.authService.demande(val).subscribe((result: any) => {});
     window.location.reload();
   }
+
   getRequest() {
     this.authService.loadUser();
     this.userId = this.authService.authenticatedUser.U_Id;

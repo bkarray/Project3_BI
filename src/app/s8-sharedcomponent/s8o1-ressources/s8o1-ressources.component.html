@@ -1,0 +1,414 @@
+
+
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
+
+<!-- Ajoutez ceci à votre fichier s8o1-ressources.component.html -->
+
+<button> Create Object </button>
+<button> Get Object </button>
+<button> Contenu </button>
+
+<br>
+
+
+
+<head>
+    <style>
+        .bouton-container, .sous-bouton-container {
+            margin-bottom: 10px;
+        }
+        .sous-boutons {
+            margin-left: 15px;
+        }
+        .options-container {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0; /* Couleur de fond du rectangle */
+            border: 1px solid #ccc; /* Bordure du rectangle */
+            width: 200px; /* Largeur du rectangle */
+        }
+        .options-container li {
+            padding: 8px 12px;
+            cursor: pointer;
+            border-bottom: 1px solid #ccc; /* Séparateurs entre les options */
+        }
+        .options-container li:last-child {
+            border-bottom: none;
+        }
+        .options-container li:hover {
+            background-color: #e0e0e0; /* Couleur de fond au survol */
+        }
+
+
+
+
+
+        ul.suggestions-list {
+            max-height: 150px; /* Hauteur maximale du rectangle */
+            overflow-y: auto; /* Active le défilement vertical si nécessaire */
+            border: 1px solid #ccc; /* Bordure pour le rectangle */
+            list-style-type: none; /* Supprime les puces de liste */
+            padding: 0;
+            width: 700px; /* Largeur du rectangle */
+            box-shadow: 0px 2px 5px rgba(0,0,0,0.2); /* Ombre pour un effet 3D */
+            position: absolute; /* Position absolue pour le positionnement */
+            background-color: white; /* Couleur de fond */
+            z-index: 1000; /* Assure que la liste apparaît au-dessus des autres éléments */
+        }
+        ul.suggestions-list li {
+            padding: 5px; /* Espace autour du texte dans chaque élément de la liste */
+            cursor: pointer; /* Change le curseur en main lors du survol */
+        }
+        ul.suggestions-list li:hover {
+            background-color: #f0f0f0; /* Couleur de fond au survol */
+        }
+        .attribute-row {
+            flex-basis: 100%; /* Chaque rangée d'attribut prend toute la largeur du conteneur */
+            display: flex; /* Utilise Flexbox pour la rangée */
+            align-items: center; /* Centre verticalement les éléments dans la rangée */
+            margin-bottom: 5px; /* Espace entre les rangées d'attributs */
+        }
+        .attribute-label {
+            margin-right: 5px; /* Espace entre le label et le champ de saisie */
+            margin-left: 5px;
+            white-space: nowrap;
+        }
+        .attribute-input {
+            margin-right: 5px;
+            margin-left: 5px; /* Espace entre le label et le champ de saisie */
+            flex-grow: 1;
+        }
+
+        .attribute-container {
+            max-width: 1700px; /* Largeur maximale pour le conteneur d'attributs */
+            display: flex; /* Utilise Flexbox pour le layout */
+            flex-wrap: wrap; /* Permet aux éléments de passer à la ligne suivante si nécessaire */
+            margin-bottom: 10px; /* Espace sous le conteneur d'attributs */
+            align-items: center; /* Centre les éléments verticalement */
+            
+        }
+
+        .attribute-description {
+            position: absolute;
+            background-color: #fff; /* Fond blanc pour la description */
+            border: 1px solid #df1919; /* Bordure pour la description */
+            padding: 5px;
+            z-index: 1; /* Pour que la description soit au-dessus du contenu */
+            margin-left: 20px; /* Espace entre attribut.key et la description (ajustez selon vos préférences) */
+            width: 20%; /* Largeur spécifique */
+        }
+        .attribute-key {
+            margin-right: 5px; /* Espace à droite du span contenant {{ attribut.key }} */
+            margin-left: 5px;
+        }
+      
+        .attribute-pair {
+            display: flex; /* Utiliser Flexbox */
+            align-items: center; /* Aligner les éléments verticalement au centre */
+            justify-content: flex-start; /* Aligner les éléments horizontalement au début */
+        }
+
+        .input-field {
+            margin-right: 10px; /* Espace à droite de l'élément <input> */
+            margin-bottom: 10px;
+        }
+        
+        .ma-classe-personnalisee {
+            font-size: 14px; /* Taille de l'écriture */
+            margin-left: 0px;
+            margin-left: 0px;
+        }
+        .boutons-conteneur {
+            border: 1px solid #ccc; /* Bordure du conteneur */
+            padding: 10px; /* Espace intérieur */
+            width: 850px; /* Largeur spécifique */
+            height: 100%; /* Hauteur spécifique */
+            overflow: auto; /* Permet le défilement si nécessaire */
+            display: flex; /* Utiliser flexbox pour l'alignement */
+            flex-direction: row; /* Les boutons s'alignent horizontalement */
+            flex-wrap: wrap; /* Passe à la ligne lorsque l'espace horizontal est insuffisant */
+            align-items: center; /* Centre les boutons verticalement */
+            gap: 1px 2px; /* espace vertical de 1px et espace horizontal de 2px */
+            resize: both; /* Permet de redimensionner horizontalement et verticalement */
+        }
+
+        .CSS_RechercheAttribut{
+            margin-top: 5px;
+            margin-bottom: 5px;
+        }
+
+        .text-area-class {
+            resize: both; /* Permet de redimensionner horizontalement et verticalement */
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <!-- Ajout des recherches Balises -->
+    <div>
+        <label for="VarU_SearchBalise">Recherche de Balise:</label>
+        <input type="text" id="VarU_SearchBalise" [(ngModel)]="VarU_SearchBalise" (input)="TS_UpdateSearchBalise()" placeholder="Entrer une balise HTML ou un mot-clé">
+    </div>
+    <ul *ngIf="VarU_SearchBaliseSuggestions.length" class="suggestions-list">
+        <li *ngFor="let suggestion of VarU_SearchBaliseSuggestions" (click)="TS_SelectSuggestion(suggestion)">{{ suggestion }}</li>
+    </ul>
+    <!-- Ajout des recherches Attributs -->
+    <div *ngIf="VarU_SelectedBalise" class="CSS_RechercheAttribut" >
+        <label for="VarU_SearchAttribute">Recherche d'Attribut:</label>
+        <input type="text" id="VarU_SearchAttribute" [(ngModel)]="VarU_SearchAttribute" (input)="TS_UpdateSearchAttribute()" placeholder="Entrer un nom d'attribut ou une description d'attribut">
+    </div>
+    <ul *ngIf="VarU_SearchAttributeSuggestions.length > 0" class="suggestions-list">
+        <li *ngFor="let suggestion of VarU_SearchAttributeSuggestions" (click)="TS_SelectAttributeSuggestion(suggestion)">{{ suggestion }}</li>
+    </ul>
+    
+
+    <!-- Ajout des boutons pour les fonctionnalités -->
+    <div *ngIf="VarU_SelectedBalise">
+        <h2>Fonctionnalités pour {{ VarU_SearchBalise }}</h2>
+    </div>
+    <div *ngIf="VarU_SelectedBalise" class="boutons-conteneur">
+        <button class="ma-classe-personnalisee" *ngFor="let fonctionnalite of fonctionnalites" (click)="TS_ShowFunctionalityAttributes(fonctionnalite)"
+            [ngClass]="{
+                'selected': TS_FunctionalitySelected(fonctionnalite),
+                'not-selected': !TS_FunctionalitySelected(fonctionnalite)}">
+            {{ fonctionnalite }}
+        </button>
+    </div>
+
+    <!-- Affichage des attributs de la fonctionnalité sélectionnée -->
+    <div *ngIf="VarTab_SelectedAttributes.length">
+        <h4>Attributs pour {{ VarU_SelectedBalise }} - Fonctionnalité sélectionnée</h4>
+    </div>
+    <div *ngIf="VarTab_SelectedAttributes.length" class="boutons-conteneur">
+        <div *ngFor="let attribut of VarTab_SelectedAttributes">
+            <span (mouseenter)="showAttributeDescription(attribut.value)" (mouseleave)="hideAttributeDescription()" class="attribute-key">
+                {{ attribut.key }}
+            </span>
+            <input type="text" [(ngModel)]="attribut.userInput" (input)="updateAttribute(attribut, $event)" class="input-field">
+            <button *ngIf="attribut.showDetailButton" (click)="showDetail(attribut.key)">Details</button>
+            <textarea *ngIf="attribut.showTextArea" [(ngModel)]="attribut.textAreaInput" class="text-area-class"></textarea>
+            <div *ngIf="attribut.valueVisible" class="attribute-description">{{ attribut.value }}</div>
+        </div>
+    </div>
+
+    <div *ngIf="VarTab_SelectedAttributes.length > 0">
+        Contenu de {{VarU_SelectedBalise}}  
+    </div>
+    <div *ngIf="VarTab_SelectedAttributes.length > 0">
+        <textarea id="VarU_ButtonContent" [(ngModel)]="VarU_ButtonContent" placeholder="Entrez le contenu du bouton" rows="4" cols="50"></textarea>
+    </div>  
+    <button (click)="TS_CreateHtmlElement()">Créer l'objet</button>
+    
+    <div #htmlContainer></div> 
+    
+
+
+
+    <br><br><br><br><br><br><br><br><br><br><br>
+
+
+    
+    <div *ngIf="VarTab_SelectedAttributes.length > 0">
+        Attributs pour {{VarU_SelectedBalise}}:
+    </div>
+    <div *ngIf="VarTab_SelectedAttributes.length > 0" class="attribute-container">
+        <div class="attribute-row" *ngFor="let attr of VarTab_SelectedAttributes">
+            <span class="attribute-label">{{attr}}:</span>
+            <!--<input class="attribute-input" type="text" [(ngModel)]="VarU_AttributeValues[attr]">
+             Mettez à jour la boucle *ngFor dans votre modèle HTML pour utiliser des clés valides -->
+            <input class="attribute-input" type="text" [(ngModel)]="VarU_AttributeValues[attr.key]">
+
+        </div>
+    </div>
+    
+
+    <button (click)="TS_CreateHtmlElement()">Créer l'objet</button>
+    
+    <div #htmlContainer></div>
+</body>
+
+
+<!-- 
+
+        <div *ngIf="htmlObject">
+        <h3>Objet HTML Créé :</h3>
+        <div><strong>Balise :</strong> {{ htmlObject.tag }}</div>
+        <div *ngIf="htmlObject.attributes">
+            <strong>Attributs :</strong>
+            <ul>
+                <li *ngFor="let key of objectKeys(htmlObject.attributes)">
+                    {{ key }}: {{ htmlObject.attributes[key] }}
+                </li>
+            </ul>
+        </div>
+    </div>
+    
+-->
+
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
+<mark>
+    abc
+</mark>
+
+
+<div
+    (click)="TS_CmdCenter_ButtonClick()">
+    Cmd Center 
+</div>
+
+
+<!-- 
+    1. Visuel HTML
+    
+-->
+
+<button
+    (click)="TS_CmdCenter_ButtonClick()">
+    Cmd Center 
+</button>
+
+<button
+    (click)="TS_Services_ButtonClick()">
+    Services 
+</button>
+
+<button
+    (click)="TS_Variable_ButtonClick()">
+    Variable
+</button>
+
+<button
+    (click)="TS_Fonction_ButtonClick()">
+    Fonction
+</button>
+
+<button
+    (click)="TS_GetData_ButtonClick()">
+    Files
+</button>
+
+<button
+    (click)="TS_GetData_ButtonClick()">
+    Create Product
+</button>
+
+<button 
+    type="Css_Submit">
+    Ensemble Data change
+</button>
+
+<!-- 
+    1.1 Recherche Principale
+-->
+<div class="input-container">
+    <label for="IFU_Recherche_Principale">Recherche principale</label>
+    <input 
+        id="IFU_Recherche_Principale" 
+        name="IFU_Recherche_Principale" 
+        type="text" 
+        class="Css_Small_Input"
+        [(ngModel)]="VarS_IFU_Recherche_Principale" 
+        (change)="TS_Change_VarS_IFU_Recherche_Principale($event)">
+</div>
+
+<!-- 
+    1.2 Recherche
+-->
+<div *ngFor="let VarS_IFU_Recherche of List_VarS_IFU_Recherche; let i = index">
+    <label [for]="'IFU_Recherche_' + i">Recherche {{i + 1}}</label>
+    <input 
+        [id]="'IFU_Recherche_' + i" 
+        [name]="'IFU_Recherche_' + i" 
+        type="text" 
+        class="Css_Small_Input"
+        [(ngModel)]="List_VarS_IFU_Recherche[i].value" 
+        (change)="TS_Change_List_VarS_IFU_Recherche (i, $event)">
+    <button (click)="TS_Remove_VarS_IFU_Recherche(i)">-</button>
+   
+</div>
+
+<!-- 
+    1.3 Add - GetButton
+-->
+<div>
+    <button (click)="TS_Add_VarS_IFU_Recherche()">+</button>
+    <div *ngIf="VarS_IFU_Recherche_Principale === 'GetButton'">
+        <button
+            (click)="TS_GetData_ButtonClick()">
+            Get Product
+        </button>
+    </div>    
+</div>
+
+<!-- 
+    2. Action HTML with Files
+-->
+<!-- 
+    2.1 Communication avec s8o1o8-database
+-->
+
+<div *ngIf="VarB_FileCmdCenter">
+    <app-s8o2-commandcenter>
+    </app-s8o2-commandcenter>
+</div>
+
+<div *ngIf="Var_BtnSelected === '3'">
+    <app-s8o2-commandcenter>
+    </app-s8o2-commandcenter>
+</div>
+
+<div *ngIf="Var_BtnSelected === '4'">
+    <app-s8o2-commandcenter>
+    </app-s8o2-commandcenter>
+</div>
+
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
+
+
+
+<!-- Code HTML pour afficher les options dans un rectangle vertical
+<div>
+    <button (click)="ajouterBouton()">Ajouter Bouton</button>
+    <ng-container *ngTemplateOutlet="boutonTemplate; context:{ Tab_Bouton: Tab_Bouton, parent: null }"></ng-container>
+</div>
+
+<ng-template #boutonTemplate let-Tab_Bouton="Tab_Bouton" let-parent="parent">
+    <div cdkDropList [cdkDropListData]="Tab_Bouton" (cdkDropListDropped)="drop($event, parent)">
+        <ng-container *ngFor="let bouton of Tab_Bouton; let i = index">
+            <div class="bouton-container" cdkDrag id="{{ bouton.id }}">
+
+                <div *ngIf="!bouton.enEdition" (contextmenu)="gererListe(bouton, $event)">
+                    <button (click)="afficherRectangle(bouton)">
+                        {{ bouton.nom }}
+                    </button>
+
+                    <ul *ngIf="bouton.listeVisible" class="options-container">
+                        <li (click)="ajouterSousBouton(bouton)">Ajouter Sous-Bouton</li>
+                        <li (click)="debutEdition(bouton)">Éditer</li>
+                        <li (click)="supprimerBouton(bouton, parent, i)">Supprimer</li>
+                        
+                    </ul>
+                </div>
+                <div *ngIf="bouton.enEdition">
+                    <input type="text" [(ngModel)]="bouton.nom" (blur)="finEdition(bouton, false)" (keyup.enter)="finEdition(bouton)">
+                </div>
+
+                <div *ngIf="bouton.rectangleVisible" class="rectangle">Rectangle</div>
+
+                <div class="sous-boutons" *ngIf="bouton.sousBoutons.length > 0">
+                    <ng-container *ngTemplateOutlet="boutonTemplate; context:{ Tab_Bouton: bouton.sousBoutons, parent: bouton }"></ng-container>
+                </div>
+            </div>
+        </ng-container>
+    </div>
+</ng-template>
+ -->
+

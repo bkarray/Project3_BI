@@ -1,0 +1,169 @@
+
+
+<div class="CSS_PageURL">
+
+  <div *ngFor="let item of Input_Tab_Object_Added"
+      class="CSS_Item_Resizable"
+      [ngStyle]="{
+        'width.px': item.Interf_TabObj_SizeW,
+        'height.px': item.Interf_TabObj_SizeH
+      }"
+      cdkDrag
+      [cdkDragDisabled]="!item.Interf_TabObj_DragEnabled"
+      (cdkDragStarted)="TS_DragStart($event)"
+      (cdkDragEnded)="TS_DragEnd($event)"
+      (contextmenu)="TS_OpenContextMenu($event,item)"
+      >
+      
+      <app-s6o5-items 
+        [Input_Tab_Object_Added]="[item]">
+
+      </app-s6o5-items>
+
+  </div>
+</div>
+
+
+
+
+<div class="CSS_ContextMenu" *ngIf="VarB_ContextMenuVisible"
+  [ngStyle]="{'left.px': VarP_ContextMenuPosition.x, 'top.px': VarP_ContextMenuPosition.y}">  
+    <a (click)="TS_DeleteItem(VarS_SelectedItem?.Interf_TabObj_Id)">Supprimer</a>
+    <a>Settings</a>
+    <a (click)="VarS_SelectedItem ? TS_BasculerItemDrag(VarS_SelectedItem) : null">
+      {{ VarS_SelectedItem?.Interf_TabObj_DragEnabled ? 'Désactiver Drag' : 'Activer Drag' }}
+    </a>
+</div>
+
+
+<!--
+    
+  <div *ngFor="let item of Input_Tab_Object_Added"
+      class="CSS_Item_Resizable" 
+      [ngStyle]="{
+        'width.px': item.InterfDI_Type[0]?.InterfT_PageURL_Taille_Initial?.W, 
+        'height.px': item.InterfDI_Type[0]?.InterfT_PageURL_Taille_Initial?.H
+      }"
+      
+      cdkDrag
+      [cdkDragDisabled]="!item.InterfDI_DragEnabled"
+      (cdkDragStarted)="TS_DragStart($event, item)"
+      (cdkDragEnded)="TS_DragEnd($event, item)"
+     
+      (contextmenu)="TS_OpenContextMenu($event, item)">
+
+      <app-s6o5-items
+        [Input_TabLine_DraggableItem]="[item]"
+        (Output_TabLine_ItemAdded)="TS_ItemAdded($event)">
+      </app-s6o5-items>
+
+
+    
+    <app-s6o5-items
+        [Input_TabLine_DraggableItem]="[item]"
+        (Output_TabLine_ItemAdded)="TS_ItemAdded($event)"
+        >
+        
+    </app-s6o5-items>
+  -->
+
+
+
+
+
+
+
+ <!--
+  (Output_TabLine_ItemAdded)="TS_ItemAdded($event)"
+ 
+
+    <div class="CSS_ContextMenu" #DRF>
+      <a href="#" (click)="TS_DeleteItem(item.InterfDI_Id)">Supprimer</a>
+      <a href="#">Settings</a>
+     
+      <a href="#" (click)="TS_BasculerItemDrag(item, $event)">
+        {{ item.dragEnabled ? 'Désactiver Drag' : 'Activer Drag' }}
+      </a> 
+    
+    </div>   
+  -->
+
+
+<!--
+
+
+[style.width.px]="item.InterfDI_Taille?.W" [style.height.px]="item.InterfDI_Taille?.H"
+ cdkDropList (cdkDropListDropped)="TS_Drop($event)"
+ [attr.draggable]="item.InterfDI_DragEnabled ? 'true' : 'false'"
+
+
+
+
+
+
+  (contextmenu)="TS_OpenContextMenu($event, item)"
+
+*ngIf=" item.InterfDI_Name === 'Tableau'"
+      
+       
+  
+      (dragstart)="item.InterfDI_DragEnabled ? TS_DragStart($event, item) : $event.preventDefault()" (dragend)="item.InterfDI_DragEnabled ? TS_DragEnd($event, item) : null"
+
+
+
+  #pageContainer
+  [cdkDropListData]="Tab2_ListItems" 
+
+  <app-s6o5-items
+          [Input_TabList_Type]="TabList_Type">
+        
+        </app-s6o5-items>
+
+
+   <div *ngIf=" item.name === 'Tableau'; else otherContent">
+          <app-s6o5o2-ui>
+          </app-s6o5o2-ui>
+        </div>
+
+  
+        <ng-template #otherContent>
+          {{ item.name }}
+        </ng-template>
+
+        <div class="context-menu" #DRF>
+          <a href="#" (click)="TS_DeleteItem(item.id)">Supprimer</a>
+          <a href="#">Settings</a>
+          <a href="#" (click)="TS_BasculerItemDrag(item, $event)">
+            {{ item.dragEnabled ? 'Désactiver Drag' : 'Activer Drag' }}
+          </a>
+        </div>   
+
+
+@Input() isTableauSelected: boolean = false   //  a effacer
+
+        <div *ngIf="isTableauSelected && item.name === 'Gestion_BD'; else otherContent">
+          <app-s6o5o5o1-gestionbd 
+              (ClickDroite_ToParentChange)="TS_ClickDroite_FromFils($event)"
+              (ClickGauche_ToParentChange)="TS_ClickGauche_FromFils($event)"
+              (VarIB_NomChange)="TS_ClickGauche_FromFils_VarIB_Nom($event)">
+          </app-s6o5o5o1-gestionbd>
+        </div>
+       
+        <div *ngIf="isTableauSelected && item.name === 'Table'; else otherContent">
+          <app-s6o5o5o2-table>
+          </app-s6o5o5o2-table>
+        </div>
+
+-->
+
+
+
+<!--
+
+ <div *ngIf="ClickGauche_FromFils" class="CSS_Item_Resizable">
+    <app-s6o5o5o2-table 
+        [cellValue]="FromGestionbd_VarIB_Nom">
+    </app-s6o5o5o2-table>
+  </div> 
+
+-->

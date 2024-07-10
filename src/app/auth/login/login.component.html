@@ -1,107 +1,67 @@
-<!-- <div class="pagecontainer">
-  <div class="formcontainer">
-    <h3>Se connecter</h3>
-    <div class="carrecontainer">
-      <form [formGroup]="log" (ngSubmit)="onSubmit()">
-        <div class="formItem">
-          <label> Email</label>
-          <input
-            type="text"
-            required
-            placehoder="unter login"
-            [(ngModel)]="U_login"
-            formControlName="login"
-            [ngClass]="{ 'is-invalid': submitted && f.login.errors }"
-          />
-          <div *ngIf="submitted && f.login.errors">
-            <div *ngIf="f.login.errors.required" class="error">
-              Email est obligatoire
-            </div>
-          </div>
-        </div>
-
-        <div class="formItem">
-          <label> Mot de passe</label>
-          <input
-            type="password"
-            required
-            placehoder="unter password"
-            [(ngModel)]="U_pwd"
-            formControlName="password"
-            [ngClass]="{ 'is-invalid': submitted && f.password.errors }"
-          />
-          <div *ngIf="submitted && f.password.errors">
-            <div *ngIf="f.password.errors.required" class="error">
-              Mot de passe est obligatoire
-            </div>
-          </div>
-        </div>
-        <br>
-        <br>
-        <div class="buttonsection">
-          <input type="submit" value="Connecter" class="buttonText" />
-          <a style="color: white" href="auth/register"
-            >s'inscrire</a
-          >
-        </div>
-      </form>
-    </div>
-  </div>
-</div> -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Document</title>
+</head>
+<body>
+   
+</body>
+</html>
 <div class="overlay">
-  <!-- LOGN IN FORM by Omar Dsoky -->
-  <form [formGroup]="log" (ngSubmit)="onSubmit()">
-     <!--   con = Container  for items in the form-->
-     <div class="con">
-     <!--     Start  header Content  -->
-     <header class="head-form">
-        <h2>Log In</h2>
-        <!--     A welcome message or an explanation of the login form -->
-        <p>login here using your email and password</p>
-     </header>
-     <!--     End  header Content  -->
-     <br>
 
+   <form [formGroup]="log" (ngSubmit)="onSubmit()">
 
-     <div class="field-set">
-        <!--   user name -->
-           <span class="input-item">
-             <i class="fa fa-user-circle icon"></i>
-           </span>
-          <!--   user name Input-->
-           <input style="height:35px ;" class="form-input" id="txt-input" type="text" required
-            placehoder="unter login"
-            [(ngModel)]="U_login"
-            formControlName="login">
-        <br>
-             <!--   Password -->
-        <span class="input-item">
-          <i class="fa fa-key icon"></i>
-         </span>
-        <!--   Password Input-->
-        <input class="form-input" style="height:35px ;" type="password" placeholder="Password" id="pwd"  name="password" required
-        [(ngModel)]="U_pwd"
-        formControlName="password">
-        <br>
-  <!--        buttons -->
-  <!--      button LogIn -->
-        <button class="log-in" type="submit"> Log In </button>
-     </div>
-  <!--   other buttons -->
-     <div class="other">
-  <!--      Forgot Password button-->
-        <button class="btn submits frgt-pass">Forgot Password</button>
-  <!--     Sign Up button -->
-        <a class="btn submits sign-up" href="auth/register" >Sign Up 
-  <!--         Sign Up font icon -->
-        <i class="fa fa-user-plus" aria-hidden="true"></i>
-        </a>
-  <!--      End Other the Division -->
-     </div>
-       
-  <!--   End Conrainer  -->
-    </div>
-    
-    <!-- End Form -->
-  </form>
-  </div>
+      <div class="con">
+         
+         <header class="head-form">
+            <h2>Log In</h2>
+            <p>login here using your email and password</p>
+         </header>
+
+         <br>
+         
+         <div class="field-set">
+               <span class="input-item">
+                  <i class="fa fa-user-circle icon"></i>
+               </span>
+            
+            /* Input User */
+            <input style="height:35px ;" class="form-input" id="txt-input" type="text" required
+               placehoder="unter login"
+               [(ngModel)]="U_login"
+               formControlName="login">
+
+            <br>
+            <span class="input-item">
+               <i class="fa fa-key icon"></i>
+            </span>
+            
+            /* Input Password */
+            <input class="form-input" style="height:35px ;" type="password" placeholder="Password" id="pwd"  name="password" required
+               [(ngModel)]="U_pwd"
+               formControlName="password">
+
+            <br>
+
+            /* Button Log In */
+            <button class="log-in" type="submit"> Log In </button>
+         
+         </div>
+
+         <div class="other">
+
+            <button class="btn submits frgt-pass">Forgot Password</button>
+            
+            <a class="btn submits sign-up" href="auth/register" > Sign Up 
+               <i class="fa fa-user-plus" aria-hidden="true"></i>
+            </a>
+         
+         </div>
+
+      </div>
+
+   </form>
+
+</div>

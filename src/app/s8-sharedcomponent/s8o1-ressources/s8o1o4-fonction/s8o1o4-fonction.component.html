@@ -1,0 +1,103 @@
+
+
+<form class="Css_MyForm">
+    <div class="Css_Container">
+    <div>
+
+        <div class="CSS_Rectangle">
+            <div class="CSS_Rectangle_2">
+                Origin Button : 
+            </div>
+            
+        </div>
+
+        <div class="CSS_Rectangle">
+            <div class="CSS_Rectangle_2">
+                Fonction :  {{ Var_SelectFonctionName }}
+                <!-- 
+                    <button (click)="TS_Appliquer()">Valider</button>
+                -->
+                
+            </div>
+        </div>
+    
+        
+        <table>
+            <thead>
+                <tr>
+                    <th class="CSS_BehindRectArrondi"><div class="CSS_RectArrondi_2">Fonction</div></th>
+                </tr>
+            </thead>
+            <tbody cdkDropList (cdkDropListDropped)="TS_Drop($event)">
+                <tr>
+                    <td>
+                        <div class="Css_SmallInput">
+                            <input id="IFU_RechercheFonction" name="IFU_RechercheFonction" type="text" class="Css_Small_Input"
+                            [(ngModel)]="VarU_SearchText">
+                        </div>
+                    </td>
+                </tr>
+                
+                <tr *ngFor="let item of TS_FilterItems(Tab_Fonction); let i = index" (click)="TS_SelectItem(item.FFct_Name, i)" cdkDrag>
+                <!-- 
+                <tr *ngFor="let item of TS_FilterItems(Tab_Fonction); let i = index" (click)="TS_SelectItem(item.FFct_Name, i)" cdkDrag [cdkDragData]="item" >
+                -->
+                    <td class="CSS_BehindRectArrondi">
+                        <div *ngIf="VarL_EditingIndex !== i; else editField" class="CSS_RectArrondi_3" 
+                            [class.selected]="VarU_CurrentlySelect === i"
+                            [class.not-selected]="VarU_CurrentlySelect !== i"
+                            (dblclick)="TS_StartEditing(i)">
+                            {{ item.FFct_Name }}
+                        </div>
+                        <ng-template #editField>
+                            <input type="text" class="Css_SmallInput" name="editInput" [(ngModel)]="VarU_TempEditValue" (blur)="TS_CancelEditing(i)">
+                            <button type="Css_Submit" (click)="TS_SaveEditing(i)">Save</button>
+                        </ng-template>
+                    </td>
+                    <td>
+                        <input type="checkbox" id="check{{i}}" [checked]="Var_Checkbox === i" (change)="TS_Checkbox(i)">
+                    </td>
+                    <td>
+                        <button type="Css_Submit" (click)="TS_Remove_VarSelect(i)">-</button>
+                    </td>
+                </tr>
+            </tbody>    
+        </table>
+        <br>
+
+        <div>
+            <button type="Css_Submit" (click)="TS_Add_VarSelect()">+</button>
+        </div>
+
+        <br>
+
+        <app-s8o1o3-variable
+            [Input_VarL_FonctionId]="VarL_FonctionId">
+        </app-s8o1o3-variable>
+
+    </div>
+        <div>
+            <div *ngIf="VarL_FonctionName">
+                Fonction : {{ VarL_FonctionName }}
+                <br>
+
+                <textarea id="IFU_Fonction" name="IFU_Fonction" class="Css_Textarea" rows="8" [(ngModel)]="VarL_FonctionTexte">
+                    {{ VarL_FonctionTexte }}
+
+                </textarea>
+
+                <br>
+                <button type="Css_Submit" (click)="TS_Update()">Update</button>
+                <button type="Css_Submit" (click)="TS_Appliquer()">Appliquer</button>
+            </div>
+        </div>
+    </div>
+
+</form>
+
+
+
+
+
+
+

@@ -1,0 +1,36 @@
+
+
+
+<div class="CSS_Ruban">
+  <div *ngFor="let Categ of Tab_ObjectCategory_1" class="CSS_Item" 
+      (click)="TS_CategoryObject_Clicked(Categ.Interf_TabObjCat_Id)">
+    {{ Categ.Interf_TabObjCat_Name }}
+  </div>
+</div>
+
+
+<div class="CSS_Ruban">
+  <div *ngFor="let Tab_Object_clicked of Tab_FilteredObject" class="CSS_Item"
+    (click)="TS_FilteredObject_Clicked(Tab_Object_clicked)"
+    >
+    {{ Tab_Object_clicked.Interf_TabObjCat_Name }}
+  </div>
+</div>
+
+
+<!-- 
+  (click)="TS_FilteredObject_Clicked(Tab_Object_clicked)"
+
+
+  
+  <div class="CSS_Ruban">
+    <div *ngFor="let item of Tab_RubanItems" 
+        [ngStyle]="item[1] === 1 ? {'width': TS_GetRubanSize(item[1]).width, 'height': TS_GetRubanSize(item[1]).height} : {}"
+        class="CSS_Item" 
+        (click)="TS_ItemClicked(item[0])">
+      {{ item[0] }}
+    </div>
+  </div>  
+-->
+
+

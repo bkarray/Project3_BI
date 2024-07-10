@@ -1,0 +1,49 @@
+
+<br>
+
+<div class="CSS_Ruban">
+    <div *ngFor="let item of rubanItems" class="CSS_Item" (click)="TS_ItemClicked(item)">
+      {{ item }}
+    </div>
+</div>
+  
+<br>
+
+<div class="CSS_Input_URL">
+    <label for="Var_URL">URL :</label>
+    <input type="text" id="Var_URL" [(ngModel)]="Var_URL">
+</div>
+
+<div class="CSS_Vue">
+    <input type="radio" id="vueDeveloppeur" name="vue" value="developpeur">
+    <label for="vueDeveloppeur">Vue Développeur</label>
+    <input type="radio" id="vueUtilisateur" name="vue" value="utilisateur">
+    <label for="vueUtilisateur">Vue Utilisateur</label>
+</div>
+
+<div class="CSS_Conteneur">
+    <div class="CSS_Gauche_Conteneur">
+        
+    </div>
+
+
+    <div #pageContainer class="CSS_PagePrincipale" cdkDropList id="pageList" [cdkDropListData]="pageItems" (cdkDropListDropped)="drop($event)">
+        <div *ngFor="let item of pageItems" class="CSS_Item_Resizable" draggable="true"
+             (dragstart)="onDragStart($event, item)"
+             (dragend)="onDragEnd($event, item)"
+             [style.left.px]="item.position.x"
+             [style.top.px]="item.position.y"
+             [style.width.px]="item.width"
+             [style.height.px]="item.height">
+          {{ item.name }}
+        </div>
+    </div>
+    <div class="CSS_Droite_Conteneur">
+        <!-- Contenu de CSS_Droite_Conteneur -->
+    </div>
+
+</div>
+
+
+
+

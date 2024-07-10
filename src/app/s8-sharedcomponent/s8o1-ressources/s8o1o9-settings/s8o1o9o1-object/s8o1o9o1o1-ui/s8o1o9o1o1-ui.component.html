@@ -1,0 +1,90 @@
+
+
+
+<!-- Si je clique sur 'UI' -->
+<div *ngIf="Input_Var_Selected === 1">
+
+    <!-- Your UI related code -->
+        <!-- Name and Label -->
+        <div class="Css_InputGroup">
+
+            <div class="Css_InputField">
+                <label for="IFU_Name">Name</label>
+                <input 
+                    id="IFU_Name" name="IFU_Name" type="text"class="Css_SmallInput"
+                    [(ngModel)]="VarN_IFU_Name" 
+                    (input)="TS_Change_VarN_IFU_Name()">
+                        
+            </div>
+            
+            <div class="Css_InputField">
+                <label for="IFU_Label">Label</label>
+                <input 
+                    id="IFU_Label" name="IFU_Label" type="text" class="Css_SmallInput"
+                    [(ngModel)]="VarS_IFU_Label">
+
+            </div>
+        </div>
+
+        <!-- Style and Size -->
+        <div class="Css_InputGroup">
+            <div class="Css_InputField">
+                <label for="IFU_Style">Style</label>
+                <select 
+                    id="IFU_Style" name="IFU_Style" class="Css_SmallInput"
+                    [(ngModel)]="VarS_IFU_Style">
+                    
+                    <option value="cssbtn1">Style 1</option>
+                    <option value="cssbtn2">Style 2</option>
+                    <option value="cssbtn3">Style 3</option>
+                
+                </select>
+            </div>
+            <div class="Css_InputField">
+                <label for="IFU_Size">Size</label>
+                <select 
+                    id="IFU_Size" name="IFU_Size" class="Css_SmallInput"
+                    [(ngModel)]="VarS_IFU_Size">
+                    <option value="small">Small</option>
+                    <option value="medium">Medium</option>
+                    <option value="large">Large</option>
+                
+                </select>
+            </div>
+        </div>
+        
+        
+        <!-- Color, Background-Color, and Border -->
+        <div class="Css_InputGroup">
+            <div class="Css_InputField">
+                <label for="IFU_Color">Color</label>
+                <input 
+                    id="IFU_Color" name="IFU_Color" type="text" class="Css_SmallInput" 
+                    [(ngModel)]="VarS_IFU_Color">
+            </div>
+            <div class="Css_InputField">
+                <label for="IFU_BgColor">Background-Color</label>
+                <input 
+                    id="IFU_BgColor" name="IFU_BgColor" type="text" class="Css_SmallInput"
+                    [(ngModel)]="VarS_IFU_BgColor">
+            </div>
+            <div class="Css_InputField">
+                <label for="IFU_Border">Border</label>
+                <input 
+                    id="IFU_Border" name="IFU_Border" type="text" class="Css_SmallInput"
+                    [(ngModel)]="VarS_IFU_Border">
+            </div>
+        </div>
+        
+</div>
+
+<!-- 
+<button
+    (click)="TS_Sce_Update_Ressources_T_Button()"
+    type="Css_Submit">
+    
+    Update
+
+</button>
+
+-->

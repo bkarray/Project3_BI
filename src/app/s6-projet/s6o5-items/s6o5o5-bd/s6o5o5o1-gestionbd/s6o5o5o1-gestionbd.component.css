@@ -1,0 +1,159 @@
+
+
+.CSS_URL {
+    height: 1000px;
+    background-color: rgb(255, 255, 255);
+    border: 2px solid black;
+}
+
+.CSS_BoutonContainer{
+    margin-bottom: 10px;
+}
+.CSS_SousBoutons {
+    margin-left: 10px;
+}
+.CSS_Options {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    background-color: #f0f0f0; /* Couleur de fond du rectangle */
+    border: 1px solid #ccc; /* Bordure du rectangle */
+    width: 200px; /* Largeur du rectangle */
+}
+.CSS_Options li {
+    padding: 8px 12px;
+    cursor: pointer;
+    border-bottom: 1px solid #ccc; /* Séparateurs entre les options */
+}
+.CSS_Options li:last-child {
+    border-bottom: none;
+}
+.CSS_Options li:hover {
+    background-color: #e0e0e0; /* Couleur de fond au survol */
+}
+
+
+.CSS_ButtonBasculer {
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.CSS_ButtonBasculer:hover {
+    color: #007bff;
+}
+
+.CSS_ButtonBasculer.collapsed {
+    transform: rotate(0deg);
+}
+
+.CSS_ButtonBasculer.expanded {
+    transform: rotate(90deg);
+}
+
+
+
+
+/* 1. Styles Boutons */
+
+    /* Styles généraux pour les boutons */
+    .CSS_Button {
+        padding: 8px 20px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        font-size: 1rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease; 
+        margin-top: 5px; 
+        margin-bottom: 5px; 
+        margin-right: 15px;
+        display: inline-block;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    /* Éliminer la marge du dernier bouton pour éviter les espaces inutiles */
+    CSS_Button:last-child {
+        margin-right: 0;
+    }
+
+    /* Pour un bouton sélectionné */
+    CSS_Button.selected {
+        background-color: #002060;  
+    }
+
+    /* Pour un bouton non sélectionné */
+    CSS_Button.not-selected {
+        background-color: #E7E6E6;  
+        color: #333;
+    }
+
+    /* Styles pour le survol des boutons */
+    CSS_Button:hover {
+        background-color: #0056b3;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    }
+
+    /* Styles pour les boutons actifs (clic) */
+    CSS_Button:active {
+        background-color: #004392;
+        transform: translateY(0); /* Réinitialisation du déplacement vertical */
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+
+    
+    /* Styles généraux pour les boutons */
+    .CSS_TableBD {
+        padding: 8px 20px;
+        background-color: #c7cfd8;
+        color: #000000;
+        border: none;
+        border-radius: 5px;
+        font-size: 1rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease; 
+        margin-top: 5px; 
+        margin-bottom: 5px; 
+        margin-right: 15px;
+        display: inline-block;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    /* Éliminer la marge du dernier bouton pour éviter les espaces inutiles */
+    CSS_TableBD:last-child {
+        margin-right: 0;
+    }
+
+    /* Pour un bouton sélectionné */
+    CSS_TableBD.selected {
+        background-color: #002060;  
+    }
+
+    /* Pour un bouton non sélectionné */
+    CSS_TableBD.not-selected {
+        background-color: #E7E6E6;  
+        color: #333;
+    }
+
+    /* Styles pour le survol des boutons */
+    CSS_TableBD:hover {
+        background-color: #0056b3;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    }
+
+    /* Styles pour les boutons actifs (clic) */
+    CSS_TableBD:active {
+        background-color: #004392;
+        transform: translateY(0); /* Réinitialisation du déplacement vertical */
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+
+    

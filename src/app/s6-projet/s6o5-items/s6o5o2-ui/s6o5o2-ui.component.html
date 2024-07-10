@@ -1,0 +1,113 @@
+<p>s6o5o2-ui works!</p>
+
+
+
+
+
+<div class="table-container">
+    <!-- En-têtes de colonnes avec drag & drop -->
+    <div class="header-container" cdkDropList (cdkDropListDropped)="dropColumn($event)">
+        <div *ngIf="showManagementButtons">
+            <button class="btn-icon add-header" (click)="addHeader()">Ajouter Colonne123</button>
+        </div>
+    </div>
+
+    <!-- Tableau -->
+    <table class="custom-table" [ngClass]="{'show-borders': showBorders}">
+        <thead cdkDropList (cdkDropListDropped)="onHeadDrop($event)">
+            <tr>
+                <th *ngFor="let header of headers; let i = index" cdkDrag (click)="sortData(header.title)" [ngStyle]="{'text-align': selectedAlignment}">
+                    <span cdkDragHandle>{{ header.title }}</span>
+                    <span *ngIf="sortDirection[header.title] === 'asc'">↑</span>
+                    <span *ngIf="sortDirection[header.title] === 'desc'">↓</span>
+                    <div *ngIf="showManagementButtons">
+                        <button class="btn-icon remove-header" (click)="removeHeader(i)">-</button>
+                    </div>
+                </th>
+            </tr>
+            <tr>
+                <th *ngFor="let header of headers">
+                    <input type="text" [(ngModel)]="filterValues[header.title]" (keyup)="applyFilter()">
+                </th>
+            </tr>
+        </thead>
+        <tbody cdkDropList (cdkDropListDropped)="dropRow($event)">
+            <tr *ngFor="let row of filteredRows; let rowIndex = index" cdkDrag>
+                <td *ngFor="let cell of row; let cellIndex = index" 
+                    (contextmenu)="openContextMenu($event, rowIndex, cellIndex)" 
+                    [ngStyle]="{'text-align': selectedAlignment}">
+                  <ng-container *ngIf="isCellEditable; else textCell">
+                    <input type="text" [(ngModel)]="row[cellIndex]">
+                  </ng-container>
+                  <ng-template #textCell>{{ cell }}</ng-template>
+                </td>
+
+                <td>
+                    <div *ngIf="showManagementButtons">
+                        <button class="btn-icon remove-row" (click)="removeRow(rowIndex)">-</button>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+        
+    </table>
+
+    <!-- Bouton pour ajouter une ligne -->
+    <div *ngIf="showManagementButtons">
+        <button class="btn-standard add-row" (click)="addRow()">Ajouter Ligne</button>  
+    </div>
+    
+    
+    <!-- Menu contextuel pour l'édition de cellule -->
+    <div *ngIf="showContextMenu" 
+         [style.top.px]="contextMenuPosition.y" 
+         [style.left.px]="contextMenuPosition.x" 
+         class="context-menu">
+        <ul>
+            <li (click)="editCell()">Éditer</li>
+            <!-- Autres options -->
+        </ul>
+        <span>Page {{ currentPage }} sur {{ getTotalPages() }}</span>
+
+    </div>
+
+    <div *ngIf="showManagementButtons">
+        <div class="pagination-controls">
+            <button (click)="changePage(currentPage - 1)" [disabled]="currentPage === 1">Précédent</button>
+            <span>Page {{ currentPage }} sur {{ getTotalPages() }}</span>
+            <button (click)="changePage(currentPage + 1)" [disabled]="currentPage * itemsPerPage >= totalItems">Suivant</button>
+          
+            <select [(ngModel)]="itemsPerPage" (change)="changeItemsPerPage(itemsPerPage)">
+              <option value="5">5</option>
+              <option value="10">10</option>
+              <option value="25">25</option>
+            </select>
+        </div>
+        <div class="alignment-controls">
+            <label>
+              <input type="radio" name="alignment" value="left" [(ngModel)]="selectedAlignment"> Gauche
+            </label>
+            <label>
+              <input type="radio" name="alignment" value="center" [(ngModel)]="selectedAlignment"> Centre
+            </label>
+            <label>
+              <input type="radio" name="alignment" value="right" [(ngModel)]="selectedAlignment"> Droite
+            </label>
+        </div>
+        <label>
+            <input type="checkbox" [(ngModel)]="showBorders"> Afficher les bordures de la table
+        </label>
+        <label>
+            <input type="checkbox" [(ngModel)]="isCellEditable"> CelluleInput
+        </label>
+        <button class="btn-standard" (click)="exportAsExcel()">Exporter en Excel</button>
+
+        <input type="file" (change)="onFileChange($event)" hidden #fileInput>
+        <button class="btn-standard" (click)="fileInput.click()">Importer Excel</button>
+        
+    </div>
+    
+
+    <button class="btn-standard" (click)="toggleManagementButtons()">Gestion</button>
+</div>
+

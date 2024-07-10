@@ -1,0 +1,59 @@
+
+
+<form class="Css_MyForm">
+    <div
+        *ngIf="VarB_FileCmdCenter">
+
+            <div>
+                <input 
+                id="IFU_Recherche_Principale" 
+                name="IFU_Recherche_Principale" 
+                type="text" 
+                class="Css_Small_Input">
+            </div>
+            <br>
+            <div>
+                <button 
+                    type="Css_Submit">
+                    Add
+                </button>
+            </div>
+        
+            <div>
+
+                <button 
+                    type="Css_Submit"
+                    (click)="TS_CmdCenterDetail_ButtonClick()">
+                    CmdCenter1
+                </button>
+                <button 
+                    type="Css_Submit">
+                    CmdCenter2
+                </button>
+                <button 
+                    type="Css_Submit">
+                    CmdCenter3
+                </button>
+        
+            </div>
+
+    </div>
+    
+
+    <div
+        *ngIf="VarB_FileCmdCenterDetail">
+
+            <app-s8o1o1o1-cmdcenterdetail
+                >
+            </app-s8o1o1o1-cmdcenterdetail>
+
+    </div>
+
+</form>
+
+
+
+
+
+
+

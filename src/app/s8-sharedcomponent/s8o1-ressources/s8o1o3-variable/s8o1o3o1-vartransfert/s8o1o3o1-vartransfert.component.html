@@ -1,0 +1,30 @@
+<table>
+    <tbody>
+        <tr *ngFor="let item of filterItems(Tab_VarSelect); let i = index" cdkDrag>
+            <td class="Css_VerticalAlign">
+                <div *ngIf="editingIndex !== i; else editField" class="CSS_RectArrondi_3" (dblclick)="TS_StartEditing(i)">
+                    {{ item.FVTransf_VarTransfert }}
+                </div>
+                <ng-template #editField>
+                    <input [(ngModel)]="VarIFU_Edit" type="text" name="editInput" (blur)="TS_CancelEditing(i)">
+                    <button type="Css_Submit" (click)="TS_SaveEditing(i)">Save</button>
+                </ng-template>
+            </td>
+            <td>
+                <select class="CSS_Select" [(ngModel)]="item.selectedVarType" name="selectedVarType-{{item.FVTransf_Id}}">
+                    <option *ngFor="let type of Tab_Type" [ngValue]="type.FVType_VarType">{{ type.FVType_VarType }}</option>
+                </select>
+             
+            </td>
+            <td>
+                <button type="Css_Submit" (click)="TS_Remove_VarSelect(i)">-</button>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<br>
+<div>
+    <button type="Css_Submit" (click)="TS_Add_VarSelect()">+</button>
+    <button type="Css_Submit" (click)="TS_Update()">Update</button>
+</div>
+

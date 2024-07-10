@@ -1,0 +1,47 @@
+<div class="CSS_MainContainer">
+    <div class="CSS_Tab_ListItems">
+        <button *ngFor="let item of Tab_ListItems">
+        {{ item.id }}
+        </button>
+    </div>
+
+    <div class="CSS_Settings">
+        <!-- Ajout des boutons pour les fonctionnalités -->
+        <div class="CSS_Fct_Header">
+            <h2>Fonctionnalités</h2>
+            <button>Update</button>
+        </div>
+        <div class="CSS_Fct_Container">
+            <button class="CSS_Fonction" *ngFor="let Var_Fonctionnalite of Tab_Fonctionnalites" (click)="TS_ShowFunctionalityAttributes(Var_Fonctionnalite)"
+                [ngClass]="{
+                    'selected': TS_FunctionalitySelected(Var_Fonctionnalite),
+                    'not-selected': !TS_FunctionalitySelected(Var_Fonctionnalite)}">
+                {{ Var_Fonctionnalite }}
+            </button>
+        </div>
+
+    <!-- Affichage des attributs de la fonctionnalité sélectionnée -->
+        <div class="CSS_Attr_Header">
+            <h4>Attributs pour Fonctionnalité sélectionnée</h4>
+        </div>
+        <div class="CSS_Attr_Container">
+            <div *ngFor="let Var_Attribut of VarTab_SelectedAttributes">
+                <div class="CSS_LinearAlignment">
+                    <span (mouseenter)="TS_ShowAttributeDescription(Var_Attribut.SA_Attr_Desc)" (mouseleave)="TS_HideAttributeDescription()" class="CSS_AttributeKey">
+                        {{ Var_Attribut.SA_Attr_Nom }}
+                    </span>
+                    <label><input type="checkbox" [(ngModel)]="Var_Attribut.SA_Checkbox_Input"> Input</label>
+                    <label><input type="checkbox" [(ngModel)]="Var_Attribut.SA_Checkbox_Detail_Input"> Detail_Input</label>
+                    <input type="text" [(ngModel)]="Var_Attribut.SA_UserInput" (input)="TS_UpdateAttribute(Var_Attribut, $event)" class="CSS_InputField">
+                </div>
+                <div class="CSS_DetailTextAreaContainer">
+                    <button (click)="TS_ShowDetail(Var_Attribut)">Details</button>
+                    <textarea *ngIf="Var_Attribut.SA_TextAreaVisible" [(ngModel)]="Var_Attribut.SA_TextAreaInput" class="CSS_TextAreaClass"></textarea>
+                </div>
+                <div *ngIf="Var_Attribut.SA_ValueVisible" class="CSS_AttributeDescription">{{ Var_Attribut.SA_Attr_Desc }}</div>
+                
+            </div>
+        </div>
+        
+    </div>
+</div>

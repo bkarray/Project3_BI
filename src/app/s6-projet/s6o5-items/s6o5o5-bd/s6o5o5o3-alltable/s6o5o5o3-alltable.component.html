@@ -1,0 +1,22 @@
+<div class="CSS_Table">
+
+    <button class="CSS_Button_Add" (click)="TS_AllTableDansBD()">Afficher</button>
+
+    <div>
+        <ng-container *ngIf="!VarB_EditingNomTable; else editField">
+            <span class="CSS_Var_Field" (dblclick)="TS_StartEditingNomTable()">{{ Var_NameTable }}</span>
+        </ng-container>
+        <ng-template #editField>
+            <input type="text" class="CSS_input_Field" [(ngModel)]="Var_NameTable" (blur)="TS_StopEditingNomTable()">
+        </ng-template>
+        <input type="text" class="CSS_input_Field">
+    </div>
+    <br>
+    <div>
+        <button class="CSS_Button_Add" (click)="TS_AddRow()">Ajouter</button>
+        <button class="CSS_Button_Add" (click)="TS_EditRow()">Modifier</button>
+        <button class="CSS_Button_Add">Supprimer</button>
+    </div>
+
+</div>
+

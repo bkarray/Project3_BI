@@ -1,0 +1,126 @@
+<div
+    *ngFor="let item of Tab_Object"
+    draggable="true"
+    (dragstart)="item.FBtn_Id !== null ? TS_OnDragStart(item.FBtn_Id) : null"
+    (dragover)="TS_OnDragOver($event)"
+    (dragend)="item.FBtn_Id !== null ? TS_OnDragEnd($event, item.FBtn_Id) : null"   
+    (mousedown)="TS_OnMouseDown($event)" 
+    [ngStyle]="{
+        'position': 'absolute',
+        'z-index': '1000', 
+        'left.px': item.FBtn_Id !== null ? VarXY_Position[item.FBtn_Id]?.x : 0, 
+        'top.px': item.FBtn_Id !== null ? VarXY_Position[item.FBtn_Id]?.y : 0
+        }"
+        >
+
+    <app-s8o1o8o2-button
+        [Input_VarN_FBtn_Id]="item.FBtn_Id"
+        >
+
+    </app-s8o1o8o2-button>
+</div>  
+
+
+<div 
+    *ngIf="VarB_ShowSettings"
+    
+    draggable="true"
+    (dragstart)="TS_OnDragStart(0)" 
+    (dragover)="TS_OnDragOver($event)" 
+    (dragend)="TS_OnDragEnd($event,0)"
+    (mousedown)="TS_OnMouseDown($event)" 
+    [ngStyle]="{
+        'position': 'absolute',
+        'z-index': '1000',
+        'left.px': VarXY_Position[0]?.x, 
+        'top.px': VarXY_Position[0]?.y
+        }"
+    >
+
+    <app-s8o1o9-settings
+        (Output_Settings_Close)="TS_Output_Settings_Close($event)">
+    
+    </app-s8o1o9-settings>  
+
+</div> 
+
+
+<div 
+    *ngIf="VarB_ShowCmdCenter"
+
+    draggable="true"
+    (dragstart)="TS_OnDragStart(1)" 
+    (dragover)="TS_OnDragOver($event)" 
+    (dragend)="TS_OnDragEnd($event,1)"
+    (mousedown)="TS_OnMouseDown($event)" 
+    [ngStyle]="{
+        'position': 'absolute',
+        'z-index': '1000',
+        'left.px': VarXY_Position[1]?.x, 
+        'top.px': VarXY_Position[1]?.y
+        }"
+    >
+
+    <app-s8o1o1-cmdcenter>
+
+    </app-s8o1o1-cmdcenter>  
+
+</div>  
+
+
+<div 
+    *ngIf="VarB_ShowVarTransfert"
+
+    draggable="true"
+    (dragstart)="TS_OnDragStart(2)" 
+    (dragover)="TS_OnDragOver($event)" 
+    (dragend)="TS_OnDragEnd($event,2)"
+    (mousedown)="TS_OnMouseDown($event)" 
+    [ngStyle]="{
+        'position': 'absolute',
+        'z-index': '1000',
+        'left.px': VarXY_Position[2]?.x, 
+        'top.px': VarXY_Position[2]?.y
+        }"
+    >
+
+    <app-s8o1o3-variable>
+
+    </app-s8o1o3-variable>  
+
+</div>  
+
+
+<div 
+    *ngIf="VarB_ShowFonction"
+
+    draggable="true"
+    (dragstart)="TS_OnDragStart(3)" 
+    (dragover)="TS_OnDragOver($event)" 
+    (dragend)="TS_OnDragEnd($event,3)"
+    (mousedown)="TS_OnMouseDown($event)" 
+    [ngStyle]="{
+        'position': 'absolute',
+        'z-index': '1000',
+        'left.px': VarXY_Position[3]?.x, 
+        'top.px': VarXY_Position[3]?.y
+        }"
+    >
+
+    <app-s8o1o4-fonction>
+
+    </app-s8o1o4-fonction>  
+
+</div> 
+
+
+
+
+<!--
+
+
+
+
+
+(Output_Settings_Close)="TS_Output_Settings_Close($event)"
+-->

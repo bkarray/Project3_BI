@@ -1,0 +1,117 @@
+
+
+<!-- Si je clique sur 'Position' -->
+<div *ngIf="Input_Var_Selected === 2">
+
+    <!-- Your Position related code -->
+    <!-- Position X et Position Y -->
+
+    <div class="Css_InputGroup">
+        <div class="Css_InputField">
+            <label> Actual Position : </label>
+        </div>
+    </div>
+
+    <div class="Css_InputGroup">
+        <div class="Css_InputField">
+            <label> Position X : </label>
+                <input 
+                    id="IFU_Position_Object_X1" name="IFU_Position_Object_X1" type="text" class="Css_SmallInput" 
+                    [(ngModel)]="VarS_IFU_PositionX_1">
+        </div>
+        <div class="Css_InputField">
+            <label> Position Y : </label>
+                <input 
+                    id="IFU_Position_Object_Y1" name="IFU_Position_Object_Y1" type="text" class="Css_SmallInput" 
+                    [(ngModel)]="VarS_IFU_PositionY_1">
+        </div>
+    </div>
+
+   
+
+    <div class="Css_InputGroup">
+        <div class="Css_InputField">
+            <label> InFront of Object: </label>
+            <input 
+                    id="IFU_FrontBehindObject" name="IFU_FrontBehindObject" type="text" class="Css_SmallInput"
+                    [(ngModel)]="VarS_IFU_FrontBehindObject" 
+                    (ngModelChange)="TS_Actual_VarS_IFU_Position()">
+                
+        </div>
+    </div>
+
+    <div class="Css_InputGroup">
+        <div class="Css_InputField">
+            <label for="IFU_PositionX"> Position X : </label>
+                <input 
+                    id="IFU_PositionX" name="IFU_PositionX" type="text" class="Css_SmallInput" 
+                    [(ngModel)]="VarS_IFU_PositionX"
+                    (ngModelChange)="TS_Actual_VarS_IFU_Position()">
+        </div>
+
+        <div class="Css_InputField">
+            <label for="IFU_PositionY"> Position Y : </label>
+                <input 
+                    id="IFU_PositionY" name="IFU_PositionY" type="text" class="Css_SmallInput"
+                    [(ngModel)]="VarS_IFU_PositionY"
+                    (input)="TS_Actual_VarS_IFU_Position()">
+        </div>
+        
+    </div>
+
+
+    <br>
+    
+<!--  
+    <select> </select>
+    <div class="Css_InputGroup">
+        <label> Actual Position Object: </label>
+        
+    </div>
+
+    <div class="Css_InputGroup">
+        <label for="IFU_Position_Object_X"> Position Object X : </label>
+            <input 
+                id="IFU_Position_Object_X" name="IFU_Position_Object_X" type="text" class="Css_SmallInput" 
+                [(ngModel)]="VarS_IFU_PositionX_2">
+
+        <label for="IFU_Position_Object_Y"> Position Object Y : </label>
+            <input 
+                id="IFU_Position_Object_Y" name="IFU_Position_Object_Y" type="text" class="Css_SmallInput"
+                [(ngModel)]="VarS_IFU_PositionY_2">
+    </div>
+-->
+</div>
+
+<br>
+ <!-- 
+<button
+    type="Css_Submit">
+    Actualiser
+</button>
+
+<button
+    (click)="TS_Sce_Update_Ressources_T_Button()"
+    type="Css_Submit">
+    
+    Update
+
+</button>
+
+-->
+
+
+
+ <!-- 
+    
+     <select 
+            id="IFU_FrontBehind" name="IFU_FrontBehind" class="Css_SmallInput"
+            [(ngModel)]="VarS_IFU_FrontBehind" 
+            (input)="TS_Actual_VarS_IFU_Position()">
+            
+            <option value="InFrontOf">In Front Of</option>
+            <option value="Behind">Behind</option>
+
+        </select>
+
+  -->

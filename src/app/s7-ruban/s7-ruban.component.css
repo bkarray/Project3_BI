@@ -1,0 +1,120 @@
+.CSS_Ruban {
+    max-width: 800px;
+    min-height: 90px;
+    max-height: 300px;
+    background-color: rgb(255, 255, 255);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: flex-start;
+    position: relative;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 2px solid black;
+    overflow-y: auto;
+    margin-bottom: 10px;
+
+    z-index: 1000; /* Assurez-vous que cette valeur est supérieure à celle de CSS_PagePrincipale */
+}
+
+.CSS_Conteneur {
+    display: flex;
+    width: 95%;
+    margin: auto; /* Centrer le conteneur */
+    align-items: flex-start; /* Aligner les éléments en haut */
+    justify-content: space-between; /* Espacer uniformément les éléments */
+    height: 1000px;
+    /* border: 2px solid black;*/
+}
+.CSS_Gauche_Conteneur {
+    width: 15%;
+    /* Autres styles pour CSS_Gauche_Conteneur */
+    height: 1000px;
+    /* border: 2px solid black;*/
+}
+.CSS_Droite_Conteneur {
+    width: 5%;
+    /* Autres styles pour CSS_Droite_Conteneur */
+    height: 1000px;
+    /* border: 2px solid black;*/
+}
+
+
+
+.CSS_URL {
+    height: 1000px;
+    background-color: rgb(255, 255, 255);
+    border: 2px solid black;
+}
+
+.CSS_PagePrincipale {
+    width: 76%;
+    height: 1000px;
+    background-color: rgb(255, 255, 255);
+    border: 2px solid black;
+
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: flex-start;
+    position: relative;
+    overflow-y: auto;
+    margin-bottom: 10px;
+    overflow: visible;
+}
+  
+.CSS_Item {
+    padding: 10px;
+    margin: 5px;
+    border: 1px solid grey;
+    background-color: white;
+    cursor: move;
+    position: relative;
+}
+
+.CSS_Item_Resizable {
+    padding: 10px;
+    margin: 5px;
+    border: 1px solid grey;
+    background-color: white;
+    cursor: move;
+    position: relative;
+    resize: both; /* Permet à l'utilisateur de redimensionner */
+    overflow: auto; /* Pour gérer le contenu débordant */
+    min-width: 50px; /* Largeur minimale */
+    min-height: 20px; /* Hauteur minimale */
+    
+}
+
+
+.CSS_Input_URL {
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Pour centrer horizontalement */
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-bottom: 20px;
+}
+
+.CSS_Input_URL label {
+    margin-right: 10px;
+}
+
+.CSS_Input_URL input {
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 1000px;
+}
+
+.CSS_Vue {
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Pour centrer horizontalement */
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-bottom: 20px;
+}

@@ -1,0 +1,78 @@
+
+<form class="Css_MyForm">
+
+    <div *ngIf="VarB_FileVarTransfert">
+
+        <button 
+            type="Css_Submit"
+            (click)="TS_VarTransfert_Selected()" 
+            [class.selected]="Var_Selected === 1"
+            [class.not-selected]="Var_Selected !== 1">
+            VarTransfert
+        </button>
+
+        <button 
+            type="Css_Submit"
+            (click)="TS_VarLocalTs_Selected()"
+            [class.selected]="Var_Selected === 2"
+            [class.not-selected]="Var_Selected !== 2">
+            VarLocal_TS
+        </button>
+
+        <button 
+            type="Css_Submit"
+            (click)="TS_VarLocalHtml_Selected()"
+            [class.selected]="Var_Selected === 3"
+            [class.not-selected]="Var_Selected !== 3">
+            VarLocal_HTML
+        </button>
+
+        <br>
+
+        <table class="Css_CustomTable">
+            <thead>
+
+                <tr>
+                    <th class="Css_BehindRectArrondi"><div class="Css_RectArrondi_2">Variable</div></th>
+                    <th class="Css_BehindRectArrondi"><div class="Css_RectArrondi_2">Type</div></th>
+                </tr>
+
+            </thead>
+            <tbody cdkDropList (cdkDropListDropped)="drop($event)">
+                <tr>
+                    <td>
+                        <input id="IFU_Variable" name="IFU_Variable" type="text"[(ngModel)]="searchText">
+                    </td>
+                </tr>
+
+                <tr *ngIf="Var_Selected === 1">
+                    <td colspan="3"> 
+                        <app-s8o1o3o1-vartransfert>
+
+                        </app-s8o1o3o1-vartransfert>
+                    </td>
+                </tr>
+
+                <tr *ngIf="Var_Selected === 2">
+                    <td colspan="3"> 
+                        <app-s8o1o3o2-varlocalts
+                            [Input_VarL_FonctionId]="Input_VarL_FonctionId">
+
+                        </app-s8o1o3o2-varlocalts>
+                    </td>
+                </tr>
+
+            </tbody> 
+  
+        </table>
+
+
+    </div>
+    <br>
+    
+
+</form>
+
+
+
+

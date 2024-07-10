@@ -1,0 +1,226 @@
+
+/* ********************************************************************************** Style Input **************************************************************************** */
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+    color: #555;
+    font-size: 0.8rem;
+}
+
+label[for="styleInput"] {
+    white-space: nowrap; /* Empêche le texte de passer à la ligne suivante */
+}
+
+.Css_InputGroup {
+    margin-bottom: 12px;
+    display: flex;
+    gap: 20px;
+}
+.Css_InputField {
+    display: flex;
+    align-items: center;  /* Centrer verticalement si nécessaire */
+    gap: 10px;  /* Espacement entre les éléments */
+    justify-content: space-between; /* Espacer les éléments également */
+}
+
+/* 5. Styles Contenu Liste Deroulante */
+.Css_SmallInput, select.Css_SmallInput {
+    width: 40%;
+    text-align: center;
+    margin-right: 10px;
+}
+.Css_SmallInput:focus, select.Css_SmallInput:focus {
+    border-color: #007bff;
+    outline: none;
+}
+.Css_SmallInput1, select.Css_SmallInput1 {
+    width: 100px;
+    padding: 5px 8px;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    font-size: 0.8rem;
+    color: #333;
+    transition: border-color 0.3s ease;
+}
+.Css_SmallInput1:focus, select.Css_SmallInput1:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+.Css_Inline-container {
+    display: flex;
+    align-items: center;
+}
+.Css_Inline_Label, .Css_Inline_Select {
+    display: inline-block;
+    margin-right: 10px; /* Ajoutez une petite marge pour l'espacement entre le label et le select */
+}
+.Css_Inline_Select {
+    width: 200px; /* Ajustez cette valeur selon vos besoins */
+}
+
+
+
+/* ********************************************************************************** Style Btn Click **************************************************************************** */
+/* 1. Styles Boutons */
+/* Styles généraux pour les boutons */
+button[type="Css_Submit"] {
+    padding: 8px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    font-weight: 500; 
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease; /* Précision des propriétés à animer */
+    margin-right: 15px;
+    margin-bottom: 10px; 
+    display: inline-block;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+    /* Éliminer la marge du dernier bouton pour éviter les espaces inutiles */
+    button[type="Css_Submit"]:last-child {
+        margin-right: 0;
+    }
+    /* Pour un bouton sélectionné */
+    button[type="Css_Submit"].selected {
+        background-color: #002060;  
+    }
+    /* Pour un bouton non sélectionné */
+    button[type="Css_Submit"].not-selected {
+        background-color: #E7E6E6;  
+        color: #333;
+    }
+    /* Styles pour le survol des boutons */
+    button[type="Css_Submit"]:hover {
+        background-color: #0056b3;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    }
+    /* Styles pour les boutons actifs (clic) */
+    button[type="Css_Submit"]:active {
+        background-color: #004392;
+        transform: translateY(0); /* Réinitialisation du déplacement vertical */
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+
+/* ********************************************************************************** Style Css_MyForm **************************************************************************** */
+/* 3. Styles Forms */
+.Css_MyForm {
+    background-color: white;
+    border: 1px solid #ddd;
+    padding: 10px;  
+}
+
+
+/* ********************************************************************************** Style Table **************************************************************************** */
+/* Table: */
+table {
+    width: 100%;
+    border: 1px solid #ddd;
+    background-color: white;
+    border-collapse: separate; /* Changez ceci pour utiliser border-spacing */
+    border-spacing: 10px; /* Espacement entre les cellules */
+}
+
+.Css_BehindRectArrondi {
+    background-color: white;
+    text-align: center; /* Centrer le contenu de la cellule */
+    vertical-align: middle;
+}
+
+.Css_RectArrondi_1 {
+    background-color: #004392; /* Couleur de fond */
+    border-radius: 10px; /* Coins arrondis */
+    padding: 5px 10px; /* Espacement intérieur: vertical et horizontal */
+
+    color: white; /* Couleur de texte */
+}
+
+.Css_RectArrondi_2 {
+    background-color: #1379ed; /* Couleur de fond */
+    border-radius: 10px; /* Coins arrondis */
+    padding: 5px 10px; /* Espacement intérieur: vertical et horizontal */
+
+    color: white; /* Couleur de texte */
+    display: inline-flex; /* s'adapter a la taille du texte */
+}
+
+
+.Css_BehindRectArrondi_3 {
+    background-color: white;
+    text-align: center; /* Centrer le contenu de la cellule */
+}
+
+.Css_RectArrondi_3 {
+    background-color: #f1f2f4e1; /* Couleur de fond */
+    border-radius: 10px; /* Coins arrondis */
+    padding: 5px 10px; /* Espacement intérieur: vertical et horizontal */
+
+    color:  #000000; /* Couleur de texte */
+    display: inline-flex; /* s'adapter a la taille du texte */
+}
+
+
+/* Styles pour le survol des boutons */
+.Css_RectArrondi_3:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.Css_RectArrondi_3.selected  {
+    background-color: #004392;
+}
+
+.Css_RectArrondi_3.not-selected {
+    background-color: #f1f2f4e1;  
+    color: #333;
+}
+
+
+
+tr {
+    text-align: center;
+}
+
+
+/* ********************************************** Other **************************************** */
+
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f7f9fc;
+    margin: 0;
+    padding: 20px;
+}
+
+/* Autres */
+.Css_ButtonContainer {
+    text-align: center;
+    margin-top: 10px;
+}
+
+
+
+.Css_CustomTable {
+    width: 100%;
+}
+
+.Css_VerticalAlign {
+    vertical-align: middle;
+    text-align: center;
+}
+.Css_HorizontalAlign {
+    text-align: center;
+}
+
+.Css_BehindRectArrondi, .Css_VerticalAlign {
+    width: 50%;
+}
+
+

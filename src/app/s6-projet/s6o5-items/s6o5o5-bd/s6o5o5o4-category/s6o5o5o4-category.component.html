@@ -1,0 +1,139 @@
+
+
+
+<div class="container">
+    <button (click)="ajouterCategorie()">Ajouter Catégorie Principale</button>
+    <div cdkDropList (cdkDropListDropped)="onDrop($event)" class="categorie-list" [cdkDropListData]="Tab_Category">
+      <div *ngFor="let categorie of Tab_Category" cdkDrag class="categorie" (contextmenu)="gererClicDroit(categorie, $event)">
+        <span *ngIf="!categorieEnEdition">{{ categorie.Interf_Cat_Nom }}</span>
+        <span *ngIf="categorieEnEdition === categorie">
+          <form (submit)="sauvegarderEdition(categorie)">
+            <input [(ngModel)]="categorie.Interf_Cat_Nom" name="nomCategorie" required>
+            <button type="submit">Enregistrer</button>
+          </form>
+        </span>
+        <ul *ngIf="categorie.Interf_Cat_MenuVisible" class="menu-contextuel">
+          <li (click)="ajouterCategorie(categorie.Interf_Cat_Id)">Ajouter Sous-Catégorie</li>
+          <li (click)="editerCategorie(categorie)">Éditer</li>
+          <li (click)="supprimerCategorie(categorie.Interf_Cat_Id)">Supprimer</li>
+        </ul>
+        <!-- Affichage récursif des sous-catégories -->
+        <div *ngIf="categorie.Interf_Cat_SousCategory?.length" class="sous-categories">
+          <ng-container *ngTemplateOutlet="templateSousCategories; context: {$implicit: categorie}"></ng-container>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <ng-template #templateSousCategories let-categorie>
+    <div *ngFor="let sousCategorie of categorie.Interf_Cat_SousCategory" cdkDrag class="sous-categorie" (contextmenu)="gererClicDroit(sousCategorie, $event)" [cdkDragData]="sousCategorie">
+      <span *ngIf="!categorieEnEdition">{{ sousCategorie.Interf_Cat_Nom }}</span>
+      <span *ngIf="categorieEnEdition === sousCategorie">
+        <form (submit)="sauvegarderEdition(sousCategorie)">
+          <input [(ngModel)]="sousCategorie.Interf_Cat_Nom" name="nomSousCategorie" required>
+          <button type="submit">Enregistrer</button>
+        </form>
+      </span>
+      <ul *ngIf="sousCategorie.Interf_Cat_MenuVisible" class="menu-contextuel">
+        <li (click)="ajouterCategorie(sousCategorie.Interf_Cat_Id)">Ajouter Sous-Catégorie</li>
+        <li (click)="editerCategorie(sousCategorie)">Éditer</li>
+        <li (click)="supprimerCategorie(sousCategorie.Interf_Cat_Id, categorie)">Supprimer</li>
+      </ul>
+      <!-- Appel récursif pour les sous-sous-catégories, si nécessaire -->
+      <div *ngIf="sousCategorie.Interf_Cat_SousCategory?.length" cdkDropList (cdkDropListDropped)="onDrop($event, sousCategorie)">
+        <ng-container *ngTemplateOutlet="templateSousCategories; context: {$implicit: sousCategorie}"></ng-container>
+      </div>
+    </div>
+  </ng-template>
+  
+
+
+
+<button class="CSS_Button_Add" (click)="TS_ImportNameTable()">Import Table</button>
+<br>
+<select *ngIf="afficherListeTables" [(ngModel)]="tableSelectionnee">
+  <option *ngFor="let table of listeTables" [value]="table">{{ table }}</option>
+</select>
+<br>
+<!-- ... Code existant ... -->
+
+<button (click)="tableSelectionnee && TS_GetFieldFromTableBD1(tableSelectionnee)">Import Field</button>
+<br>
+<div *ngFor="let champCategorie of champsCategorie">
+  <label [for]="champCategorie.nom">{{ champCategorie.nom }}:</label>
+  <select *ngIf="tableSelectionnee" [(ngModel)]="champCategorie.selection" [name]="champCategorie.nom">
+    <option value="">Sélectionnez un champ</option>
+    <option *ngFor="let champ of champsTableSelectionnee" [value]="champ">{{ champ }}</option>
+  </select>
+  <br>
+</div>
+<button (click)="importerDonnees()"> Import Data</button>
+<button (click)="recupererDonnees()">Récupérer les données de la table</button>
+
+<!-- Section pour afficher les données importées -->
+<div *ngIf="donneesImportees.length > 0">
+  <h2>Données Importées</h2>
+  <table>
+    <thead>
+      <tr>
+        <th *ngFor="let champ of champsTableSelectionnee">{{ champ }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let ligne of donneesImportees">
+        <td *ngFor="let champ of champsTableSelectionnee">{{ ligne[champ] }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Reste de votre code HTML ... -->
+
+
+
+
+<div class="CSS_BD">
+    <div>
+        <button class="CSS_Button" (click)="TS_AjouterBouton()">Ajouter BD</button>
+        <ng-container *ngTemplateOutlet="Template_Bouton; context:{ Tab_Bouton_2: Tab_Bouton_1, TabIB_Parent_Line: null }"></ng-container>
+    </div>
+    
+    <ng-template #Template_Bouton let-Tab_Bouton_2="Tab_Bouton_2" let-TabIB_Parent_Line="TabIB_Parent_Line">
+        <div cdkDropList [cdkDropListData]="Tab_Bouton_2" (cdkDropListDropped)="TS_Drop_BD($event, TabIB_Parent_Line)">
+            <ng-container *ngFor="let Tab_Bouton_Line of Tab_Bouton_2; let i = index">
+                <div class="CSS_BoutonContainer" cdkDrag id="{{ Tab_Bouton_Line.InterfIB_Id }}">
+                    <div *ngIf="!Tab_Bouton_Line.InterfIB_EnEdition">
+                        <!-- Modification ici: gestionnaire d'événements pour clic droit -->
+                        <div (contextmenu)="TS_GererClicDroite(Tab_Bouton_Line, $event)">
+                            <button [ngClass]="{'CSS_Button': Tab_Bouton_Line.InterfIB_Type === 'Sous_Bouton'}" 
+                                    (click)="TS_GererClicGauche(Tab_Bouton_Line, $event)">
+                                {{ Tab_Bouton_Line.InterfIB_Nom }}
+                            </button>
+                            <button class="CSS_ButtonBasculer" *ngIf="Tab_Bouton_Line.InterfIB_SousBoutons && Tab_Bouton_Line.InterfIB_SousBoutons.length > 0" 
+                                (click)="TS_Basculer_SousBoutons(Tab_Bouton_Line)">
+                                {{ Tab_Bouton_Line.InterfIB_SousBoutonsVisible ? '-' : '+' }}
+                            </button>
+                        </div>
+                        <!-- Rectangle avec les options -->
+                        <ul *ngIf="Tab_Bouton_Line.InterfIB_ListeVisible" class="CSS_Options">
+                            <li *ngIf="!Tab_Bouton_Line.InterfIB_EstTableBD" (click)="TS_AjouterBouton(Tab_Bouton_Line)">Ajouter Sous_Bouton</li>
+                            <li *ngIf="Tab_Bouton_Line.InterfIB_Type === 'Table_BD'" (click)="TS_GetFieldFromTableBD(Tab_Bouton_Line.InterfIB_Nom)">Afficher Field</li>
+                            <li (click)="TS_ItemAdded(Tab_Bouton_Line)">Ouvrir</li>
+                            <li (click)="TS_DebutEdition(Tab_Bouton_Line)">Éditer</li>
+                            <li (click)="TS_SupprimerBouton(Tab_Bouton_Line, TabIB_Parent_Line, i)">Supprimer</li>
+                        </ul>
+                    </div>
+                    <div *ngIf="Tab_Bouton_Line.InterfIB_EnEdition">
+                        <input type="text" [(ngModel)]="Tab_Bouton_Line.InterfIB_Nom" (blur)="TS_FinEdition(Tab_Bouton_Line, false)" (keyup.enter)="TS_FinEdition(Tab_Bouton_Line)">
+                    </div>
+                    <!-- CSS_SousBoutons -->
+                    <div class="CSS_SousBoutons" *ngIf="Tab_Bouton_Line.InterfIB_SousBoutons.length > 0 && Tab_Bouton_Line.InterfIB_SousBoutonsVisible">
+                        <ng-container *ngTemplateOutlet="Template_Bouton; context:{ Tab_Bouton_2: Tab_Bouton_Line.InterfIB_SousBoutons, TabIB_Parent_Line: Tab_Bouton_Line}"></ng-container>
+                    </div>
+                </div>
+            </ng-container>
+        </div>
+    </ng-template>
+
+</div>
+

@@ -1,0 +1,85 @@
+
+<br>
+  <!-- 
+    (Output_Tab_Object_clicked)="TS_ObjectAdded($event)"
+        (Output_Tab_ObjectSize)="TS_ObjectSize($event)"
+    -->
+<div>
+    <app-s6o1-ruban
+        (Output_Tab_Object_clicked)="TS_ObjectAdded($event)"
+        >
+    </app-s6o1-ruban>
+</div>
+
+<br>
+
+<div class="CSS_Input_URL">
+    <label for="Var_URL">URL :</label>
+    <input type="text" id="Var_URL" [value]="selectedUrl">
+</div>
+
+<div class="CSS_Vue">
+    <input type="radio" id="vueDeveloppeur" name="vue" value="developpeur">
+    <label for="vueDeveloppeur">Vue Développeur</label>
+    <input type="radio" id="vueUtilisateur" name="vue" value="utilisateur">
+    <label for="vueUtilisateur">Vue Utilisateur</label>
+</div>
+
+<div class="CSS_Conteneur">
+    <div class="CSS_Gauche_Conteneur">
+        <app-s6o2-linkurl (boutonClicked)="TS_ClickURL($event)"></app-s6o2-linkurl>
+    </div>
+
+
+    <div class="CSS_Milieu_Conteneur">
+        <app-s6o3-pageurl
+            [Input_Tab_Object_Added]="Tab_Object_Added"       
+
+            (Output_ItemDeleted)="TS_ObjectDeleted($event)"
+    
+            >
+        </app-s6o3-pageurl>
+            <!-- 
+                            [Input_Tab_ObjectSize]="Tab_ObjectSize"  
+
+                            
+                [Input_TabList_DraggableItem]="TabList_DraggableItem"
+                (itemDeleted)="TS_DeleteItem($event)"
+                (Output_TabLine_ItemAdded)="TS_ItemAdded($event)"
+            -->
+    </div>
+
+
+    <div class="CSS_Droite_Conteneur">
+        <!-- Contenu de CSS_Droite_Conteneur -->
+    </div>
+
+</div>
+
+<br>
+
+<div>
+    <app-s6o4-settings>
+    </app-s6o4-settings>
+</div>
+
+
+
+
+ <!-- 
+        <app-s6o3-pageurl 
+            [TabList_DraggableItem]="TabList_DraggableItem"
+            [isTableauSelected]="isTableauSelected"
+            (itemDeleted)="TS_DeleteItem($event)">
+        </app-s6o3-pageurl>
+
+    <app-s6o1-ruban 
+        (itemAdded)="TS_ItemAdded($event)">
+    
+    </app-s6o1-ruban>
+
+<app-s6o4-settings
+        [TabList_DraggableItem]="TabList_DraggableItem">
+    </app-s6o4-settings>
+
+ -->

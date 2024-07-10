@@ -1,0 +1,80 @@
+
+
+<!-- si je clique sur 'object' -->
+<div *ngIf="InputVarN_Selected === 1">
+
+    <!-- Pop up Form se crée -->
+    <form class="Css_MyForm">
+
+        <!-- Button 'UI' -->
+        <button 
+            type="Css_Submit" 
+            (click)="TS_ShowUIOptions()" 
+            [class.selected]="Var_Selected === 1"
+            [class.not-selected]="Var_Selected !== 1">
+            
+            UI
+        
+        </button>
+
+        <!-- Button 'Position' -->
+        <button 
+            type="Css_Submit" 
+            (click)="TS_ShowPositionOptions()" 
+            [class.selected]="Var_Selected === 2"
+            [class.not-selected]="Var_Selected !== 2">
+            
+            Position
+        
+        </button>
+
+        <!-- Button 'Size' -->
+        <button 
+            type="Css_Submit" 
+            (click)="TS_ShowSizeOptions()" 
+            [class.selected]="Var_Selected === 3"
+            [class.not-selected]="Var_Selected !== 3">
+            
+            Size
+        
+        </button>
+
+        <!-- Si je clique sur 'UI' -->
+        <div *ngIf="Var_Selected === 1">
+
+            <app-s8o1o9o1o1-ui 
+                [Input_VarS_IFU_Recherche]="Input_VarS_IFU_Recherche"
+                [Input_Var_Selected]="Var_Selected"
+                >
+
+                a5:
+                {{  Input_VarS_IFU_Recherche }}
+
+            </app-s8o1o9o1o1-ui>
+
+        </div>
+
+        <!-- Si je clique sur 'Position' -->
+        <div *ngIf="Var_Selected === 2">
+
+            <app-s8o1o9o1o2-position
+                [Input_VarS_IFU_Recherche]="Input_VarS_IFU_Recherche"
+                [Input_Var_Selected]="Var_Selected" 
+                [Input_RT_VarXY_Position_X]="Input_RT_VarXY_Position_X"
+                [Input_RT_VarXY_Position_Y]="Input_RT_VarXY_Position_Y"
+                (Output_from_VarS_IFU_FrontBehindObject)="TS_UpdateOutputValue($event)"
+                [Input_Tab_ActualDataPosition]="Input_Tab_ActualDataPosition">
+                
+                
+
+            </app-s8o1o9o1o2-position>
+
+
+        </div>
+
+    </form>
+
+
+</div>
+ 
+

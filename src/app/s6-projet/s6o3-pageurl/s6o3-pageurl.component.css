@@ -1,0 +1,56 @@
+
+
+.CSS_PageURL {
+    width: 100%;
+    height: 1000px;
+    background-color: rgb(255, 255, 255);
+    border: 2px solid black;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: flex-start;
+    position: relative;
+    overflow-y: auto;
+    margin-bottom: 10px;
+    overflow: visible;
+}
+
+
+.CSS_Item_Resizable {
+    padding: 10px;
+    margin: 5px;
+    border: 1px solid grey;
+    background-color: white;
+    cursor: move;
+    position: relative;
+    resize: both; /* Permet à l'utilisateur de redimensionner */
+    overflow: auto; /* Pour gérer le contenu débordant */
+    position: relative; 
+}
+
+
+
+
+
+
+.CSS_ContextMenu {
+    position: fixed;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    z-index: 1000;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.CSS_ContextMenu a {
+    display: block;
+    padding: 5px 10px;
+    text-decoration: none;
+    color: black;
+    font-size: 12px;
+}
+
+.CSS_ContextMenu a:hover {
+    background-color: #f0f0f0;
+}
+
+

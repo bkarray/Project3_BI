@@ -15,24 +15,26 @@ export class LoginComponent implements OnInit {
   U_pwd: string = "";
 
   ngOnInit(): void {
-    if(this.authService.isAuthenticated()){
-      this.router.navigate(['/P_Home']);
-    }
-    this.log = this.fb.group({
-      login: ['', [Validators.required, Validators.maxLength(50)]],
-      password: ['', [Validators.required, Validators.maxLength(50)]],
+    if(this.authService.isAuthenticated())
+      {
+        this.router.navigate(['/P_Home']);
+      }
+        this.log = this.fb.group({
+        login: ['', [Validators.required, Validators.maxLength(50)]],
+        password: ['', [Validators.required, Validators.maxLength(50)]],
     })
   }
+  
+  
   get f()
    {
      return this.log.controls;
     }
+
   Signin(user:any){
     this.authService.login(user.username,user.password);
-let users
+      let users
       this.authService.getUser().subscribe((data: any) => {
-        
-      
       let us;
       data.forEach((u:any)=>{
         if(u.U_Email===user.username && u.U_Pwd===user.password){
@@ -52,13 +54,13 @@ let users
         this.authService.authenticated=false;
       }
     })
-    
-
   }
+
   getuser(){
     this.authService.loadUser()
     console.log(this.authService.authenticatedUser.U_Id);
   }
+
   onSubmit() {
     var u ={
       username:this.U_login,

@@ -1,0 +1,30 @@
+
+
+
+<button
+        (contextmenu)="TS_OnRightClick($event)"
+        [ngStyle]="{
+            'color': VarS_IFU_Color,
+            'background-color': VarS_IFU_BgColor,
+            'border': VarS_IFU_Border}">
+        {{ VarS_IFU_Label }}
+        abcd
+</button>
+ 
+<app-s8o1o8o1o1-menucontextuel
+    *ngIf="VarB_ShowContextMenu"
+    [Input_VarN_FBtn_Id]=Input_VarN_FBtn_Id
+    (Output_MenuC_Close)="TS_Output_MenuC_Close($event)"
+    >
+</app-s8o1o8o1o1-menucontextuel>
+
+<!-- 
+    'position': 'absolute',
+    'z-index': '1000',
+    'left.px': VarXY_Position.x,
+    'top.px': VarXY_Position.y,
+    'width.px': VarXY_Size.width,
+    'height.px': VarXY_Size.height
+-->
+
+

@@ -1,0 +1,141 @@
+<div class="CSS_Table">
+
+    <div class="CSS_Nom_Table">
+        <ng-container *ngIf="!VarB_EditingNomTable; else editField">
+            <span class="CSS_Var_Field" (dblclick)="TS_StartEditingNomTable()">{{ Var_NameTable }}</span>
+        </ng-container>
+        <ng-template #editField>
+            <input type="text" class="CSS_input_Field" [(ngModel)]="Var_NameTable" (blur)="TS_StopEditingNomTable()">
+        </ng-template>
+    </div>
+
+
+    <div class="CSS_Contenu_Table">
+        <div *ngFor="let Tab_FieldLine of Tab_AllField; let i = index" class="CSS_LineSpacing">
+
+            <div *ngIf="VarB_EditMode">
+                <ng-container *ngIf="!Tab_FieldLine.VarAF_IsEditing; else editField">
+                    <span class="CSS_Var_Field" (dblclick)="TS_StartEditing(Tab_FieldLine)">{{ Tab_FieldLine.VarAF_NameField }}</span>
+                </ng-container>
+                    <ng-template #editField>
+                        <input type="text" class="CSS_input_Field" [(ngModel)]="Tab_FieldLine.VarAF_NameField" (blur)="TS_StopEditing(Tab_FieldLine)">
+                    </ng-template>
+                <span (dblclick)="TS_StartEditingType(Tab_FieldLine)" *ngIf="!Tab_FieldLine.VarAF_IsEditingType" class="CSS_Var_TypeField">{{ Tab_FieldLine.VarAF_SelectedType }}</span>
+                    <select *ngIf="Tab_FieldLine.VarAF_IsEditingType" class="CSS_Select_TypeField" [(ngModel)]="Tab_FieldLine.VarAF_SelectedType" (blur)="TS_StopEditingType(Tab_FieldLine)">
+                        <option value="integer">integer</option>
+                        <option value="array">array</option>
+                        <option value="varchar">varchar</option>
+                        <option value="boolean">boolean</option>
+                    </select>                
+                <input type="checkbox" [(ngModel)]="Tab_FieldLine.VarAF_IsPrimaryKey"> P Key
+                <input type="checkbox" [(ngModel)]="Tab_FieldLine.VarAF_IsSecondaryKey"> S Key
+                <button class="CSS_Button_Delete" (click)="TS_DeleteRow(i)">-</button>
+            </div>
+
+            <div *ngIf="!VarB_EditMode">
+                <ng-container *ngIf="!Tab_FieldLine.VarAF_IsEditing; else editField">
+                    <span class="CSS_Var_Field" (dblclick)="TS_StartEditing(Tab_FieldLine)">{{ Tab_FieldLine.VarAF_NameField }}</span>
+                </ng-container>
+                <ng-template #editField>
+                    <input type="text" class="CSS_input_Field" [(ngModel)]="Tab_FieldLine.VarAF_NameField" (blur)="TS_StopEditing(Tab_FieldLine)">
+                </ng-template>
+                <span (dblclick)="TS_StartEditingType(Tab_FieldLine)" *ngIf="!Tab_FieldLine.VarAF_IsEditingType" class="CSS_Var_TypeField">{{ Tab_FieldLine.VarAF_SelectedType }}</span>
+                    <select *ngIf="Tab_FieldLine.VarAF_IsEditingType" class="CSS_Select_TypeField" [(ngModel)]="Tab_FieldLine.VarAF_SelectedType" (blur)="TS_StopEditingType(Tab_FieldLine)">
+                        <option value="integer">integer</option>
+                        <option value="array">array</option>
+                        <option value="varchar">varchar</option>
+                        <option value="boolean">boolean</option>
+                    </select>
+                <span *ngIf="Tab_FieldLine.VarAF_IsPrimaryKey" class="CSS_PrimaryKey"> Primary Key </span>
+                <span *ngIf="Tab_FieldLine.VarAF_IsSecondaryKey" class="CSS_SecondaryKey"> Secondary Key </span>
+                
+            </div>
+
+        </div>
+
+        <button class="CSS_Button_Add" (click)="TS_AddRow()">Ajouter</button>
+        <button class="CSS_Button_Add" (click)="TS_EditRow()">Modifier</button>
+        <button class="CSS_Button_Add">Supprimer BD</button>
+
+        <br><br>
+        <button class="CSS_Button_Add" (click)="TS_AddField()">Ajouter Field</button>
+        <button class="CSS_Button_Add" (click)="TS_GetFieldFromTableBD()">Get Field</button>
+        <button class="CSS_Button_Add" (click)="TS_Update_FieldTable()"> Update Table</button>
+
+
+    </div>
+
+</div>
+
+<!-- 
+     (click)="TS_AddField()"
+
+ TS_AddField(tableName: varchar, fieldName: varchar, fieldType: varchar = 'integer') {
+    tableName={{ Var_NameTable }}
+    fieldName ce sont les champs ajouté dans : Tab_FieldLine.VarAF_NameField 
+
+
+    
+
+
+            <div *ngIf="VarB_EditMode">
+                <input type="text" class="CSS_input_Field" [(ngModel)]="Tab_FieldLine.VarAF_NameField">
+                <select class="CSS_Select_TypeField" [(ngModel)]="Tab_FieldLine.VarAF_SelectedType">
+                    <option value="integer">integer</option>
+                    <option value="array">array</option>
+                    <option value="varchar">String</option>
+                    <option value="boolean">boolean</option>
+                </select>
+            </div>
+
+
+<div class="CSS_Table">
+
+    <div class="CSS_Nom_Table">
+        <div *ngIf="VarB_EditMode">
+            <input [(ngModel)]="Var_NameTable">
+        </div>
+        <div *ngIf="!VarB_EditMode">
+            {{ Var_NameTable }}
+        </div>
+    </div>
+    
+
+    <div class="CSS_Contenu_Table">
+        <div *ngFor="let Tab_FieldLine of Tab_AllField; let i = index" class="CSS_LineSpacing">
+            <div *ngIf="VarB_EditMode">
+                <input type="text" class="CSS_input_Field" [(ngModel)]="Tab_FieldLine.VarAF_NameField">
+                <select class="CSS_Select_TypeField" [(ngModel)]="Tab_FieldLine.VarAF_SelectedType">
+                    <option value="integer">integer</option>
+                    <option value="array">array</option>
+                    <option value="varchar">String</option>
+                    <option value="boolean">boolean</option>
+                </select>
+                <input type="checkbox" [(ngModel)]="Tab_FieldLine.VarAF_IsPrimaryKey"> P Key
+                <input type="checkbox" [(ngModel)]="Tab_FieldLine.VarAF_IsSecondaryKey"> S Key
+                <button class="CSS_Button_Delete" (click)="TS_DeleteRow(i)">-</button>
+            </div>
+            <div *ngIf="!VarB_EditMode">
+                <span class="CSS_Var_Field">{{ Tab_FieldLine.VarAF_NameField }}</span> 
+                <span class="CSS_Var_TypeField">{{ Tab_FieldLine.VarAF_SelectedType }}</span>
+                <span *ngIf="Tab_FieldLine.VarAF_IsPrimaryKey" class="CSS_PrimaryKey"> Primary Key</span>
+                <span *ngIf="Tab_FieldLine.VarAF_IsSecondaryKey" class="CSS_SecondaryKey"> Secondary Key</span>
+            </div>
+        </div>
+        <div *ngIf="VarB_EditMode">
+            <button class="CSS_Button_Add" (click)="TS_AddRow()">Ajouter</button>
+            <button class="CSS_Button_Add" (click)="TS_EditRow()">Retour</button>
+        </div>
+        <div *ngIf="VarB_EditMode">
+            <button class="CSS_Button_Add">MAJ BD</button>
+        </div>
+        <div *ngIf="VarB_EditMode">
+            <button class="CSS_Button_Add">Supprimer BD</button>
+        </div>
+        <div *ngIf="!VarB_EditMode">
+            <button class="CSS_Button_Add" (click)="TS_EditRow()">Modifier</button>
+        </div>
+    </div>
+</div>
+
+-->

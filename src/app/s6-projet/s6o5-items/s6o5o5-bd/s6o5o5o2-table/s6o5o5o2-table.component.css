@@ -1,0 +1,219 @@
+.CSS_Table {
+    position: absolute; /* Position absolue par rapport à CSS_Item_Resizable */
+    top: 5px; /* Espace de 5px en haut */
+    right: 5px; /* Espace de 5px à droite */
+    bottom: 5px; /* Espace de 5px en bas */
+    left: 5px; /* Espace de 5px à gauche */
+    box-sizing: border-box; /* Inclut le padding et la bordure dans la largeur/hauteur */
+    width: calc(100% - 10px); 
+    height: calc(100% - 10px);
+    
+}
+
+.CSS_Nom_Table {
+    padding: 10px;
+    margin: 5px;
+    border: 1px solid grey;
+    background-color: white;
+    cursor: move;
+    position: relative;
+    overflow: auto; /* Pour gérer le contenu débordant */
+    width: calc(100% - 10px); /* 5px de marge de chaque côté */
+    height: 50px;
+    display: flex; /* Utilisez Flexbox */
+    align-items: center; /* Centre verticalement */
+    justify-content: center; /* Centre horizontalement */
+}
+
+
+.CSS_Contenu_Table {
+    padding: 10px;
+    margin: 5px 5px 15px 5px; /* Marge ajustée pour garder l'espace de 5px en bas */
+    border: 1px solid grey;
+    background-color: white;
+    cursor: move;
+    position: relative;
+    overflow: auto; /* Pour gérer le contenu débordant */
+    width: calc(100% - 10px); /* 5px de marge de chaque côté */
+    height: calc(100% - 95px);
+}
+
+
+
+
+.input-field, .CSS_Select_TypeField {
+    padding: 8px;
+    margin: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.CSS_Select_TypeField {
+    cursor: pointer;
+}
+
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    margin: 5px;
+}
+
+.checkbox-label input[type="checkbox"] {
+    margin-right: 5px;
+}
+
+
+
+.CSS_PrimaryKey {
+    font-size: 14px;
+    color: #333;
+    margin: 5px 0;
+    font-weight: bold;
+    color: #007bff; 
+    margin-bottom: 10px;
+}
+
+.CSS_Var_Field {
+    background-color: #002060; /* Fond légèrement différent pour se démarquer */
+    color: white;
+    border-radius: 5px;
+    padding: 3px 6px;
+    margin-right: 15px; 
+    margin-bottom: 10px;
+    min-width: 20px;
+}
+
+
+.CSS_Var_TypeField {
+    background-color: #007bff;
+    color: white;
+    border-radius: 5px;
+    padding: 3px 6px;
+    margin-right: 15px; 
+    margin-bottom: 10px;
+}
+
+.CSS_LineSpacing {
+    margin-bottom: 10px; /* Espace de 10px entre les lignes */
+}
+
+.row-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* 1. Styles Boutons */
+
+    /* Styles généraux pour les boutons */
+    .CSS_Button_Delete {
+        padding: 4px 10px; /* Réduit de 8px 20px à 4px 10px */
+        font-size: 0.8rem; 
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease; 
+        margin-top: 5px; 
+        margin-bottom: 5px; 
+        margin-right: 15px;
+        display: inline-block;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    /* Éliminer la marge du dernier bouton pour éviter les espaces inutiles */
+    .CSS_Button_Delete:last-child {
+        margin-right: 0;
+    }
+
+    /* Pour un bouton sélectionné */
+    .CSS_Button_Delete.selected {
+        background-color: #002060;  
+    }
+
+    /* Pour un bouton non sélectionné */
+    .CSS_Button_Delete.not-selected {
+        background-color: #E7E6E6;  
+        color: #333;
+    }
+
+    /* Styles pour le survol des boutons */
+    .CSS_Button_Delete:hover {
+        background-color: #0056b3;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    }
+
+    /* Styles pour les boutons actifs (clic) */
+    .CSS_Button_Delete:active {
+        background-color: #004392;
+        transform: translateY(0); /* Réinitialisation du déplacement vertical */
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+
+
+
+
+    .CSS_Button_Add {
+        padding: 8px 20px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        font-size: 1rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease; 
+        margin-top: 5px; 
+        margin-bottom: 5px; 
+        margin-right: 15px;
+        display: inline-block;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    /* Éliminer la marge du dernier bouton pour éviter les espaces inutiles */
+    .CSS_Button_Add:last-child {
+        margin-right: 0;
+    }
+
+    /* Pour un bouton sélectionné */
+    .CSS_Button_Add.selected {
+        background-color: #002060;  
+    }
+
+    /* Pour un bouton non sélectionné */
+    .CSS_Button_Add.not-selected {
+        background-color: #E7E6E6;  
+        color: #333;
+    }
+
+    /* Styles pour le survol des boutons */
+    .CSS_Button_Add:hover {
+        background-color: #0056b3;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    }
+
+    /* Styles pour les boutons actifs (clic) */
+    .CSS_Button_Add:active {
+        background-color: #004392;
+        transform: translateY(0); /* Réinitialisation du déplacement vertical */
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+
+    .CSS_input_Field {
+        font-size: 1rem; /* Ajustez au besoin */
+        width: 100px; 
+        height: 35px; 
+    }
+
+    .CSS_Select_TypeField {
+        font-size: 0.8rem; /* Ajustez au besoin */
+        width: 100px;
+        height: 35px; 
+    }
+    

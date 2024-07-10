@@ -1,0 +1,276 @@
+
+
+<!-- si je clique sur 'object' -->
+<div *ngIf="InputVarN_Selected === 3">
+
+
+    <!-- Pop up Form se crée -->
+    <form class="Css_MyForm">
+
+        <!-- Button 'UI' -->
+        <button 
+            type="Css_Submit" 
+            (click)="TS_CmdCenter_Origin()" 
+            [class.selected]="Var_Selected === 1"
+            [class.not-selected]="Var_Selected !== 1">
+            
+            Origin Button
+        
+        </button>
+
+        <button 
+            type="Css_Submit" 
+            (click)="TS_CmdCenter_From()" 
+            [class.selected]="Var_Selected === 2"
+            [class.not-selected]="Var_Selected !== 2">
+            
+            From
+        
+        </button>
+
+        <button 
+            type="Css_Submit" 
+            (click)="TS_CmdCenter_To()" 
+            [class.selected]="Var_Selected === 3"
+            [class.not-selected]="Var_Selected !== 3">
+            
+            To
+        
+        </button>
+
+        <button 
+            type="Css_Submit" 
+            (click)="TS_CmdCenter_All()" 
+            [class.selected]="Var_Selected === 0"
+            [class.not-selected]="Var_Selected !== 0">
+            
+            All
+        
+        </button>
+
+        <div *ngIf="Var_Selected === 1">
+            <table>
+                <thead>
+                    Origin Button : <span *ngIf="Tab_SelectedItem && Tab_SelectedItem.length > 0">{{ Tab_SelectedItem[0].FBtn_Id }}</span>
+                    <!-- Ligne pour les en-têtes de groupe -->
+                    <tr>
+                        <th colspan="1" class="CSS_BehindRectArrondi"><div class="CSS_RectArrondi_1">CmdCenter</div></th>
+                        <th colspan="3" class="CSS_BehindRectArrondi"><div class="CSS_RectArrondi_1">From</div></th>
+                        <th colspan="3" class="CSS_BehindRectArrondi"><div class="CSS_RectArrondi_1">To</div></th>
+                    </tr>
+                    <!-- Ligne pour les en-têtes de colonnes individuelles -->
+                    <tr>
+                        <th class="CSS_BehindRectArrondi"><div class="CSS_RectArrondi_2">Ordre</div></th>
+
+                        <th class="CSS_BehindRectArrondi"><div class="CSS_RectArrondi_2">Fonction (Post)</div></th>
+                        <th class="CSS_BehindRectArrondi"><div class="CSS_RectArrondi_2">ChangeData (VarTransfer)</div></th>
+                        <th class="CSS_BehindRectArrondi"><div class="CSS_RectArrondi_2">Btn</div></th>
+
+                        <th class="CSS_BehindRectArrondi"><div class="CSS_RectArrondi_2">Btn</div></th>
+                        <th class="CSS_BehindRectArrondi"><div class="CSS_RectArrondi_2">Select ChangeData (VarTransfer)</div></th>
+                        <th class="CSS_BehindRectArrondi"><div class="CSS_RectArrondi_2">Fonction (Get)</div></th>
+                    </tr>
+                </thead>
+                <tbody cdkDropList (cdkDropListDropped)="drop($event)">
+                    <tr *ngFor="let item of Tab; let i = index" cdkDrag>
+
+                        <th class="CSS_BehindRectArrondi">
+                            <div class="CSS_RectArrondi_3" *ngIf="VarL_EditingIndex0 !== i; else editField0" (dblclick)="TS_StartEditing0(i)">
+                                {{ item.FCmdC_Ordre }}
+                            </div>
+                            <ng-template #editField0>
+                                <input type="text" class="Css_SmallInput" name="editInput0" [(ngModel)]="VarU_TempEditValue0" (blur)="TS_CancelEditing(i)">
+                                <button type="button" class="Css_Submit" (click)="TS_SaveEditing0(i)">Save</button>
+                            </ng-template>
+                        </th>
+
+                        <th class="CSS_BehindRectArrondi"><div class="CSS_RectArrondi_3" (dblclick)="TS_OpenFonction(i)">{{ item.FCmdC_FFct_From }}</div></th>
+                        <th class="CSS_BehindRectArrondi"><div class="CSS_RectArrondi_3"></div></th>
+
+                        <th class="CSS_BehindRectArrondi">
+                            <div class="CSS_RectArrondi_3" *ngIf="VarL_EditingIndex1 !== i; else editField1" (dblclick)="TS_StartEditing1(i)">
+                                {{ item.FCmdC_FBtn_From }}
+                            </div>
+                            <ng-template #editField1>
+                                <input type="text" class="Css_SmallInput" name="editInput1" [(ngModel)]="VarU_TempEditValue1" (blur)="TS_CancelEditing(i)">
+                                <button type="button" class="Css_Submit" (click)="TS_SaveEditing1(i)">Save</button>
+                            </ng-template>
+                        </th>
+
+                        <th class="CSS_BehindRectArrondi">
+                            <div class="CSS_RectArrondi_3" *ngIf="VarL_EditingIndex2 !== i; else editField2" (dblclick)="TS_StartEditing2(i)">
+                                {{ item.FCmdC_FBtn_To }}
+                            </div>
+                            <ng-template #editField2>
+                                <input type="text" class="Css_SmallInput" name="editInput2" [(ngModel)]="VarU_TempEditValue2" (blur)="TS_CancelEditing(i)">
+                                <button type="button" class="Css_Submit" (click)="TS_SaveEditing2(i)">Save</button>
+                            </ng-template>
+                        </th>
+                        <th class="CSS_BehindRectArrondi"><div class="CSS_RectArrondi_3"></div></th>
+                        <th class="CSS_BehindRectArrondi"><div class="CSS_RectArrondi_3">{{ item.FCmdC_FFct_To }}</div></th>
+
+                        <th>
+                            <button type="Css_Submit" (click)="TS_Remove_VarSelect(i)">-</button>
+                        </th>
+                        <!-- 
+                        <th>
+                            <button type="Css_Submit" (click)="TS_Remove_VarSelect(i)">-</button>
+                        </th>
+                        Ajoutez d'autres cellules de données si nécessaire -->
+                    </tr>
+                </tbody>    
+            </table>
+            <br>
+            <div>
+                <button type="Css_Submit" (click)="TS_Add_VarSelect()">+</button>
+                <button type="Css_Submit" (click)="TS_Update()">Update</button>
+            </div>
+        </div>
+
+
+        <div *ngIf="Var_Selected === 2">
+            <table>
+                <thead>
+                    From : <span *ngIf="Tab_SelectedItem && Tab_SelectedItem.length > 0">{{ Tab_SelectedItem[0].FBtn_Id }}</span>
+                    <!-- Ligne pour les en-têtes de groupe -->
+                    <tr>
+                        <th colspan="2" class="CSS_BehindRectArrondi"><div class="CSS_RectArrondi_1">CmdCenter</div></th>
+                        <th colspan="2" class="CSS_BehindRectArrondi"><div class="CSS_RectArrondi_1">From</div></th>
+                        <th colspan="3" class="CSS_BehindRectArrondi"><div class="CSS_RectArrondi_1">To</div></th>
+                        
+                    </tr>
+                    <!-- Ligne pour les en-têtes de colonnes individuelles -->
+                    <tr>
+                        <th class="CSS_BehindRectArrondi"><div class="CSS_RectArrondi_2">Origin</div></th>
+                        <th class="CSS_BehindRectArrondi"><div class="CSS_RectArrondi_2">Ordre</div></th>
+
+                        <th class="CSS_BehindRectArrondi"><div class="CSS_RectArrondi_2">Fonction (Post)</div></th>
+                        <th class="CSS_BehindRectArrondi"><div class="CSS_RectArrondi_2">ChangeData (VarTransfer)</div></th>
+
+                        <th class="CSS_BehindRectArrondi"><div class="CSS_RectArrondi_2">Btn</div></th>
+                        <th class="CSS_BehindRectArrondi"><div class="CSS_RectArrondi_2">Select ChangeData (VarTransfer)</div></th>
+                        <th class="CSS_BehindRectArrondi"><div class="CSS_RectArrondi_2">Fonction (Get)</div></th>
+
+                        
+                    </tr>
+                </thead>
+            <tbody cdkDropList (cdkDropListDropped)="drop($event)">
+                <tr *ngFor="let item of Tab" cdkDrag>
+                        <th class="CSS_BehindRectArrondi"><div class="CSS_RectArrondi_3">{{ item.FCmdC_FBtn_Origin }}</div></th>
+                        <th class="CSS_BehindRectArrondi"><div class="CSS_RectArrondi_3">{{ item.FCmdC_Ordre }}</div></th>
+
+                        <th class="CSS_BehindRectArrondi"><div class="CSS_RectArrondi_3">{{ item.FCmdC_FFct_From }}</div></th>
+                        <th class="CSS_BehindRectArrondi"><div class="CSS_RectArrondi_3"></div></th>
+
+                        <th class="CSS_BehindRectArrondi"><div class="CSS_RectArrondi_3">{{ item.FCmdC_FBtn_To }}</div></th>
+                        <th class="CSS_BehindRectArrondi"><div class="CSS_RectArrondi_3"></div></th>
+                        <th class="CSS_BehindRectArrondi"><div class="CSS_RectArrondi_3">{{ item.FCmdC_FFct_To }}</div></th>
+                        
+                        <!-- Ajoutez d'autres cellules de données si nécessaire -->
+                    </tr>
+                </tbody>
+            </table>
+            <div>
+                <button type="Css_Submit">+</button>
+                <button type="Css_Submit">Update</button>
+            </div>
+        </div>
+
+        <div *ngIf="Var_Selected === 3">
+            <table>
+                <thead>
+                    To : <span *ngIf="Tab_SelectedItem && Tab_SelectedItem.length > 0">{{ Tab_SelectedItem[0].FBtn_Id }}</span>
+                    <!-- Ligne pour les en-têtes de groupe -->
+                    <tr>
+                        <th colspan="2" class="CSS_BehindRectArrondi"><div class="CSS_RectArrondi_1">CmdCenter</div></th>
+                        <th colspan="3" class="CSS_BehindRectArrondi"><div class="CSS_RectArrondi_1">From</div></th>
+                        <th colspan="2" class="CSS_BehindRectArrondi"><div class="CSS_RectArrondi_1">To</div></th>
+                    </tr>
+                    <!-- Ligne pour les en-têtes de colonnes individuelles -->
+                    <tr>
+                        <th class="CSS_BehindRectArrondi"><div class="CSS_RectArrondi_2">Origin</div></th>
+                        <th class="CSS_BehindRectArrondi"><div class="CSS_RectArrondi_2">Ordre</div></th>
+
+                        <th class="CSS_BehindRectArrondi"><div class="CSS_RectArrondi_2">Fonction (Post)</div></th>
+                        <th class="CSS_BehindRectArrondi"><div class="CSS_RectArrondi_2">ChangeData (VarTransfer)</div></th>
+                        <th class="CSS_BehindRectArrondi"><div class="CSS_RectArrondi_2">Btn</div></th>
+
+                        <th class="CSS_BehindRectArrondi"><div class="CSS_RectArrondi_2">Select ChangeData (VarTransfer)</div></th>
+                        <th class="CSS_BehindRectArrondi"><div class="CSS_RectArrondi_2">Fonction (Get)</div></th>
+                    </tr>
+                </thead>
+            <tbody cdkDropList (cdkDropListDropped)="drop($event)">
+                <tr *ngFor="let item of Tab" cdkDrag>
+                        <th class="CSS_BehindRectArrondi"><div class="CSS_RectArrondi_3">{{ item.FCmdC_FBtn_Origin }}</div></th>
+                        <th class="CSS_BehindRectArrondi"><div class="CSS_RectArrondi_3">{{ item.FCmdC_Ordre }}</div></th>
+
+                        <th class="CSS_BehindRectArrondi"><div class="CSS_RectArrondi_3">{{ item.FCmdC_FFct_From }}</div></th>
+                        <th class="CSS_BehindRectArrondi"><div class="CSS_RectArrondi_3"></div></th>
+                        <th class="CSS_BehindRectArrondi"><div class="CSS_RectArrondi_3">{{ item.FCmdC_FBtn_From }}</div></th>
+
+                        <th class="CSS_BehindRectArrondi"><div class="CSS_RectArrondi_3"></div></th>
+                        <th class="CSS_BehindRectArrondi"><div class="CSS_RectArrondi_3">{{ item.FCmdC_FFct_To }}</div></th>
+                        <!-- Ajoutez d'autres cellules de données si nécessaire -->
+                    </tr>
+                </tbody>
+            </table>
+            <div>
+                <button type="Css_Submit">+</button>
+                <button type="Css_Submit">Update</button>
+            </div>
+        </div>
+
+        <div *ngIf="Var_Selected === 0">
+            <table>
+                <thead>
+                    <!-- Ligne pour les en-têtes de groupe -->
+                    <tr>
+                        <th colspan="3" class="CSS_BehindRectArrondi"><div class="CSS_RectArrondi_1">From</div></th>
+                        <th colspan="2" class="CSS_BehindRectArrondi"><div class="CSS_RectArrondi_1">CmdCenter</div></th>
+                        <th colspan="3" class="CSS_BehindRectArrondi"><div class="CSS_RectArrondi_1">To</div></th>
+                    </tr>
+                    <!-- Ligne pour les en-têtes de colonnes individuelles -->
+                    <tr>
+                        <th class="CSS_BehindRectArrondi"><div class="CSS_RectArrondi_2">Fonction (Post)</div></th>
+                        <th class="CSS_BehindRectArrondi"><div class="CSS_RectArrondi_2">ChangeData (VarTransfer)</div></th>
+                        <th class="CSS_BehindRectArrondi"><div class="CSS_RectArrondi_2">Btn</div></th>
+                        <th class="CSS_BehindRectArrondi"><div class="CSS_RectArrondi_2">Origin</div></th>
+                        <th class="CSS_BehindRectArrondi"><div class="CSS_RectArrondi_2">Ordre</div></th>
+                        <th class="CSS_BehindRectArrondi"><div class="CSS_RectArrondi_2">Btn</div></th>
+                        <th class="CSS_BehindRectArrondi"><div class="CSS_RectArrondi_2">Select ChangeData (VarTransfer)</div></th>
+                        <th class="CSS_BehindRectArrondi"><div class="CSS_RectArrondi_2">Fonction (Get)</div></th>
+                    </tr>
+                </thead>
+            <tbody cdkDropList (cdkDropListDropped)="drop($event)">
+                <tr *ngFor="let item of Tab" cdkDrag>
+                        <th class="CSS_BehindRectArrondi"><div class="CSS_RectArrondi_3">{{ item.FCmdC_FFct_From }}</div></th>
+                        <th class="CSS_BehindRectArrondi"><div class="CSS_RectArrondi_3"></div></th>
+                        <th class="CSS_BehindRectArrondi"><div class="CSS_RectArrondi_3">{{ item.FCmdC_FBtn_From }}</div></th>
+                        <th class="CSS_BehindRectArrondi"><div class="CSS_RectArrondi_3">{{ item.FCmdC_FBtn_Origin }}</div></th>
+                        <th class="CSS_BehindRectArrondi"><div class="CSS_RectArrondi_3">{{ item.FCmdC_Ordre }}</div></th>
+                        <th class="CSS_BehindRectArrondi"><div class="CSS_RectArrondi_3">{{ item.FCmdC_FBtn_To }}</div></th>
+                        <th class="CSS_BehindRectArrondi"><div class="CSS_RectArrondi_3"></div></th>
+                        <th class="CSS_BehindRectArrondi"><div class="CSS_RectArrondi_3">{{ item.FCmdC_FFct_To }}</div></th>
+                        <!-- Ajoutez d'autres cellules de données si nécessaire -->
+                    </tr>
+                </tbody>
+            </table>
+            <div>
+                <button type="Css_Submit">+</button>
+                <button type="Css_Submit">Update</button>
+            </div>
+        </div>
+        
+
+    </form>
+
+</div>
+
+<!-- 
+<div *ngIf="Var_BtnSelected === '1'">
+    <app-s8o2-commandcenter>
+    </app-s8o2-commandcenter>
+</div>
+-->
+
+

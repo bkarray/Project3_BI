@@ -1,0 +1,56 @@
+
+<form class="Css_MyForm">
+    <div *ngIf="VarB_FileVarTransfert">
+        <table>
+            <thead>
+                <tr>
+                    <th class="CSS_BehindRectArrondi"><div class="CSS_RectArrondi_2">Variable</div></th>
+                    <th class="CSS_BehindRectArrondi"><div class="CSS_RectArrondi_2">Type</div></th>
+                </tr>
+            </thead>
+            <tbody cdkDropList (cdkDropListDropped)="drop($event)">
+                <tr>
+                    <td>
+                        <div class="Css_SmallInput">
+                            <input id="IFU_Variable" name="IFU_Variable" type="text" class="Css_Small_Input"
+                                [(ngModel)]="searchText">
+                        </div>
+                    </td>
+                </tr>
+                <tr *ngFor="let item of filterItems(Tab_VarSelect); let i = index" cdkDrag>
+                    <td class="CSS_BehindRectArrondi">
+                        <div *ngIf="editingIndex !== i; else editField" class="CSS_RectArrondi_3" (dblclick)="TS_StartEditing(i)">
+                            {{ item.FVTransf_VarTransfert }}
+                        </div>
+                        <ng-template #editField>
+                            <input [(ngModel)]="tempEditValue" type="text" class="Css_SmallInput" name="editInput" (blur)="TS_CancelEditing(i)">
+                            <button type="Css_Submit" (click)="TS_SaveEditing(i)">Save</button>
+                        </ng-template>
+                    </td>
+                    <td>
+                        <select class="CSS_Select" [(ngModel)]="item.selectedVarType" name="selectedVarType-{{item.FVTransf_Id}}">
+                            <option *ngFor="let type of Tab_Type" [ngValue]="type.FVType_VarType">{{ type.FVType_VarType }}</option>
+                        </select>
+                    </td>
+                    <td>
+                        <button type="Css_Submit" (click)="TS_Remove_VarSelect(i)">-</button>
+                    </td>
+                </tr>
+            </tbody>    
+        </table>
+    </div>
+    
+    <div>
+        <button type="Css_Submit" (click)="TS_Add_VarSelect()">+</button>
+        <button type="Css_Submit" (click)="TS_Update()">Update</button>
+    </div>
+    
+
+</form>
+
+
+
+
+
+
+

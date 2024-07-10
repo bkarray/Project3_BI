@@ -1,0 +1,35 @@
+<div class="CSS_URL">
+    <div>
+        <button (click)="ajouterBouton()">Ajouter URL</button>
+        <ng-container *ngTemplateOutlet="boutonTemplate; context:{ Tab_Bouton: Tab_Bouton, parent: null }"></ng-container>
+    </div>
+    
+    <ng-template #boutonTemplate let-Tab_Bouton="Tab_Bouton" let-parent="parent">
+        <div cdkDropList [cdkDropListData]="Tab_Bouton" (cdkDropListDropped)="drop_URL($event, parent)">
+            <ng-container *ngFor="let bouton of Tab_Bouton; let i = index">
+                <div class="CSS_BoutonContainer" cdkDrag id="{{ bouton.id }}">
+                    <!-- Affichage et édition du nom du bouton -->
+                    <div *ngIf="!bouton.enEdition" (contextmenu)="gererListe(bouton, $event)">
+                        <button (click)="afficherRectangle(bouton)">
+                            {{ bouton.nom }}
+                        </button>
+                        <!-- Rectangle avec les options -->
+                        <ul *ngIf="bouton.listeVisible" class="CSS_Options">
+                            <li (click)="ajouterSousBouton(bouton)">Ajouter Sous-Bouton</li>
+                            <li (click)="debutEdition(bouton)">Éditer</li>
+                            <li (click)="supprimerBouton(bouton, parent, i)">Supprimer</li>
+                            
+                        </ul>
+                    </div>
+                    <div *ngIf="bouton.enEdition">
+                        <input type="text" [(ngModel)]="bouton.nom" (blur)="finEdition(bouton, false)" (keyup.enter)="finEdition(bouton)">
+                    </div>
+                    <!-- CSS_SousBoutons -->
+                    <div class="CSS_SousBoutons" *ngIf="bouton.sousBoutons.length > 0">
+                        <ng-container *ngTemplateOutlet="boutonTemplate; context:{ Tab_Bouton: bouton.sousBoutons, parent: bouton }"></ng-container>
+                    </div>
+                </div>
+            </ng-container>
+        </div>
+    </ng-template>
+</div>

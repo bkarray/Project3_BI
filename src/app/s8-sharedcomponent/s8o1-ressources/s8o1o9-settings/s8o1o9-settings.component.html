@@ -1,0 +1,148 @@
+
+
+<div class="wrapper">
+    
+    <div class="left-content">
+        <button
+            type="Css_Submit" 
+            *ngFor="let item of Tab_Object"
+            (click)="TS_Show_Item_Tab_Object(item)"
+            [class.selected]="Tab_SelectedItem[0] === item"
+            [class.not-selected]="Tab_SelectedItem[0] !== item">
+
+            {{ item.FBtn_Id }}
+
+        </button>
+    </div>
+
+    <div class="right-content">
+        <div>
+            <button
+                type="Css_Submit"
+                (click)="TS_VarB_Settings_ButtonClick()">                
+                    Settings
+            </button>
+        </div>
+
+        <!-- 1 Debut de Section : Formulaire Setting -->
+        <form class="Css_MyForm">
+
+            <div
+                *ngIf="VarB_Settings">
+                    <!-- 1.1 Debut de Section : Object -->
+                    <form class="Css_MyForm">
+                        <div>
+                            <label for="IFU_Object">Object</label>
+                            <select 
+                                id="IFU_Object" name="IFU_Object"
+                                [(ngModel)]="VarS_IFU_Object"
+                                (change)="TS_Change_VarS_IFU_Object(VarS_IFU_Object)">
+                                <option value="Button">Button</option>
+                                <option value="Popup">Popup</option>
+                                <option value="Tree">Tree</option>
+                                <option value="Table">Table</option>
+                            </select>
+                            <br>
+                            <button
+                                (click)="TS_Sce_Update_Ressources_T_Button()"
+                                type="Css_Submit">
+                                Update Object
+                            </button>
+                        </div>
+                    </form>  
+                    <!-- 1.2 Debut de Section : Object Data -->
+                    <form class="Css_MyForm">
+                        <!-- 2 boutons 'Object' et 'Data' -->
+                        <button 
+                            type="Css_Submit" 
+                            (click)="TS_ShowObjectOptions()" 
+                            [class.selected]="VarN_Selected === 1"
+                            [class.not-selected]]="VarN_Selected !== 1"
+                            (Output_from_VarS_IFU_FrontBehindObject)="Output_from_VarS_IFU_FrontBehindObject">
+
+                            Object
+
+                        </button> 
+
+                        <button 
+                            type="Css_Submit" 
+                            (click)="TS_ShowDataOptions()" 
+                            [class.selected]="VarN_Selected === 2"
+                            [class.not-selected]]="VarN_Selected !== 2">
+                            
+                            Data
+
+                        </button>
+
+                        <button 
+                            type="Css_Submit" 
+                            (click)="TS_ShowCmdCenterOptions()" 
+                            [class.selected]="VarN_Selected === 3"
+                            [class.not-selected]]="VarN_Selected !== 3">
+                            
+                            Cmd Center
+
+                        </button>
+        <!-- 
+                        <button 
+                            type="Css_Submit">
+                            Object
+                        </button> 
+
+                        <button 
+                            type="Css_Submit">
+                            Traitment
+                        </button> 
+
+                        <button 
+                            type="Css_Submit">
+                            Files
+                        </button> 
+
+                        <button 
+                            type="Css_Submit">
+                            Cmd Center
+                        </button> 
+
+                        <button 
+                            type="Css_Submit">
+                            Services
+                        </button> 
+
+        -->
+                        <app-s8o1o9o1-Object 
+                            [InputVarN_Selected]="VarN_Selected">
+                            
+                        </app-s8o1o9o1-Object>
+
+        <!-- 
+        [Input_VarS_IFU_Recherche]="Input_VarS_IFU_Recherche"
+        [Input_RT_VarXY_Position_X]="Input_RT_VarXY_Position_X"
+        [Input_RT_VarXY_Position_Y]="Input_RT_VarXY_Position_Y"
+        (Output_from_VarS_IFU_FrontBehindObject)="TS_UpdateOutputValue($event)" 
+        -->
+                        <app-s8o1o9o2-data
+                            [InputVarN_Selected]="VarN_Selected">
+
+                        </app-s8o1o9o2-data>
+
+                        <app-s8o1o9o3-cmdcenter
+                            [InputVarN_Selected]="VarN_Selected">
+
+                        </app-s8o1o9o3-cmdcenter>
+
+
+                    </form>
+            </div>
+
+        </form>
+        <!-- Fin de Section : Formulaire Setting -->
+    </div>
+    <button (click)="TS_Close_Settings()" class="close-button">Close</button>
+    
+</div>
+
+
+
+
+

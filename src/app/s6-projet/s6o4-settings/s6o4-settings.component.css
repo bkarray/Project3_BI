@@ -1,0 +1,166 @@
+
+
+
+.CSS_MainContainer {
+    display: flex;
+    align-items: start;
+    gap: 5px; /* Espace de 5px entre les éléments enfants */
+    margin-left: 10%;
+    
+}
+
+.CSS_Tab_ListItems {
+    display: flex;
+    flex-direction: column;
+    background-color: white; /* Couleur de fond légère pour les onglets */
+    border-radius: 5px; /* Coins arrondis pour l'esthétique */
+    overflow: hidden; /* Cache les débordements pour maintenir les coins arrondis */
+    
+}
+
+.CSS_Tab_ListItems button {
+    background-color: white; /* Fond clair pour les onglets non actifs */
+    color: #333333; /* Couleur du texte pour une lisibilité accrue */
+    padding: 12px 20px; /* Espacement intérieur confortable */
+    font-size: 18px; /* Taille de police plus grande pour une meilleure visibilité */
+    border: none; /* Pas de bordure pour un look épuré */
+    border-radius: 8px; /* Coins légèrement plus arrondis */
+    cursor: pointer; /* Indique que l'élément est cliquable */
+    transition: background-color 0.3s, box-shadow 0.3s, transform 0.2s; /* Transition en douceur pour les interactions */
+    text-align: left; /* Alignement du texte à gauche */
+    border: 2px solid black;
+    margin-bottom: 10px; /* Marge en bas de chaque bouton */
+}
+
+.CSS_Tab_ListItems button:active {
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2); /* Ombre réduite lorsqu'actif */
+    transform: translateY(4px); /* Effet de pression lors du clic */
+}
+
+
+.CSS_Settings {
+    display: inline-block;
+    background-color: rgb(255, 255, 255);
+    border: 2px solid black;
+    margin-left: 5px;
+    overflow: hidden; /* Ajoutez un débordement caché pour éviter le débordement du contenu */
+    padding: 10px; /* Ajoutez un peu d'espacement intérieur */
+    min-height: 120px;
+    min-width: 600px; 
+    max-width: 2600px; 
+    resize: both; 
+}
+
+.CSS_Fct_Header h2 {
+    margin: 0; /* Retire la marge par défaut du h2 pour un alignement correct */
+    /* Ajoutez d'autres styles si nécessaire */
+}
+.CSS_Fct_Header button {
+    padding: 10px 20px; /* Espacement généreux pour le confort de clic */
+    font-size: 16px; /* Taille de police lisible */
+    color: white; /* Couleur du texte */
+    background-color: #007bff; /* Couleur de fond vive */
+    border: none; /* Aucune bordure pour un look moderne */
+    border-radius: 5px; /* Coins arrondis pour une apparence douce */
+    cursor: pointer; /* Curseur en forme de main pour indiquer qu'il s'agit d'un bouton */
+    transition: background-color 0.3s, box-shadow 0.3s, transform 0.3s; /* Transition douce pour l'interaction */
+    outline: none; /* Supprimer le contour lors de la focalisation pour un style propre */
+}
+.CSS_Fct_Header button:hover {
+    background-color: #0056b3; /* Assombrir le bouton au survol pour une interaction visuelle */
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2); /* Ombre subtile pour un effet de soulèvement */
+}
+.CSS_Fct_Header button:active {
+    transform: translateY(2px); /* Légèrement enfoncer le bouton lorsqu'il est cliqué */
+}
+.CSS_Fct_Header button:focus {
+    box-shadow: 0 0 0 3px rgba(0,123,255,0.5); /* Halo de focus pour l'accessibilité */
+}
+
+/* *********************************************************************************** */
+.CSS_Fct_Header, .CSS_Attr_Header {
+    padding: 10px;
+    background-color: #f6f8fa;
+    border-bottom: 1px solid #e1e4e8;
+    margin-bottom: 20px;
+    display: flex; /* Active le flexbox */
+    justify-content: space-between; /* Répartit l'espace entre les éléments */
+    
+}
+/* *********************************************************************************** */
+.CSS_Fct_Container, .CSS_Attr_Container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.CSS_Fct_Container {
+    padding: 10px;
+    background-color: #f9f9f9;
+    border: 1px solid #e1e4e8;
+}
+.CSS_Fct_Container button {
+    padding: 10px 15px;
+    font-size: 16px;
+    background-color: #eff3f6;
+    border: 1px solid #d1d5da;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+.CSS_Fct_Container button:hover {
+    background-color: #e7e9eb;
+}
+
+.CSS_Attr_Container div {
+    background-color: #f9f9f9;
+    border: 1px solid #e1e4e8;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+.CSS_Attr_Container input[type="text"], .CSS_Attr_Container textarea {
+    width: 100%;
+    padding: 8px;
+    margin: 5px 0;
+    border: 1px solid #d1d5da;
+}
+/* *********************************************************************************** */
+
+.CSS_Fonction {
+    font-size: 14px; /* Taille de l'écriture */
+    margin-left: 0px;
+    margin-left: 0px;
+}
+.CSS_LinearAlignment {
+    display: flex; /* Active le flexbox */
+    align-items: center; /* Centre les éléments verticalement */
+    gap: 10px; /* Espace entre les éléments */
+}
+.CSS_AttributeKey {
+    margin-right: 5px; /* Espace à droite du span contenant {{ attribut.key }} */
+    margin-left: 5px;
+}
+.CSS_InputField {
+    flex-grow: 1;
+}
+.CSS_DetailTextAreaContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Alignement vertical en haut */
+}
+.CSS_TextAreaClass {
+    resize: both; /* Permet de redimensionner horizontalement et verticalement */
+}
+.CSS_TextAreaClass {
+    resize: both; /* Permet de redimensionner horizontalement et verticalement */
+    margin-top: 10px; /* Espace entre le bouton et le textarea */
+}
+.CSS_AttributeDescription {
+    position: absolute;
+    background-color: #fff; /* Fond blanc pour la description */
+    border: 1px solid #000000; /* Bordure pour la description */
+    padding: 5px;
+    z-index: 1; /* Pour que la description soit au-dessus du contenu */
+    margin-left: 20px; /* Espace entre attribut.key et la description (ajustez selon vos préférences) */
+    width: 20%; /* Largeur spécifique */
+}
+

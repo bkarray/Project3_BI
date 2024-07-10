@@ -1,0 +1,60 @@
+
+<!-- Debut Setting Drag and drop Setting -->
+<div 
+     (dragover)="TS_OnDragOver($event)" 
+     draggable="true"
+     (dragstart)="TS_OnDragStart($event, 0)" 
+     (dragend)="TS_OnDragEnd($event)"
+     [ngStyle]="{
+         'position': 'absolute',
+         'z-index': '1000', 
+         'left.px': VarXY_Position[0].x, 
+         'top.px': VarXY_Position[0].y
+     }">
+<div>    
+    
+</div>
+    <app-s8o1o9-settings>
+     </app-s8o1o9-settings>    
+<!--
+[Input_VarS_IFU_Recherche]="Input_VarS_IFU_Recherche"
+
+[Input_RT_VarXY_Position_X]="VarXY_Position[1].x"
+[Input_RT_VarXY_Position_Y]="VarXY_Position[1].y"
+
+[Input_Get_DB_FBtn_Object]= "Input_Get_DB_FBtn_Object" 
+(Output_from_VarS_IFU_FrontBehindObject)="TS_UpdateOutputValue($event)"
+[Input_Tab_ActualDataPosition]="Input_Tab_ActualDataPosition"
+(Output_VarS_IFU_Object)="VarS_IFU_Object = $event"
+ -->
+</div>
+<!-- Fin Setting Drag and drop Setting -->
+
+
+
+<!-- Debut Resultat Setting Drag and drop Resultat Setting -->
+
+<div 
+    *ngFor="let item of Tab_Object"
+    (dragover)="TS_OnDragOver($event)" 
+    draggable="true"
+    (dragstart)="TS_OnDragStart($event, 1)" 
+    (dragend)="TS_OnDragEnd($event)"
+    [ngStyle]="{
+        'position': 'absolute',
+        'z-index': '1000', 
+        'left.px': VarXY_Position[1].x, 
+        'top.px': VarXY_Position[1].y
+        }"> 
+
+        abc
+     <ng-container *ngIf="VarS_IFU_Object === 'Button' || Input_Get_DB_FBtn_Object === 'Button'">
+        <app-s8o1o8o2-button
+            [Input_VarS_IFU_Recherche]="Input_VarS_IFU_Recherche">
+            
+        </app-s8o1o8o2-button>
+    </ng-container>
+    
+
+</div>
+<!-- Fin Resultat Setting Drag and drop Resultat Setting -->

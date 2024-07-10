@@ -1,0 +1,107 @@
+/* Styles de base */
+.CSS_Tableau {
+  padding: 10px;
+  margin: 5px;
+  border: 1px solid grey;
+  background-color: white;
+  cursor: move;
+  position: relative;
+  width: 100%; /* Ajusté de 100 à 100% pour une largeur complète */
+  height: 100px; /* Ajusté pour la clarté */
+}
+
+.table-container {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin: 20px 0; /* Ajouté pour un espacement vertical */
+}
+
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+  gap: 15px; /* Espace entre les éléments */
+}
+
+.table-header {
+  background-color: #f8f9fa; /* Couleur de fond légère */
+  padding: 5px 10px;
+  border-radius: 4px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid #ddd; /* Bordure légère */
+}
+
+.custom-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px; /* Espace au-dessus du tableau */
+}
+
+.custom-table th, .custom-table td {
+  padding: 8px;
+  text-align: left;
+}
+
+/* Styles des boutons */
+.btn-icon, .btn-standard {
+  border: none;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s; /* Transition pour l'effet de survol */
+}
+
+.btn-icon {
+  background-color: #007bff;
+}
+
+.btn-icon:hover {
+  background-color: #0056b3; /* Foncer au survol */
+}
+
+.btn-standard {
+  background-color: #0056b3;
+}
+
+.btn-standard:hover {
+  background-color: #0056b3; /* Foncer au survol */
+}
+
+/* Styles pour le menu contextuel */
+.context-menu {
+  position: absolute;
+  background-color: #f0f0f0;
+  border: 1px solid #d1d1d1;
+  border-radius: 4px;
+  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
+  padding: 10px;
+  z-index: 1000; /* Assure que le menu est au-dessus des autres éléments */
+}
+
+.context-menu ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.context-menu ul li {
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.context-menu ul li:hover {
+  background-color: #e9ecef; /* Changement de couleur au survol */
+}
+
+/* Styles supplémentaires au besoin */
+
+
+.show-borders th,
+.show-borders td {
+  border: 1px solid black;
+}
